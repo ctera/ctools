@@ -5,7 +5,7 @@ import requests
 import csv
 import re
 from cterasdk import *
-from sample_base import CTERASDKSampleBase
+#from sample_base import CTERASDKSampleBase
 from getpass import getpass
 requests.packages.urllib3.disable_warnings()
 
@@ -78,9 +78,22 @@ def status():
                         
     global_admin.logout()
 
+# Print possible tasks and prompt user to pick a task by entering corresponding number.
+def switch():
+    print("Tasks to run:\n1. Get Connected Edge Filer status.")
+    option = int(input("Enter a task number to execute: "))
+    tasks.get(option,default)()
 
-  
+# Dictionary to map numbers to functions/tasks user can choose to run.
+tasks = {
+        1 : status,
 
+}
+
+# If an invalid number is entered, call this function and exit.
+def default():
+    print("ERROR: Invalid option given.")
+    logging.warning("Invalid option given. Exiting ctools.exe")
 
 if __name__ == "__main__":
-    status()
+    switch()
