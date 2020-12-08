@@ -1,3 +1,6 @@
+# CTools.py
+# CTERA Portal/Edge Filer Maintenance Tool
+# Version 1.1
 import logging
 import os
 import sys
@@ -28,12 +31,12 @@ def status():
         if deletefile in ('N', 'n'):
             print ('Contents will be appended to the existing file')
     else:
-        print("The file does not exist")
+        print("Output file does not exist. Creating new file")
         
     import csv
     with open(filename, mode='a') as gatewayList:
         gateway_writer = csv.writer(gatewayList, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        gateway_writer.writerow(['Gateway', 'CloudSync Status', 'selfScanIntervalInHours', 'FilesInUploadQueue', 'scanningFiles', 'selfVerificationscanningFiles', 'MetaLogsSetting', 'MetaLogMaxSize', 'MetaLogMaxFiles', 'CurrentFirmware', 'License', 'EvictionPercentage', 'CurrentVolumeStorage', 'IP Config'])
+        gateway_writer.writerow(['Gateway', 'CloudSync Status', 'selfScanIntervalInHours', 'FilesInUploadQueue', 'scanningFiles', 'selfVerificationscanningFiles', 'MetaLogsSetting', 'MetaLogMaxSize', 'MetaLogMaxFiles', 'CurrentFirmware', 'License', 'EvictionPercentage', 'CurrentVolumeStorage', 'IP Config', 'Alerts'])
     
     for tenant in global_admin.portals.tenants():
         global_admin.portals.browse(tenant.name)
@@ -53,34 +56,46 @@ def status():
                 try:
                     MetaLogMaxSize = filer.get('/config/logging/metalog/maxFileSizeMB')
                 except:
-                    MetaLogMaxSize = ('Not Applicable')
+                    try:
+                        MetaLogMaxSize = filer.get('/config/logging/log2File/maxFileSizeMB')
+                    except:
+                        MetaLogMaxSize = ('Not Applicable')
                 try:
                     MetaLogMaxFiles = filer.get('/config/logging/metalog/maxfiles')
                 except:
-                    MetaLogMaxFiles = ('Not Applicable')
+                    try:                     
+                        MetaLogMaxFiles = filer.get('/config/logging/log2File/maxfiles')
+                    except:
+                        MetaLogMaxFiles = ('Not Applicable')
+                try:
+                    MetaLogs = filer.cli.run_command('dbg le')
+                except:
+                    MetaLogs = ('Not Applicable')
                 License = filer.licenses.get()
                 IP = filer.network.ipconfig()
                 IPstr = str(IP)
                 IP1 = re.findall ('address.*', IPstr)            
                 storageThresholdPercentTrigger = filer.get('/config/cloudsync/cloudExtender/storageThresholdPercentTrigger')
                 VolumeStorage = filer.get('/proc/storage/summary')
-                MetaLogs = filer.cli.run_command('dbg le')
+                #MetaLogs = filer.cli.run_command('dbg le')
                 MetaLogsstr = str(MetaLogs)
                 MetaLogs1 = re.findall ('...........Current.*', MetaLogsstr)
+                Alerts = filer.get('/config/logging/alert')
+                #MetaLogs1 = 'test'
                 import csv
                 with open(filename, mode='a') as gatewayList:
                     gateway_writer = csv.writer(gatewayList, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-                    gateway_writer.writerow([filer.name, cloudSyncStatus1, selfScanIntervalInHours, FilesInUploadQueue, scanningFiles, selfVerificationscanningFiles, MetaLogs1, MetaLogMaxSize, MetaLogMaxFiles, CurrentFirmware, License, storageThresholdPercentTrigger, VolumeStorage, IP1])
+                    gateway_writer.writerow([filer.name, cloudSyncStatus1, selfScanIntervalInHours, FilesInUploadQueue, scanningFiles, selfVerificationscanningFiles, MetaLogs1, MetaLogMaxSize, MetaLogMaxFiles, CurrentFirmware, License, storageThresholdPercentTrigger, VolumeStorage, IP1, Alerts])
 #                import sys
 #                sys.stdout = open('output.csv','a')
-#                print(filer.name, selfScanIntervalInHours, FilesInUploadQueue, scanningFiles, selfVerificationscanningFiles,MetaLogs1, MetaLogMaxSize, MetaLogMaxFiles, CurrentFirmware, License, storageThresholdPercentTrigger, VolumeStorage, IP1)
+#                print(filer.name, selfScanIntervalInHours, FilesInUploadQueue, scanningFiles, selfVerificationscanningFiles,MetaLogs1, MetaLogMaxSize, MetaLogMaxFiles, CurrentFirmware, License, storageThresholdPercentTrigger, VolumeStorage, IP1, Alerts)
 
                         
     global_admin.logout()
 
 # Print possible tasks and prompt user to pick a task by entering corresponding number.
 def switch():
-    print("Tasks to run:\n1. Get Connected Edge Filer status.")
+    print("Tasks to run:\n1. Get Details of all Connected Edge Filers to a specific Portal.")
     option = int(input("Enter a task number to execute: "))
     tasks.get(option,default)()
 
