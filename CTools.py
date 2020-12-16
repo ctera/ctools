@@ -1,6 +1,6 @@
 # CTools.py
 # CTERA Portal/Edge Filer Maintenance Tool
-# Version 1.1
+# Version 1.2
 import logging
 import os
 import sys
@@ -12,16 +12,28 @@ from cterasdk import *
 from getpass import getpass
 requests.packages.urllib3.disable_warnings()
 
-def status():
-    address = input("Portal (IP, Hostname or FQDN): ")
-    username = input("Admin Username: ")
-    password = getpass("Admin Password: ")
-    filename = input("Output filename. Make sure extension is csv: ")
-
-    global_admin = GlobalAdmin(address)
-    global_admin.login(username, password)
-    global_admin.portals.browse_global_admin()
+def login():
+    try:
+        address = input("Portal (IP, Hostname or FQDN): ")
+        username = input("Admin Username: ")
+        password = getpass("Admin Password: ")
+    except CTERAException as error:
+        logging.error(error)
     
+    try:
+        logging.info("Logging into " + address)
+        global_admin = GlobalAdmin(address)
+        global_admin.login(username, password)
+        logging.info("Successfully logged in to " + address)
+        return global_admin
+    except CTERAException as error:
+        logging.warning(error)
+
+def status():
+   
+    global_admin = login()
+    global_admin.portals.browse_global_admin()
+    filename = input("Enter output filename. Make sure extension is csv: ")
     import os
     if os.path.exists(filename):
         print ('File exists. It will be deleted and a new one will be created')
@@ -112,3 +124,4 @@ def default():
 
 if __name__ == "__main__":
     switch()
+
