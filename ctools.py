@@ -1,4 +1,5 @@
-# CTools.py
+#!/usr/bin/python3
+# ctools.py
 # CTERA Portal/Edge Filer Maintenance Tool
 # Version 1.2
 import logging
@@ -49,7 +50,7 @@ def status():
     with open(filename, mode='a') as gatewayList:
         gateway_writer = csv.writer(gatewayList, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         gateway_writer.writerow(['Gateway', 'CloudSync Status', 'selfScanIntervalInHours', 'FilesInUploadQueue', 'scanningFiles', 'selfVerificationscanningFiles', 'MetaLogsSetting', 'MetaLogMaxSize', 'MetaLogMaxFiles', 'CurrentFirmware', 'License', 'EvictionPercentage', 'CurrentVolumeStorage', 'IP Config', 'Alerts'])
-    
+
     for tenant in global_admin.portals.tenants():
         global_admin.portals.browse(tenant.name)
         filers = global_admin.devices.filers(include=['deviceConnectionStatus.connected', 'deviceReportedStatus.config.hostname'])
@@ -75,7 +76,7 @@ def status():
                 try:
                     MetaLogMaxFiles = filer.get('/config/logging/metalog/maxfiles')
                 except:
-                    try:                     
+                    try:
                         MetaLogMaxFiles = filer.get('/config/logging/log2File/maxfiles')
                     except:
                         MetaLogMaxFiles = ('Not Applicable')
@@ -86,7 +87,7 @@ def status():
                 License = filer.licenses.get()
                 IP = filer.network.ipconfig()
                 IPstr = str(IP)
-                IP1 = re.findall ('address.*', IPstr)            
+                IP1 = re.findall ('address.*', IPstr)
                 storageThresholdPercentTrigger = filer.get('/config/cloudsync/cloudExtender/storageThresholdPercentTrigger')
                 VolumeStorage = filer.get('/proc/storage/summary')
                 #MetaLogs = filer.cli.run_command('dbg le')
@@ -102,7 +103,6 @@ def status():
 #                sys.stdout = open('output.csv','a')
 #                print(filer.name, selfScanIntervalInHours, FilesInUploadQueue, scanningFiles, selfVerificationscanningFiles,MetaLogs1, MetaLogMaxSize, MetaLogMaxFiles, CurrentFirmware, License, storageThresholdPercentTrigger, VolumeStorage, IP1, Alerts)
 
-                        
     global_admin.logout()
 
 # Print possible tasks and prompt user to pick a task by entering corresponding number.
@@ -114,9 +114,7 @@ def switch():
 # Dictionary to map numbers to functions/tasks user can choose to run.
 tasks = {
         1 : status,
-
 }
-
 # If an invalid number is entered, call this function and exit.
 def default():
     print("ERROR: Invalid option given.")
