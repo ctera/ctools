@@ -65,9 +65,7 @@ def status():
                 except:
                     MetaLogs = ('Not Applicable')
                 License = filer.licenses.get()
-                IP = filer.network.ipconfig()
-                IPstr = str(IP)
-                IP1 = re.findall ('address.*', IPstr)
+                IP1 = filer.get('/status/network/ports/0/ip/address')
                 storageThresholdPercentTrigger = filer.get('/config/cloudsync/cloudExtender/storageThresholdPercentTrigger')
                 VolumeStorage = filer.get('/proc/storage/summary')
                 #MetaLogs = filer.cli.run_command('dbg le')
