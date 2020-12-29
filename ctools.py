@@ -10,18 +10,29 @@ from unlock import get_info, unlock
 
 from cterasdk import *
 import logging
+import sys
+
+def quit():
+    sys.exit("Exiting ctools")
 
 # Print possible tasks and prompt user to pick a task by entering corresponding number.
 def switch():
-    tasks_str = """Tasks to run:
-    1. Get Details of all Connected Edge Filers to a specific Portal.
-    2. Try to enable telnet unlock on every single device."""
+    tasks_str = """Available tasks:
+    0. Quit ctools
+    1. Record status details of all connected Edge Filers.
+    2. Enable telnet on one or more connected Edge Filers.
+    """
     print(tasks_str)
-    option = int(input("Enter a task number to execute: "))
-    tasks.get(option,default)()
+    try:
+        option = int(input("Enter a task number to run: "))
+        tasks.get(option,default)()
+    except ValueError:
+        print("Not a task number")
+        quit()
 
 # Dictionary to map numbers to functions/tasks user can choose to run.
 tasks = {
+        0 : quit,
         1 : status,
         2 : get_info,
 }
