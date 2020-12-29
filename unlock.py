@@ -8,7 +8,6 @@ from cterasdk import *
 import logging
 
 def get_info():
- 
     global_admin = login()
     global_admin.portals.browse_global_admin()
     for tenant in global_admin.portals.tenants():
@@ -19,9 +18,14 @@ def get_info():
                 device_name = filer.name
                 firmware = filer.get('/status/device/runningFirmware')
                 mac = filer.get('/status/device/MacAddress')
-                print(tenant.name, filer.name, firmware, mac)
-                unlock(filer)
- 
+                ip = filer.get('/status/network/ports/0/ip/address')
+                print(tenant.name, filer.name, firmware, mac, ip)
+                prompt = input("Unlock this device? yes/no: ")
+                if prompt in ('Y', 'y', 'ye', 'yes'):
+                    unlock(filer)
+                else:
+                    print('Skipping', device_name)
+
 def unlock(filer):
     try:
         code = input("Enter unlock code: ")
@@ -34,5 +38,3 @@ def unlock(filer):
         logging.warning(error)
         print("Bad code or something went wrong unlocking device.")
 
-# uncomment to debug module by running `python unlock.py`
-#get_info()
