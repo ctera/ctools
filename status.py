@@ -13,7 +13,6 @@ import re
 def status():
    
     global_admin = login()
-    global_admin.portals.browse_global_admin()
     filename = input("Enter output filename. Make sure extension is csv: ")
     import os
     if os.path.exists(filename):

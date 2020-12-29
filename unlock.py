@@ -9,7 +9,6 @@ import logging
 
 def get_info():
     global_admin = login()
-    global_admin.portals.browse_global_admin()
     for tenant in global_admin.portals.tenants():
         global_admin.portals.browse(tenant.name)
         filers = global_admin.devices.filers(include=['deviceConnectionStatus.connected'])
