@@ -6,7 +6,7 @@
 # import local modules
 from status import status 
 from login import login 
-from unlock import get_info, unlock
+from unlock import unlock
 
 from cterasdk import *
 import logging
@@ -34,7 +34,7 @@ def switch():
 tasks = {
         0 : quit,
         1 : status,
-        2 : get_info,
+        2 : unlock,
 }
 # If an invalid number is entered, call this function and exit.
 def default():
