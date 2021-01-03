@@ -11,6 +11,8 @@ from unlock import unlock
 from cterasdk import *
 import logging
 import sys
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 def quit():
     sys.exit("Exiting ctools")
