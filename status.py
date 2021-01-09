@@ -28,7 +28,7 @@ def status():
     import csv
     with open(filename, mode='a') as gatewayList:
         gateway_writer = csv.writer(gatewayList, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        gateway_writer.writerow(['Gateway', 'CloudSync Status', 'selfScanIntervalInHours', 'FilesInUploadQueue', 'scanningFiles', 'selfVerificationscanningFiles', 'MetaLogsSetting', 'MetaLogMaxSize', 'MetaLogMaxFiles', 'CurrentFirmware', 'License', 'EvictionPercentage', 'CurrentVolumeStorage', 'IP Config', 'Alerts'])
+        gateway_writer.writerow(['Gateway', 'CloudSync Status', 'selfScanIntervalInHours', 'FilesInUploadQueue', 'scanningFiles', 'selfVerificationscanningFiles', 'MetaLogsSetting', 'MetaLogMaxSize', 'MetaLogMaxFiles', 'CurrentFirmware', 'License', 'EvictionPercentage', 'CurrentVolumeStorage', 'IP Config', 'Alerts', 'TimeServer'])
 
     for tenant in global_admin.portals.tenants():
         global_admin.portals.browse(tenant.name)
@@ -71,11 +71,12 @@ def status():
                 MetaLogsstr = str(MetaLogs)
                 MetaLogs1 = re.findall ('...........Current.*', MetaLogsstr)
                 Alerts = filer.get('/config/logging/alert')
+                TimeServer = filer.get('/config/time/NTPServer')
                 #MetaLogs1 = 'test'
                 import csv
                 with open(filename, mode='a') as gatewayList:
                     gateway_writer = csv.writer(gatewayList, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-                    gateway_writer.writerow([filer.name, cloudSyncStatus1, selfScanIntervalInHours, FilesInUploadQueue, scanningFiles, selfVerificationscanningFiles, MetaLogs1, MetaLogMaxSize, MetaLogMaxFiles, CurrentFirmware, License, storageThresholdPercentTrigger, VolumeStorage, IP1, Alerts])
+                    gateway_writer.writerow([filer.name, cloudSyncStatus1, selfScanIntervalInHours, FilesInUploadQueue, scanningFiles, selfVerificationscanningFiles, MetaLogs1, MetaLogMaxSize, MetaLogMaxFiles, CurrentFirmware, License, storageThresholdPercentTrigger, VolumeStorage, IP1, Alerts, TimeServer])
 #                import sys
 #                sys.stdout = open('output.csv','a')
 #                print(filer.name, selfScanIntervalInHours, FilesInUploadQueue, scanningFiles, selfVerificationscanningFiles,MetaLogs1, MetaLogMaxSize, MetaLogMaxFiles, CurrentFirmware, License, storageThresholdPercentTrigger, VolumeStorage, IP1, Alerts)
