@@ -4,11 +4,7 @@
 # Version 1.2
 from login import login
 from cterasdk import *
-import logging
-import os
-import sys
-import csv
-import re
+import csv, logging, os, re, sys
 
 def status():
    
@@ -28,18 +24,33 @@ def status():
     import csv
     with open(filename, mode='a') as gatewayList:
         gateway_writer = csv.writer(gatewayList, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        gateway_writer.writerow(['Gateway', 'CloudSync Status', 'selfScanIntervalInHours', 'FilesInUploadQueue', 'scanningFiles', 'selfVerificationscanningFiles', 'MetaLogsSetting', 'MetaLogMaxSize', 'MetaLogMaxFiles', 'CurrentFirmware', 'License', 'EvictionPercentage', 'CurrentVolumeStorage', 'IP Config', 'Alerts', 'TimeServer'])
+        gateway_writer.writerow(['Gateway', 
+                                 'CloudSync Status',
+                                 'selfScanIntervalInHours',
+                                 'FilesInUploadQueue',
+                                 'scanningFiles',
+                                 'selfVerificationscanningFiles',
+                                 'MetaLogsSetting',
+                                 'MetaLogMaxSize',
+                                 'MetaLogMaxFiles',
+                                 'CurrentFirmware',
+                                 'License',
+                                 'EvictionPercentage',
+                                 'CurrentVolumeStorage',
+                                 'IP Config',
+                                 'Alerts',
+                                 'TimeServer'])
 
     for tenant in global_admin.portals.tenants():
         global_admin.portals.browse(tenant.name)
-        filers = global_admin.devices.filers(include=['deviceConnectionStatus.connected', 'deviceReportedStatus.config.hostname'])
+        filers = global_admin.devices.filers(include=['deviceConnectionStatus.connected',
+                                                      'deviceReportedStatus.config.hostname'])
         total_devices = 0
         for filer in filers:
             if filer.deviceConnectionStatus.connected:
                 total_devices = total_devices + 1
-                cloudSyncStatus = filer.get('/proc/cloudsync/serviceStatus')
-                cloudSyncStatusstr = str(cloudSyncStatus)
-                cloudSyncStatus1 = re.findall('id.*', cloudSyncStatusstr)
+                sync_status = filer.sync.get_status()
+                sync_id = sync_status.id
                 selfScanIntervalInHours = filer.get('/config/cloudsync/selfScanVerificationIntervalInHours')
                 FilesInUploadQueue = filer.get('/proc/cloudsync/serviceStatus/uploadingFiles')
                 scanningFiles = filer.get('/proc/cloudsync/serviceStatus/scanningFiles')
@@ -76,10 +87,7 @@ def status():
                 import csv
                 with open(filename, mode='a') as gatewayList:
                     gateway_writer = csv.writer(gatewayList, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-                    gateway_writer.writerow([filer.name, cloudSyncStatus1, selfScanIntervalInHours, FilesInUploadQueue, scanningFiles, selfVerificationscanningFiles, MetaLogs1, MetaLogMaxSize, MetaLogMaxFiles, CurrentFirmware, License, storageThresholdPercentTrigger, VolumeStorage, IP1, Alerts, TimeServer])
-#                import sys
-#                sys.stdout = open('output.csv','a')
-#                print(filer.name, selfScanIntervalInHours, FilesInUploadQueue, scanningFiles, selfVerificationscanningFiles,MetaLogs1, MetaLogMaxSize, MetaLogMaxFiles, CurrentFirmware, License, storageThresholdPercentTrigger, VolumeStorage, IP1, Alerts)
+                    gateway_writer.writerow([filer.name, sync_id, selfScanIntervalInHours, FilesInUploadQueue, scanningFiles, selfVerificationscanningFiles, MetaLogs1, MetaLogMaxSize, MetaLogMaxFiles, CurrentFirmware, License, storageThresholdPercentTrigger, VolumeStorage, IP1, Alerts, TimeServer])
 
     global_admin.logout()
 
