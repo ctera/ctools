@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # status.py
 # Module for ctools.py, a CTERA Portal/Edge Filer Maintenance Tool
-# Version 1.2
+# Version 1.3
 from login import login
 from cterasdk import *
 import csv, logging, os, re, sys
@@ -24,7 +24,7 @@ def status():
     import csv
     with open(filename, mode='a') as gatewayList:
         gateway_writer = csv.writer(gatewayList, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        gateway_writer.writerow(['Gateway', 
+        gateway_writer.writerow(['Gateway',
                                  'CloudSync Status',
                                  'selfScanIntervalInHours',
                                  'FilesInUploadQueue',
@@ -52,9 +52,10 @@ def status():
                 sync_status = filer.sync.get_status()
                 sync_id = sync_status.id
                 selfScanIntervalInHours = filer.get('/config/cloudsync/selfScanVerificationIntervalInHours')
-                FilesInUploadQueue = filer.get('/proc/cloudsync/serviceStatus/uploadingFiles')
-                scanningFiles = filer.get('/proc/cloudsync/serviceStatus/scanningFiles')
-                selfVerificationscanningFiles = filer.get('/proc/cloudsync/serviceStatus/selfVerificationScanningFiles')
+                FilesInUploadQueue = sync_status.uploadingFiles
+                uploadingFiles = sync_status.uploadingFiles
+                scanningFiles = sync_status.scanningFiles
+                selfVerificationscanningFiles = sync_status.selfVerificationScanningFiles
                 CurrentFirmware = filer.get('/status/device/runningFirmware')
                 try:
                     MetaLogMaxSize = filer.get('/config/logging/metalog/maxFileSizeMB')
@@ -75,19 +76,31 @@ def status():
                 except:
                     MetaLogs = ('Not Applicable')
                 License = filer.licenses.get()
-                IP1 = filer.get('/status/network/ports/0/ip/address')
+                IP1 = filer.network.get_status().ip.address
                 storageThresholdPercentTrigger = filer.get('/config/cloudsync/cloudExtender/storageThresholdPercentTrigger')
                 VolumeStorage = filer.get('/proc/storage/summary')
-                #MetaLogs = filer.cli.run_command('dbg le')
-                MetaLogsstr = str(MetaLogs)
-                MetaLogs1 = re.findall ('...........Current.*', MetaLogsstr)
+                dbg_level = filer.support.set_debug_level()
+                MetaLogs1 = dbg_level[-28:-18]
                 Alerts = filer.get('/config/logging/alert')
                 TimeServer = filer.get('/config/time/NTPServer')
-                #MetaLogs1 = 'test'
-                import csv
                 with open(filename, mode='a') as gatewayList:
                     gateway_writer = csv.writer(gatewayList, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-                    gateway_writer.writerow([filer.name, sync_id, selfScanIntervalInHours, FilesInUploadQueue, scanningFiles, selfVerificationscanningFiles, MetaLogs1, MetaLogMaxSize, MetaLogMaxFiles, CurrentFirmware, License, storageThresholdPercentTrigger, VolumeStorage, IP1, Alerts, TimeServer])
+                    gateway_writer.writerow([filer.name,
+                                             sync_id, 
+                                             selfScanIntervalInHours,
+                                             FilesInUploadQueue,
+                                             scanningFiles,
+                                             selfVerificationscanningFiles,
+                                             MetaLogs1,
+                                             MetaLogMaxSize,
+                                             MetaLogMaxFiles,
+                                             CurrentFirmware,
+                                             License,
+                                             storageThresholdPercentTrigger,
+                                             VolumeStorage,
+                                             IP1,
+                                             Alerts,
+                                             TimeServer])
 
     global_admin.logout()
 
