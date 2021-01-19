@@ -1,12 +1,13 @@
 #!/usr/bin/python3
 # ctools.py
 # CTERA Portal/Edge Filer Maintenance Tool
-# Version 1.3
+# Version 1.4
 
 # import local modules
 from status import status 
 from login import login 
 from unlock import unlock
+from run_cmd import run_cmd
 
 from cterasdk import *
 import logging
@@ -23,6 +24,7 @@ def switch():
     0. Quit ctools
     1. Record status details of all connected Edge Filers.
     2. Enable telnet on one or more connected Edge Filers.
+    3. Run a specified command on all connected Edge Filers.
     """
     print(tasks_str)
     try:
@@ -37,6 +39,7 @@ tasks = {
         0 : quit,
         1 : status,
         2 : unlock,
+        3 : run_cmd,
 }
 # If an invalid number is entered, call this function and exit.
 def default():
