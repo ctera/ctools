@@ -4,7 +4,7 @@
 # Version 1.0
 from cterasdk import *
 from getpass import getpass
-import logging
+import logging, sys
 
 def login():
     try:
@@ -23,4 +23,5 @@ def login():
         return global_admin
     except CTERAException as error:
         logging.warning(error)
+        sys.exit("There was a problem logging in. Please try again.")
 
