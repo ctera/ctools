@@ -21,63 +21,64 @@ python3 -m pip install -r ctools/requirements.txt
 ## Run
 
 ```
-python3 ctools/CTools.py
+python3 ctools.py
 ```
 
 ## Example
 
 ```
-user@localhost:~$ python3 ctools/CTools.py
-Tasks to run:
-1. Get Details of all Connected Edge Filers to a specific Portal.
-Enter a task number to execute: 1
+[user@localhost ctools]$ ./ctools.py
+2021-01-22 12:27:51,898    INFO [ctools.py:10] [<module>] - Starting ctools
+
+    #################
+       ctools menu
+         v 1.5.1
+    #################
+
+    Available tasks:
+
+    0. Quit
+    1. Record status details of all connected Edge Filers.
+    2. Enable telnet on one or more connected Edge Filers.
+    3. Run a specified command on all connected Edge Filers.
+
+Enter a task number to run: 3
+2021-01-22 12:27:53,246    INFO [run_cmd.py:12] [run_cmd] - Starting run_cmd task
 Portal (IP, Hostname or FQDN): portal.example.com
 Admin Username: admin
-Admin Password:
-Output filename. Make sure extension is csv: status.csv
-2020-12-15 17:30:44,777    INFO [login.py:19] [login] - User logged in. {'host': 'portal.example.com', 'user': 'admin'}
-Output file does not exist. Creating new file
-2020-12-15 17:30:44,846    INFO [cli.py:16] [run_command] - Executing CLI command. {'cli_command': 'dbg le'}
-2020-12-15 17:30:44,850    INFO [cli.py:20] [run_command] - CLI command executed. {'cli_command': 'dbg le'}
-2020-12-15 17:30:44,882    INFO [login.py:26] [logout] - User logged out. {'host': 'portal.example.com'}
-user@localhost:~$ cat status.csv
-Gateway,CloudSync Status,selfScanIntervalInHours,FilesInUploadQueue,scanningFiles,selfVerificationscanningFiles,MetaLogsSetting,MetaLogMaxSize,MetaLogMaxFiles,CurrentFirmware,License,EvictionPercentage,CurrentVolumeStorage,IP Config,Alerts
-my-vGateway,"['id"": ""Synced"",']",168,0,0,0,['0x00000404\tCurrent dbg level'],10,7,6.0.771.19,EV16,75,"{
-     ""_classname"": ""StorageSummaryProc"",
-     ""totalVolumeSpace"": 102400,
-     ""usedVolumeSpace"": 79075,
-     ""freeVolumeSpace"": 23325
-}","['address"": null,']","{
-     ""_classname"": ""AlertSettings"",
-     ""SMTPServer"": null,
-     ""auth"": null,
-     ""emails"": [],
-     ""from"": ""alert-no-reply@ctera.com"",
-     ""logCodes"": [],
-     ""minSeverity"": ""critical"",
-     ""port"": 25,
-     ""specificAlerts"": {
-          ""_classname"": ""SpecificAlerts"",
-          ""BackupFailAlert"": true,
-          ""BackupFailDays"": 3,
-          ""CloudConnectFailAlert"": true,
-          ""CloudConnectFailHours"": 6,
-          ""CloudSyncFailAlert"": true,
-          ""CloudSyncFailHours"": 5,
-          ""NotifyBackupSuccess"": false,
-          ""NotifyDeviceStarted"": false,
-          ""NotifyFirmwareUpgrade"": true,
-          ""NotifyRedundantPSUFailure"": false,
-          ""NotifySyncSuccess"": false,
-          ""SyncFailAlert"": true,
-          ""SyncFailDays"": 3,
-          ""VolumeFullAlert"": true,
-          ""VolumeFullPercent"": 95,
-          ""VolumeQuotaFullAlert"": true,
-          ""VolumeQuotaFullPercent"": 95
-     },
-     ""useAuth"": false,
-     ""useCustomServer"": false,
-     ""useTLS"": true
-}"
+Admin Password: password
+2021-01-22 12:27:55,279    INFO [login.py:18] [login] - Logging into portal.example.com
+2021-01-22 12:27:55,347    INFO [login.py:19] [login] - User logged in. {'host': 'portal.example.com', 'user': 'admin'}
+2021-01-22 12:27:55,360    INFO [login.py:21] [login] - Successfully logged in to portal.example.com
+Enter command to run: dbg level backup
+You enetered:  dbg level backup
+### Start command on: todd-vGateway
+2021-01-22 12:28:00,655    INFO [cli.py:16] [run_command] - Executing CLI command. {'cli_command': 'dbg level backup'}
+2021-01-22 12:28:00,782    INFO [cli.py:20] [run_command] - CLI command executed. {'cli_command': 'dbg level backup'}
+Response:
+ Setting debug level to 0x00000800
+### End command on: todd-vGateway
+### Start command on: vGateway-5439
+2021-01-22 12:28:00,782    INFO [cli.py:16] [run_command] - Executing CLI command. {'cli_command': 'dbg level backup'}
+2021-01-22 12:28:00,911    INFO [cli.py:20] [run_command] - CLI command executed. {'cli_command': 'dbg level backup'}
+Response:
+ Setting debug level to 0x00000800
+### End command on: vGateway-5439
+2021-01-22 12:28:00,911    INFO [run_cmd.py:26] [run_cmd] - Finished run_cmd task
+Finished task. Returning to menu.
+
+    #################
+       ctools menu
+         v 1.5.1
+    #################
+
+    Available tasks:
+
+    0. Quit
+    1. Record status details of all connected Edge Filers.
+    2. Enable telnet on one or more connected Edge Filers.
+    3. Run a specified command on all connected Edge Filers.
+
+Enter a task number to run: 0
+[user@localhost] ctools]$
 ```
