@@ -3,11 +3,13 @@
 # Module for ctools.py, a CTERA Portal/Edge Filer Maintenance Tool
 # Get device name, return firmware, and MAC and prompt for unlock code.
 # Version 0.2 
+import menu
 from login import login
 from cterasdk import *
 import logging
 
 def unlock():
+    logging.info('Starting unlock task')
     global_admin = login()
     device = input("Enter device name to unlock: ")
     tenant = input("Enter tenant portal of " + device + " : ")
@@ -20,6 +22,9 @@ def unlock():
     info(filer)
     enable(filer)
 
+    logging.info('Finished unlock task')
+    print('Finished task. Returning to menu.')
+    menu.menu()
 def info(filer):
     mac = filer.get('/status/device/MacAddress')
     firmware = filer.get('/status/device/runningFirmware')

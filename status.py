@@ -2,12 +2,13 @@
 # status.py
 # Module for ctools.py, a CTERA Portal/Edge Filer Maintenance Tool
 # Version 1.3
+import menu
 from login import login
 from cterasdk import *
 import csv, logging, os, re, sys
 
 def status():
-   
+    logging.info('Starting status task')
     global_admin = login()
     filename = input("Enter output filename. Make sure extension is csv: ")
     import os
@@ -103,4 +104,8 @@ def status():
                                              TimeServer])
 
     global_admin.logout()
+
+    logging.info('Finished status task')
+    print('Finished task. Returning to menu.')
+    menu.menu()
 

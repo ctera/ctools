@@ -3,11 +3,13 @@
 # Module for ctools.py, a CTERA Portal/Edge Filer Maintenance Tool
 # Module to execute an arbitrary task on all Filers
 # Version 1.0
-
+import menu
 from login import login
 from cterasdk import *
+import logging
 
 def run_cmd():
+    logging.info('Starting run_cmd task')
     global_admin = login()
     cmd_str = get_cmd()
     filers = global_admin.devices.filers(allPortals=True)
@@ -21,7 +23,10 @@ def run_cmd():
             logging.warning(error)
             print("Something went wrong running the command")
 
-    global_admin.logout()
+    logging.info('Finished run_cmd task')
+    print('Finished task. Returning to menu.')
+    menu.menu()
+    #global_admin.logout()
 
 def get_cmd():
     _cmd_str = input("Enter command to run: ")
