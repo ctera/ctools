@@ -5,26 +5,20 @@
 # Version 0.2 
 import menu
 from login import login
+from filer import get_filer
 from cterasdk import *
 import logging
 
 def unlock():
     logging.info('Starting unlock task')
     global_admin = login()
-    device = input("Enter device name to unlock: ")
-    tenant = input("Enter tenant portal of " + device + " : ")
-    try:
-        filer = global_admin.devices.device(device, tenant)
-        print("Device found.")
-    except CTERAException as error:
-        logging.warning(error)
-        print("Device not found.")
+    filer = get_filer(global_admin)
     info(filer)
     enable(filer)
-
     logging.info('Finished unlock task')
     print('Finished task. Returning to menu.')
     menu.menu()
+
 def info(filer):
     mac = filer.get('/status/device/MacAddress')
     firmware = filer.get('/status/device/runningFirmware')
