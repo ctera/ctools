@@ -16,8 +16,18 @@ import sys
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-# Print possible tasks and prompt user to pick a task by entering corresponding number.
+def default():
+    """If an invalid number is entered, call this function and exit."""
+    logging.info('Invalid task number.')
+    print('Invalid task number.')
+    quit()
+
+def quit():
+    logging.info('Exiting ctools')
+    sys.exit('Exiting ctools')
+
 def menu():
+    """Prompt which task integer to run"""
     tasks_str = """
     #################
        ctools menu 
@@ -47,13 +57,4 @@ tasks = {
         2 : unlock,
         3 : run_cmd,
 }
-# If an invalid number is entered, call this function and exit.
-def default():
-    logging.info('Invalid task number.')
-    print('Invalid task number.')
-    quit()
-
-def quit():
-    logging.info('Exiting ctools')
-    sys.exit('Exiting ctools')
 
