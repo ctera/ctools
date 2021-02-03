@@ -50,16 +50,17 @@ def status():
         for filer in filers:
             if filer.deviceConnectionStatus.connected:
                 total_devices = total_devices + 1
+                config = filer.get('/config')
                 sync_status = filer.sync.get_status()
                 sync_id = sync_status.id
-                selfScanIntervalInHours = filer.get('/config/cloudsync/selfScanVerificationIntervalInHours')
+                selfScanIntervalInHours = config.cloudsync.selfScanVerificationIntervalInHours
                 FilesInUploadQueue = sync_status.uploadingFiles
                 uploadingFiles = sync_status.uploadingFiles
                 scanningFiles = sync_status.scanningFiles
                 selfVerificationscanningFiles = sync_status.selfVerificationScanningFiles
                 CurrentFirmware = filer.get('/status/device/runningFirmware')
                 try:
-                    MetaLogMaxSize = filer.get('/config/logging/metalog/maxFileSizeMB')
+                    MetaLogMaxSize = config.logging.metalog.maxFileSizeMB
                 except:
                     try:
                         MetaLogMaxSize = filer.get('/config/logging/log2File/maxFileSizeMB')
@@ -80,10 +81,18 @@ def status():
                 IP1 = filer.network.get_status().ip.address
                 storageThresholdPercentTrigger = filer.get('/config/cloudsync/cloudExtender/storageThresholdPercentTrigger')
                 VolumeStorage = filer.get('/proc/storage/summary')
+                _total = VolumeStorage.totalVolumeSpace
+                _used = VolumeStorage.usedVolumeSpace
+                _free = VolumeStorage.freeVolumeSpace
+                volume_summary = "Total: {} Used: {} Free: {}".format(_total,_used,_free)
                 dbg_level = filer.support.set_debug_level()
                 MetaLogs1 = dbg_level[-28:-18]
-                Alerts = filer.get('/config/logging/alert')
-                TimeServer = filer.get('/config/time/NTPServer')
+                Alerts = config.logging.alert
+                TimeServer = config.time
+                _mode = TimeServer.NTPMode
+                _zone = TimeServer.TimeZone
+                _servers = TimeServer.NTPServer
+                time_summary = "Mode: {} Zone: {} Servers: {}".format(_mode,_zone,_servers)
                 with open(filename, mode='a') as gatewayList:
                     gateway_writer = csv.writer(gatewayList, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
                     gateway_writer.writerow([filer.name,
@@ -98,10 +107,10 @@ def status():
                                              CurrentFirmware,
                                              License,
                                              storageThresholdPercentTrigger,
-                                             VolumeStorage,
+                                             volume_summary,
                                              IP1,
                                              Alerts,
-                                             TimeServer])
+                                             time_summary])
 
     global_admin.logout()
 
