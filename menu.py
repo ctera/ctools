@@ -5,7 +5,7 @@
 # Version 0.1
 
 # import local modules
-from status import status 
+from status import run_status
 from login import login 
 from unlock import unlock
 from run_cmd import run_cmd
@@ -53,7 +53,7 @@ def menu():
 # Dictionary to map numbers to functions/tasks user can choose to run.
 tasks = {
         0 : quit,
-        1 : status,
+        1 : run_status,
         2 : unlock,
         3 : run_cmd,
 }
