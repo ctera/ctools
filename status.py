@@ -42,6 +42,8 @@ def write_status(p_filename):
         License = filer.licenses.get()
         IP1 = filer.network.get_status().ip.address
         storageThresholdPercentTrigger = filer.get('/config/cloudsync/cloudExtender/storageThresholdPercentTrigger')
+        uptime = filer.get('/proc/time/uptime')
+        performance = filer.get('/proc/perfMonitor')
         VolumeStorage = filer.get('/proc/storage/summary')
         _total = VolumeStorage.totalVolumeSpace
         _used = VolumeStorage.usedVolumeSpace
@@ -55,6 +57,25 @@ def write_status(p_filename):
         _zone = TimeServer.TimeZone
         _servers = TimeServer.NTPServer
         time_summary = "Mode: {} Zone: {} Servers: {}".format(_mode,_zone,_servers)
+
+        """Parse Performance History"""
+        #def get_perf_history():
+        #    for sample in performance.samples:
+        #        samples.append("{} CPU: {} Mem {}".format(sample.timestamp,sample.cpu,sample.memUsage))
+        #    return samples
+
+        def get_max_cpu():
+            cpu_history = []
+            for i in performance.samples:
+                cpu_history.append(i.cpu)
+            return max(cpu_history)
+
+        def get_max_memory():
+            memory_history = []
+            for i in performance.samples:
+                memory_history.append(i.memUsage)
+            return max(memory_history)
+
 
         """Write results to output filename"""
         with open(p_filename, mode='a') as gatewayList:
@@ -75,7 +96,12 @@ def write_status(p_filename):
                     volume_summary,
                     IP1,
                     Alerts,
-                    time_summary])
+                    time_summary,
+                    uptime,
+                    "CPU: {} Mem: {}".format(performance.current.cpu,performance.current.memUsage),
+                    get_max_cpu(),
+                    get_max_memory(), 
+                    ])
     global_admin.logout()
 
 def write_header(p_filename):
@@ -103,7 +129,12 @@ def write_header(p_filename):
                                      'CurrentVolumeStorage',
                                      'IP Config',
                                      'Alerts',
-                                     'TimeServer'])
+                                     'TimeServer',
+                                     'uptime',
+                                     'Current Performance',
+                                     'Max CPU',
+                                     'Max Memory',
+                                     ])
     except FileNotFoundError as error:
         logging.error(error)
         print("ERROR: Unable to open filename specified: {}".format(p_filename))
