@@ -78,8 +78,12 @@ def write_status(p_filename):
 
 
         """Write results to output filename"""
-        with open(p_filename, mode='a') as gatewayList:
-            gateway_writer = csv.writer(gatewayList, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        with open(p_filename, mode='a', newline='', encoding="utf-8-sig") as gatewayList:
+            gateway_writer = csv.writer(gatewayList, 
+                    dialect='excel',
+                    delimiter=',', 
+                    quotechar='"', 
+                    quoting=csv.QUOTE_MINIMAL)
             gateway_writer.writerow([
                     filer.name,
                     sync_id,
@@ -100,16 +104,17 @@ def write_status(p_filename):
                     uptime,
                     "CPU: {} Mem: {}".format(performance.current.cpu,performance.current.memUsage),
                     get_max_cpu(),
-                    get_max_memory(), 
+                    get_max_memory()
                     ])
     global_admin.logout()
 
 def write_header(p_filename):
     """Write CSV header to given filename parameter """
     try:
-        with open(p_filename, mode='a') as gatewayList:
+        with open(p_filename, mode='a', newline='', encoding="utf-8-sig") as gatewayList:
             gateway_writer = csv.writer(
                     gatewayList,
+                    dialect='excel',
                     delimiter=',',
                     quotechar='"',
                     quoting=csv.QUOTE_MINIMAL
@@ -133,7 +138,7 @@ def write_header(p_filename):
                                      'uptime',
                                      'Current Performance',
                                      'Max CPU',
-                                     'Max Memory',
+                                     'Max Memory'
                                      ])
     except FileNotFoundError as error:
         logging.error(error)
