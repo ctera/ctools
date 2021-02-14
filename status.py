@@ -11,70 +11,63 @@ import csv, logging, os, re, sys
 def write_status(p_filename):
     """Save and write Filer status information to filename param."""
     global_admin = login()
+    """List of paths to pass to get_multi request"""
+    get_list = ['config','status','proc/cloudsync','proc/time/',
+                'proc/storage/summary','proc/perfMonitor']
     for filer in get_filers(global_admin):
-        config = filer.get('/config')
-        sync_status = filer.sync.get_status()
-        sync_id = sync_status.id
-        selfScanIntervalInHours = config.cloudsync.selfScanVerificationIntervalInHours
-        FilesInUploadQueue = sync_status.uploadingFiles
-        uploadingFiles = sync_status.uploadingFiles
-        scanningFiles = sync_status.scanningFiles
-        selfVerificationscanningFiles = sync_status.selfVerificationScanningFiles
-        CurrentFirmware = filer.get('/status/device/runningFirmware')
+        info = filer.get_multi('', get_list)
+        sync_id = info.proc.cloudsync.serviceStatus.id
+        selfScanIntervalInHours = info.config.cloudsync.selfScanVerificationIntervalInHours
+        uploadingFiles = info.proc.cloudsync.serviceStatus.uploadingFiles
+        scanningFiles = info.proc.cloudsync.serviceStatus.scanningFiles
+        selfVerificationscanningFiles = info.proc.cloudsync.serviceStatus.selfVerificationScanningFiles
+        CurrentFirmware = info.status.device.runningFirmware
         try:
-            MetaLogMaxSize = config.logging.metalog.maxFileSizeMB
+            MetaLogMaxSize = info.config.logging.metalog.maxFileSizeMB
         except:
             try:
                 MetaLogMaxSize = filer.get('/config/logging/log2File/maxFileSizeMB')
             except:
                 MetaLogMaxSize = ('Not Applicable')
         try:
-            MetaLogMaxFiles = filer.get('/config/logging/metalog/maxfiles')
+            MetaLogMaxFiles = info.config.logging.metalog.maxfiles
         except:
             try:
                 MetaLogMaxFiles = filer.get('/config/logging/log2File/maxfiles')
             except:
                 MetaLogMaxFiles = ('Not Applicable')
-        try:
-            MetaLogs = filer.cli.run_command('dbg le')
-        except:
-            MetaLogs = ('Not Applicable')
         License = filer.licenses.get()
-        IP1 = filer.network.get_status().ip.address
-        storageThresholdPercentTrigger = filer.get('/config/cloudsync/cloudExtender/storageThresholdPercentTrigger')
-        uptime = filer.get('/proc/time/uptime')
-        performance = filer.get('/proc/perfMonitor')
-        VolumeStorage = filer.get('/proc/storage/summary')
-        _total = VolumeStorage.totalVolumeSpace
-        _used = VolumeStorage.usedVolumeSpace
-        _free = VolumeStorage.freeVolumeSpace
-        volume_summary = "Total: {} Used: {} Free: {}".format(_total,_used,_free)
+        # License = info.config.device.activeLicenseType
+        IP1 = info.status.network.ports[0].ip.address
+        storageThresholdPercentTrigger = info.config.cloudsync.cloudExtender.storageThresholdPercentTrigger
+        uptime = info.proc.time.uptime
+        curr_cpu = info.proc.perfMonitor.current.cpu
+        curr_mem = info.proc.perfMonitor.current.memUsage
+        _total = info.proc.storage.summary.totalVolumeSpace
+        _used = info.proc.storage.summary.usedVolumeSpace
+        _free = info.proc.storage.summary.freeVolumeSpace
+        volume = "Total: {} Used: {} Free: {}".format(_total,_used,_free)
         dbg_level = filer.support.set_debug_level()
         MetaLogs1 = dbg_level[-28:-18]
-        Alerts = config.logging.alert
-        TimeServer = config.time
+        Alerts = info.config.logging.alert
+        TimeServer = info.config.time
         _mode = TimeServer.NTPMode
         _zone = TimeServer.TimeZone
         _servers = TimeServer.NTPServer
-        time_summary = "Mode: {} Zone: {} Servers: {}".format(_mode,_zone,_servers)
+        time = "Mode: {} Zone: {} Servers: {}".format(_mode,_zone,_servers)
 
         """Parse Performance History"""
-        #def get_perf_history():
-        #    for sample in performance.samples:
-        #        samples.append("{} CPU: {} Mem {}".format(sample.timestamp,sample.cpu,sample.memUsage))
-        #    return samples
-
         def get_max_cpu():
             cpu_history = []
-            for i in performance.samples:
+            for i in info.proc.perfMonitor.samples:
                 cpu_history.append(i.cpu)
-            return max(cpu_history)
+            return "{}%".format(max(cpu_history))
 
         def get_max_memory():
             memory_history = []
-            for i in performance.samples:
+            for i in info.proc.perfMonitor.samples:
                 memory_history.append(i.memUsage)
-            return max(memory_history)
+            return "{}%".format(max(memory_history))
 
 
         """Write results to output filename"""
@@ -88,7 +81,7 @@ def write_status(p_filename):
                     filer.name,
                     sync_id,
                     selfScanIntervalInHours,
-                    FilesInUploadQueue,
+                    uploadingFiles,
                     scanningFiles,
                     selfVerificationscanningFiles,
                     MetaLogs1,
@@ -97,12 +90,12 @@ def write_status(p_filename):
                     CurrentFirmware,
                     License,
                     storageThresholdPercentTrigger,
-                    volume_summary,
+                    volume,
                     IP1,
                     Alerts,
-                    time_summary,
+                    time,
                     uptime,
-                    "CPU: {} Mem: {}".format(performance.current.cpu,performance.current.memUsage),
+                    "CPU: {}% Mem: {}%".format(curr_cpu,curr_mem),
                     get_max_cpu(),
                     get_max_memory()
                     ])
@@ -122,7 +115,7 @@ def write_header(p_filename):
             gateway_writer.writerow(['Gateway',
                                      'CloudSync Status',
                                      'selfScanIntervalInHours',
-                                     'FilesInUploadQueue',
+                                     'uploadingFiles',
                                      'scanningFiles',
                                      'selfVerificationscanningFiles',
                                      'MetaLogsSetting',
