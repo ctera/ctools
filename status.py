@@ -36,6 +36,10 @@ def write_status(p_filename):
                 MetaLogMaxFiles = filer.get('/config/logging/log2File/maxfiles')
             except:
                 MetaLogMaxFiles = ('Not Applicable')
+        try:
+            MetaLogs1 = filer.cli.run_command('dbg le')
+        except:
+            MetaLogs1 = ('Not Applicable')
         License = filer.licenses.get()
         # License = info.config.device.activeLicenseType
         IP1 = info.status.network.ports[0].ip.address
@@ -47,8 +51,8 @@ def write_status(p_filename):
         _used = info.proc.storage.summary.usedVolumeSpace
         _free = info.proc.storage.summary.freeVolumeSpace
         volume = "Total: {} Used: {} Free: {}".format(_total,_used,_free)
-        dbg_level = filer.support.set_debug_level()
-        MetaLogs1 = dbg_level[-28:-18]
+        #dbg_level = filer.support.set_debug_level()
+        #MetaLogs1 = dbg_level[-28:-18]
         Alerts = info.config.logging.alert
         TimeServer = info.config.time
         _mode = TimeServer.NTPMode
