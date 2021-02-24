@@ -16,14 +16,14 @@ def get_filer(self):
 
 def get_filers(self):
     """Return all connected Filers from each Tenant"""
+    connected_filers = []
     for tenant in self.portals.tenants():
         self.portals.browse(tenant.name)
         all_filers = self.devices.filers(include=[
                 'deviceConnectionStatus.connected',
                 'deviceReportedStatus.config.hostname'])
-        connected_filers = []
         for filer in all_filers:
             if filer.deviceConnectionStatus.connected:
                 connected_filers.append(filer)
-        return connected_filers
+    return connected_filers
 
