@@ -1,8 +1,3 @@
-#!/usr/bin/python3
-# runcmd.py
-# Module for ctools.py, a CTERA Portal/Edge Filer Maintenance Tool
-# Module to execute an arbitrary task on all Filers
-# Version 1.0
 import menu
 from login import login
 from cterasdk import *

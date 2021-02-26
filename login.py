@@ -1,7 +1,3 @@
-#!/usr/bin/python3
-# login.py
-# Module for ctools.py, a CTERA Portal/Edge Filer Maintenance Tool
-# Version 1.0
 from cterasdk import *
 from getpass import getpass
 import logging, sys

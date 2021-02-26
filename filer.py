@@ -1,4 +1,3 @@
-# return a single filer 
 from cterasdk import *
 import logging
 

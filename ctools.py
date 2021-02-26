@@ -1,7 +1,3 @@
-#!/usr/bin/python3
-# ctools.py
-# CTERA Portal/Edge Filer Maintenance Tool
-# Version 1.5.1
 from menu import menu
 from cterasdk import *
 import logging

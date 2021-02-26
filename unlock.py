@@ -1,8 +1,3 @@
-#!/usr/bin/python3
-# unlock.py
-# Module for ctools.py, a CTERA Portal/Edge Filer Maintenance Tool
-# Get device name, return firmware, and MAC and prompt for unlock code.
-# Version 0.2 
 import menu
 from login import login
 from filer import get_filer

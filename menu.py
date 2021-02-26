@@ -1,10 +1,3 @@
-#!/usr/bin/python3
-# menu.py
-# CTERA Portal/Edge Filer Maintenance Tool
-# Module for presenting the CLI Menu.
-# Version 0.1
-
-# import local modules
 from status import run_status
 from login import login 
 from unlock import unlock
@@ -13,8 +6,6 @@ from run_cmd import run_cmd
 from cterasdk import *
 import logging
 import sys
-import urllib3
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 def default():
     """If an invalid number is entered, call this function and exit."""

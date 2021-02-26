@@ -1,7 +1,3 @@
-#!/usr/bin/python3
-# status.py
-# Module for ctools.py, a CTERA Portal/Edge Filer Maintenance Tool
-# Version 1.3
 import menu
 from filer import get_filers
 from login import login
