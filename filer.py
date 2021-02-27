@@ -1,5 +1,5 @@
 from cterasdk import *
-import logging
+import logging,sys
 
 def get_filer(self):
     """Prompt for Filer and Return Filer object if found"""
@@ -12,6 +12,7 @@ def get_filer(self):
     except CTERAException as error:
         logging.warning(error)
         print("Device not found.")
+        sys.exit("Exiting...")
 
 def get_filers(self):
     """Return all connected Filers from each Tenant"""

@@ -1,6 +1,6 @@
 from status import run_status
 from login import login 
-from unlock import unlock
+from unlock import unlock, start_ssh
 from run_cmd import run_cmd
 
 from cterasdk import *
@@ -29,8 +29,9 @@ def menu():
 
     0. Quit
     1. Record status details of all connected Edge Filers.
-    2. Enable telnet on one or more connected Edge Filers.
-    3. Run a specified command on all connected Edge Filers.
+    2. Run a specified command on all connected Edge Filers.
+    3. Enable telnet on an Edge Filer, Virtual, or C-Series Gateway.
+    4. Enable SSH on an Edge Filer.
     """
     print(tasks_str)
     try:
@@ -45,7 +46,8 @@ def menu():
 tasks = {
         0 : quit,
         1 : run_status,
-        2 : unlock,
-        3 : run_cmd,
+        2 : run_cmd,
+        3 : unlock,
+        4 : start_ssh,
 }
 

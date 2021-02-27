@@ -34,3 +34,14 @@ def enable(filer):
         logging.warning(error)
         print("Bad code or something went wrong unlocking device.")
 
+def start_ssh():
+    logging.info('Starting task to enable SSH on Filer')
+    global_admin = login()
+    filer = get_filer(global_admin)
+    pubkey = input("Enter the public key:\n")
+    cmd = ('exec /config/device startSSHD publicKey "{}"'.format(pubkey))
+    filer.cli.run_command(cmd) # TODO: validate public key
+    print("You may now try to ssh to the Filer:",filer.name)
+    print("If connection is refused, make sure public key is valid.")
+    menu.menu
+
