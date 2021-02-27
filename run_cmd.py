@@ -21,7 +21,6 @@ def run_cmd():
     logging.info('Finished run_cmd task')
     print('Finished task. Returning to menu.')
     menu.menu()
-    #global_admin.logout()
 
 def get_cmd():
     _cmd_str = input("Enter command to run: ")

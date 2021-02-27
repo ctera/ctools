@@ -5,11 +5,14 @@ from cterasdk import *
 import csv, logging, os, re, sys
 
 def write_status(p_filename):
-    """Save and write Filer status information to filename param."""
+    """Save and write Filer status information to given filename."""
     global_admin = login()
-    """List of paths to pass to get_multi request"""
-    get_list = ['config','status','proc/cloudsync','proc/time/',
-                'proc/storage/summary','proc/perfMonitor']
+    get_list = ['config',
+                'status',
+                'proc/cloudsync',
+                'proc/time/',
+                'proc/storage/summary',
+                'proc/perfMonitor']
     for filer in get_filers(global_admin):
         info = filer.get_multi('', get_list)
         sync_id = info.proc.cloudsync.serviceStatus.id
@@ -22,18 +25,19 @@ def write_status(p_filename):
             MetaLogMaxSize = info.config.logging.metalog.maxFileSizeMB
         except:
             try:
-                MetaLogMaxSize = filer.get('/config/logging/log2File/maxFileSizeMB')
+                MetaLogMaxSize = info.config.logging.log2File.maxFileSizeMB
             except:
                 MetaLogMaxSize = ('Not Applicable')
         try:
             MetaLogMaxFiles = info.config.logging.metalog.maxfiles
         except:
             try:
-                MetaLogMaxFiles = filer.get('/config/logging/log2File/maxfiles')
+                MetaLogMaxFiles = info.config.logging.log2File.maxfiles
             except:
                 MetaLogMaxFiles = ('Not Applicable')
         try:
-            MetaLogs1 = filer.cli.run_command('dbg le')
+            MetaLogs = filer.cli.run_command('dbg le')
+            MetaLogs1 = MetaLogs[-28:-18]
         except:
             MetaLogs1 = ('Not Applicable')
         License = filer.licenses.get()
@@ -56,21 +60,21 @@ def write_status(p_filename):
         _servers = TimeServer.NTPServer
         time = "Mode: {} Zone: {} Servers: {}".format(_mode,_zone,_servers)
 
-        """Parse Performance History"""
         def get_max_cpu():
+            """Return the max CPU usage recorded in last few hours."""
             cpu_history = []
             for i in info.proc.perfMonitor.samples:
                 cpu_history.append(i.cpu)
             return "{}%".format(max(cpu_history))
 
         def get_max_memory():
+            """Return the max memory usage recorded in last few hours."""
             memory_history = []
             for i in info.proc.perfMonitor.samples:
                 memory_history.append(i.memUsage)
             return "{}%".format(max(memory_history))
 
 
-        """Write results to output filename"""
         with open(p_filename, mode='a', newline='', encoding="utf-8-sig") as gatewayList:
             gateway_writer = csv.writer(gatewayList, 
                     dialect='excel',
@@ -155,6 +159,7 @@ def create_csv():
     return _filename
 
 def run_status():
+    """Log start/end of task and call main function."""
     logging.info('Starting status task')
     filename = create_csv()
     write_status(filename)
