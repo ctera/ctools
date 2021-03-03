@@ -39,8 +39,7 @@ def start_ssh():
     global_admin = login()
     filer = get_filer(global_admin)
     pubkey = input("Enter the public key:\n")
-    cmd = ('exec /config/device startSSHD publicKey "{}"'.format(pubkey))
-    filer.cli.run_command(cmd) # TODO: validate public key
+    filer.ssh.enable(pubkey)
     print("You may now try to ssh to the Filer:",filer.name)
     print("If connection is refused, make sure public key is valid.")
     menu.menu
