@@ -35,12 +35,27 @@ def enable(filer):
         print("Bad code or something went wrong unlocking device.")
 
 def start_ssh():
+    """Start SSH Daemon and copy public key to a given Filer"""
     logging.info('Starting task to enable SSH on Filer')
     global_admin = login()
     filer = get_filer(global_admin)
-    pubkey = input("Enter the public key:\n")
-    filer.ssh.enable(pubkey)
-    print("You may now try to ssh to the Filer:",filer.name)
+    pubkey = input("Enter a public key or press Enter to create one:\n")
+    if pubkey:
+        print("Copying existing public key to",filer.name)
+        filer.ssh.enable(pubkey)
+    else:
+        print("Creating a new private key and copying its public key to",
+                filer.name)
+        try:
+            filer.ssh.enable()
+        except (CTERAException) as e:
+            logging.warning(e)
+            logging.warning("Aborted task to enable SSH on Filer")
+            print("Error creating new private key")
+            print("Does ~/Downloads or %USERPROFILE%\Downloads folder exist?")
+            menu.menu()
+    print("You now try to ssh to the Filer:",filer.name)
     print("If connection is refused, make sure public key is valid.")
+    logging.info('Finished task to enable SSH on Filer')
     menu.menu
 
