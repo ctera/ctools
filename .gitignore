@@ -1,5 +1,10 @@
 *.csv
 *.log
 *.swp
+log.txt
 __pycache__
+.idea
+build
+dist
+venv
 
