@@ -1,6 +1,7 @@
 from menu import menu
 from cterasdk import *
 import logging
+from GUI import Menu
 
 def set_logging(p_level=logging.INFO,log_file="log.txt"):
     """Set up logging to a given file name.
@@ -22,5 +23,8 @@ def set_logging(p_level=logging.INFO,log_file="log.txt"):
 if __name__ == "__main__":
     set_logging(logging.DEBUG)
     logging.info('Starting ctools')
-    menu()
-
+    GUI_TER=input("Switch to GUI or Not? (Y/N)",)
+    if GUI_TER in ('y','Y'):
+        Menu() # Gui window
+    elif GUI_TER in ('n','N'):
+        menu() # terminal Window

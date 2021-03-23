@@ -3,10 +3,11 @@ from filer import get_filers
 from login import login
 from cterasdk import *
 import csv, logging, os, re, sys
+from tkinter import messagebox
 
-def write_status(p_filename):
+def write_status(p_filename,portal, username, password):
     """Save and write Filer status information to given filename."""
-    global_admin = login()
+    global_admin = login(Pro_mode,portal,username,password)
     get_list = ['config',
                 'status',
                 'proc/cloudsync',
@@ -140,29 +141,52 @@ def write_header(p_filename):
     except FileNotFoundError as error:
         logging.error(error)
         print("ERROR: Unable to open filename specified: {}".format(p_filename))
-        sys.exit("Make sure you entered a valid file name and it exists")
+        if Pro_mode == 'G':
+            messagebox.showerror("Error","ERROR: Unable to open filename specified: {}".format(p_filename))
+        else:
+            sys.exit("Make sure you entered a valid file name and it exists")
 
-def create_csv():
+def create_csv(filename):
     """Prompt to create a CSV or append to existing. Return filename."""
-    _filename = input("Enter output filename. Make sure extension is csv: ")
+    """Prompt to create a CSV or append to existing. Return filename."""
+    if Pro_mode == 'G':
+        _filename = filename
+    else:
+        _filename = input("Enter output filename. Make sure extension is csv: ")
     if os.path.exists(_filename):
-        print ('File exists. It will be deleted and a new one will be created')
-        deletefile = input("Delete File? Type Y/n: ")
-        if deletefile in ('Y', 'y'):
+        deletefile = ''
+        msg_res = ''
+        if Pro_mode == 'G':
+            msg_res = messagebox.askquestion("File exists",
+                                             "'Yes' for delete it and a new one will be created\n 'No' will be appended the Contents to the existing file")
+        else:
+            print('File exists. It will be deleted and a new one will be created')
+            # remover the input and replaced with ''
+            deletefile = input("Delete File? Type Y/n: ")
+        if deletefile in ('Y', 'y') or msg_res in ('yes', 'Yes', 'YES'):
             os.remove(_filename)
             write_header(_filename)
-        if deletefile in ('N', 'n'):
-            print ('Contents will be appended to the existing file')
+        if deletefile in ('N', 'n') or msg_res in ('No', 'no', 'NO'):
+            print('Contents will be appended to the existing file')
     else:
-        print("Output file does not exist. Creating new file")
+        # showing the popup msg just to info
+        if Pro_mode == 'G':
+            messagebox.showinfo("Info", "Output file does not exist. Creating new file")
+        else:
+            print("Output file does not exist. Creating new file")
         write_header(_filename)
     return _filename
 
-def run_status():
+def run_status(mode,filename,portal,username,password):
     """Log start/end of task and call main function."""
+    global Pro_mode
+    Pro_mode = mode
     logging.info('Starting status task')
-    filename = create_csv()
-    write_status(filename)
+    filename = create_csv(filename)
+    write_status(filename, portal, username, password)
     logging.info('Finished status task.')
-    menu.menu()
+    if Pro_mode == 'G':
+        messagebox.showinfo("Success", 'Finished status task.')
+
+    #menu.menu()
 

@@ -36,18 +36,20 @@ def menu():
     print(tasks_str)
     try:
         option = int(input('Enter a task number to run: '))
-        tasks.get(option,default)()
+        if option in (1, 2, 3, 4):
+            from getpass import getpass
+            if option == 1:
+                run_status('T', None, None, None, None)
+                menu()
+            elif option == 2:
+                unlock('T', None, None, None, None, None, None)
+                menu()
+            elif option == 3:
+                run_cmd('T', None, None, None, None)
+                menu()
+            else:
+                start_ssh('T', None, None, None, None)
     except ValueError:
         logging.info('Invalid value.')
         print('Invalid number')
         quit()
-
-# Dictionary to map numbers to functions/tasks user can choose to run.
-tasks = {
-        0 : quit,
-        1 : run_status,
-        2 : run_cmd,
-        3 : unlock,
-        4 : start_ssh,
-}
-
