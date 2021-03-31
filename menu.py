@@ -2,6 +2,8 @@ from status import run_status
 from login import login 
 from unlock import unlock, start_ssh
 from run_cmd import run_cmd
+from suspend_sync import suspend_filer_sync
+from unsuspend_sync import unsuspend_filer_sync
 
 from cterasdk import *
 import logging
@@ -32,6 +34,8 @@ def menu():
     2. Run a specified command on all connected Edge Filers.
     3. Enable telnet on an Edge Filer, Virtual, or C-Series Gateway.
     4. Enable SSH on an Edge Filer.
+    5. Suspend Cloud Sync on an Edge Filer.
+    6. Unsuspend Cloud Sync on an Edge Filer.
     """
     print(tasks_str)
     try:
@@ -49,5 +53,7 @@ tasks = {
         2 : run_cmd,
         3 : unlock,
         4 : start_ssh,
+        5 : suspend_filer_sync,
+        6 : unsuspend_filer_sync,
 }
 
