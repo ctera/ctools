@@ -4,7 +4,7 @@ from filer import get_filer
 from cterasdk import *
 import logging
 
-def unlock():
+def unlock(self):
     logging.info('Starting unlock task')
     global_admin = login()
     filer = get_filer(global_admin)
@@ -34,7 +34,7 @@ def enable(filer):
         logging.warning(error)
         print("Bad code or something went wrong unlocking device.")
 
-def start_ssh():
+def start_ssh(self):
     """Start SSH Daemon and copy public key to a given Filer"""
     logging.info('Starting task to enable SSH on Filer')
     global_admin = login()

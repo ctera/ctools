@@ -158,7 +158,7 @@ def create_csv():
         write_header(_filename)
     return _filename
 
-def run_status():
+def run_status(self):
     """Log start/end of task and call main function."""
     logging.info('Starting status task')
     filename = create_csv()
