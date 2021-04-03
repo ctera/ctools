@@ -1,4 +1,3 @@
-import menu
 from filer import get_filers
 from login import login
 from cterasdk import *
@@ -164,5 +163,4 @@ def run_status(self):
     filename = create_csv()
     write_status(filename)
     logging.info('Finished status task.')
-    menu.menu()
 

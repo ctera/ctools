@@ -26,6 +26,10 @@ def set_logging(p_level=logging.INFO,log_file="log.txt"):
    )
 
 parser = ArgumentParser(description='Manage CTERA Edge Filers')
+parser.add_argument('-m', '--menu',
+                    dest='action',action='store_const',
+                    const=menu,
+                    help='Show a menu of options to run')
 parser.add_argument('-rs','--get_status',
                     dest='action',action='store_const',
                     const=run_status,
@@ -49,9 +53,11 @@ parser.add_argument('-us','--unsuspend_sync',
 
 if __name__ == "__main__":
     args = parser.parse_args()
-    if args.action is None:
-        parser.parse_args(['-h'])
     set_logging(logging.DEBUG)
+    if args.action is None:
+        self = None
+        menu(self)
+        sys.exit('Exiting ctools.')
     logging.info('Starting ctools')
     args.action(args)
-    sys.exit('Exiting ctools_arg')
+    sys.exit('Exiting ctools.')
