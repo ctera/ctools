@@ -42,6 +42,8 @@ def write_status(p_filename):
         License = filer.licenses.get()
         # License = info.config.device.activeLicenseType
         IP1 = info.status.network.ports[0].ip.address
+        DNS1 = info.status.network.ports[0].ip.DNSServer1
+        DNS2 = info.status.network.ports[0].ip.DNSServer2
         storageThresholdPercentTrigger = info.config.cloudsync.cloudExtender.storageThresholdPercentTrigger
         uptime = info.proc.time.uptime
         curr_cpu = info.proc.perfMonitor.current.cpu
@@ -95,6 +97,8 @@ def write_status(p_filename):
                     storageThresholdPercentTrigger,
                     volume,
                     IP1,
+		    DNS1,
+		    DNS2,
                     Alerts,
                     time,
                     uptime,
@@ -129,6 +133,8 @@ def write_header(p_filename):
                                      'EvictionPercentage',
                                      'CurrentVolumeStorage',
                                      'IP Config',
+	         		     'DNS Server1',
+	         		     'DNS Server2',
                                      'Alerts',
                                      'TimeServer',
                                      'uptime',
