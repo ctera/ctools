@@ -1,4 +1,4 @@
-from login import login
+from menu import menu
 from status import run_status
 from unlock import unlock, start_ssh
 from run_cmd import run_cmd
@@ -6,7 +6,6 @@ from suspend_sync import suspend_filer_sync
 from unsuspend_sync import unsuspend_filer_sync
 from cterasdk import *
 from argparse import ArgumentParser
-from getpass import getpass
 import logging, sys
 
 def set_logging(p_level=logging.INFO,log_file="log.txt"):
@@ -26,52 +25,39 @@ def set_logging(p_level=logging.INFO,log_file="log.txt"):
         ]
    )
 
-def parse_args():
-    """Parse CLI Arguments.
-    
-    Required Arguments:
-    See choices in FUNCTION_MAP
-    Optionally, any or all Portal Global Admin creds can be provided.
-    """
-    parser = ArgumentParser(description='Manage CTERA Edge Filers')
-
-    FUNCTION_MAP = {'suspend_sync' : suspend_filer_sync,
-                    'unsuspend_sync' : unsuspend_filer_sync,
-                    'get_status' : run_status,
-                    'run_cmd' : run_cmd,
-                    'enable_telnet' : unlock,
-                    'enable_ssh' : start_ssh
-                   }
-
-    tasks = parser.add_argument_group('tasks', 'Possible tasks to run.')
-    tasks.add_argument('task', choices=FUNCTION_MAP.keys())
-
-    creds = parser.add_argument_group('credentials', 'Optional. Provide creds for scripting or re-running.')
-    creds.add_argument('-a', '--address',help='Portal IP, hostname, or FQDN')
-    creds.add_argument('-u', '--username',help='Username for portal administrator')
-    creds.add_argument('-p', '--password',help='Password for portal administrator')
-
-    args = parser.parse_args()
-    if args.address is None:
-        address = input("Portal (IP, Hostname or FQDN): ")
-    else:
-        address = args.address
-    if args.username is None:
-        username = input("Admin Username: ")
-    else:
-        username = args.username
-    if args.password is None:
-        password = getpass("Admin Password: ")
-    else:
-        password = args.password
-
-    global_admin = login(address,username,password)
-    selected_task = FUNCTION_MAP[args.task]
-    selected_task(global_admin)
-    return parser
+parser = ArgumentParser(description='Manage CTERA Edge Filers')
+parser.add_argument('-m', '--menu',
+                    dest='action',action='store_const',
+                    const=menu,
+                    help='Show a menu of options to run')
+parser.add_argument('-rs','--get_status',
+                    dest='action',action='store_const',
+                    const=run_status,
+                    help='Get and save status of all Filers')
+parser.add_argument('-et','--enable_telnet',
+                    dest='action',action='store_const',
+                    const=unlock,
+                    help='Enable telnet on a Filer')
+parser.add_argument('-es','--enable_ssh',
+                    dest='action',action='store_const',
+                    const=start_ssh,
+                    help='Enable ssh on a Filer')
+parser.add_argument('-ss','--suspend_sync',
+                    dest='action', action='store_const',
+                    const=suspend_filer_sync,
+                    help='Suspend Sync on a given Filer')
+parser.add_argument('-us','--unsuspend_sync',
+                    dest='action', action='store_const',
+                    const=unsuspend_filer_sync,
+                    help='Unsuspend Sync on a given Filer')
 
 if __name__ == "__main__":
+    args = parser.parse_args()
     set_logging(logging.DEBUG)
+    if args.action is None:
+        self = None
+        menu(self)
+        sys.exit('Exiting ctools.')
     logging.info('Starting ctools')
-    parse_args()
+    args.action(args)
     sys.exit('Exiting ctools.')

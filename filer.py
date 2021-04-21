@@ -1,12 +1,10 @@
 from cterasdk import *
 import logging,sys
 
-def get_filer(self,device=None,tenant=None):
+def get_filer(self):
     """Prompt for Filer and Return Filer object if found"""
-    if device is None:
-        device = input("Enter device name: ")
-    if tenant is None:
-        tenant = input("Enter tenant portal of " + device + " : ")
+    device = input("Enter device name: ")
+    tenant = input("Enter tenant portal of " + device + " : ")
     try:
         filer = self.devices.device(device, tenant)
         print("Device found.")

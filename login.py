@@ -2,7 +2,14 @@ from cterasdk import *
 from getpass import getpass
 import logging, sys
 
-def login(address,username,password):
+def login():
+    try:
+        address = input("Portal (IP, Hostname or FQDN): ")
+        username = input("Admin Username: ")
+        password = getpass("Admin Password: ")
+    except CTERAException as error:
+        logging.error(error)
+    
     try:
         logging.info("Logging into " + address)
         global_admin = GlobalAdmin(address)
@@ -13,3 +20,4 @@ def login(address,username,password):
     except CTERAException as error:
         logging.warning(error)
         sys.exit("There was a problem logging in. Please try again.")
+

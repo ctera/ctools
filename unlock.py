@@ -1,10 +1,12 @@
+from login import login
 from filer import get_filer
 from cterasdk import *
 import logging
 
 def unlock(self):
     logging.info('Starting unlock task')
-    filer = get_filer(self)
+    global_admin = login()
+    filer = get_filer(global_admin)
     info(filer)
     enable(filer)
     logging.info('Finished unlock task')
@@ -33,7 +35,8 @@ def enable(filer):
 def start_ssh(self):
     """Start SSH Daemon and copy public key to a given Filer"""
     logging.info('Starting task to enable SSH on Filer')
-    filer = get_filer(self)
+    global_admin = login()
+    filer = get_filer(global_admin)
     pubkey = input("Enter a public key or press Enter to create one:\n")
     if pubkey:
         print("Copying existing public key to",filer.name)
@@ -43,14 +46,11 @@ def start_ssh(self):
                 filer.name)
         try:
             filer.ssh.enable()
-            # TODO: Fix this error when no pubkey is provided.
-            # TypeError: generate_private_key() missing 1 required positional argument: 'backend'
         except (CTERAException) as e:
             logging.warning(e)
             logging.warning("Aborted task to enable SSH on Filer")
             print("Error creating new private key")
             print("Does ~/Downloads or %USERPROFILE%\Downloads folder exist?")
-            # exit here
     print("You now try to ssh to the Filer:",filer.name)
     print("If connection is refused, make sure public key is valid.")
     logging.info('Finished task to enable SSH on Filer')
