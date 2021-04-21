@@ -1,18 +1,16 @@
 from filer import get_filers
-from login import login
 from cterasdk import *
 import csv, logging, os, re, sys
 
-def write_status(p_filename):
+def write_status(self,p_filename):
     """Save and write Filer status information to given filename."""
-    global_admin = login()
     get_list = ['config',
                 'status',
                 'proc/cloudsync',
                 'proc/time/',
                 'proc/storage/summary',
                 'proc/perfMonitor']
-    for filer in get_filers(global_admin):
+    for filer in get_filers(self):
         info = filer.get_multi('', get_list)
         sync_id = info.proc.cloudsync.serviceStatus.id
         selfScanIntervalInHours = info.config.cloudsync.selfScanVerificationIntervalInHours
@@ -97,8 +95,8 @@ def write_status(p_filename):
                     storageThresholdPercentTrigger,
                     volume,
                     IP1,
-		    DNS1,
-		    DNS2,
+		            DNS1,
+		            DNS2,
                     Alerts,
                     time,
                     uptime,
@@ -167,6 +165,6 @@ def run_status(self):
     """Log start/end of task and call main function."""
     logging.info('Starting status task')
     filename = create_csv()
-    write_status(filename)
+    write_status(self,filename)
     logging.info('Finished status task.')
 

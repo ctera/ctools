@@ -1,12 +1,10 @@
-from login import login
 from cterasdk import *
 import logging
 
 def run_cmd(self):
     logging.info('Starting run_cmd task')
-    global_admin = login()
     cmd_str = get_cmd()
-    filers = global_admin.devices.filers(allPortals=True)
+    filers = self.devices.filers(allPortals=True)
     for filer in filers:
         try:
             print("### Start command on:",filer.name)
