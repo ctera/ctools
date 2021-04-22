@@ -1,6 +1,6 @@
 from login import login
 from status import run_status
-from unlock import unlock, start_ssh
+from unlock import unlock, start_ssh, disable_ssh
 from run_cmd import run_cmd
 from suspend_sync import suspend_filer_sync
 from unsuspend_sync import unsuspend_filer_sync
@@ -40,7 +40,8 @@ def parse_args():
                     'get_status' : run_status,
                     'run_cmd' : run_cmd,
                     'enable_telnet' : unlock,
-                    'enable_ssh' : start_ssh
+                    'enable_ssh' : start_ssh,
+                    'disable_ssh' : disable_ssh
                    }
 
     tasks = parser.add_argument_group('tasks', 'Possible tasks to run.')
@@ -65,13 +66,13 @@ def parse_args():
     else:
         password = args.password
 
+    logging.info('Starting ctools')
     global_admin = login(address,username,password)
     selected_task = FUNCTION_MAP[args.task]
     selected_task(global_admin)
     return parser
 
 if __name__ == "__main__":
-    set_logging(logging.DEBUG)
-    logging.info('Starting ctools')
+    set_logging(logging.DEBUG,'debug.log')
     parse_args()
     sys.exit('Exiting ctools.')

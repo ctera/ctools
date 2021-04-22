@@ -1,6 +1,6 @@
 from filer import get_filer
 from cterasdk import *
-import logging
+import logging, sys
 
 def unlock(self):
     logging.info('Starting unlock task')
@@ -50,8 +50,15 @@ def start_ssh(self):
             logging.warning("Aborted task to enable SSH on Filer")
             print("Error creating new private key")
             print("Does ~/Downloads or %USERPROFILE%\Downloads folder exist?")
-            # exit here
+            sys.exit("Exiting ctools.")
     print("You now try to ssh to the Filer:",filer.name)
     print("If connection is refused, make sure public key is valid.")
     logging.info('Finished task to enable SSH on Filer')
+    sys.exit("Exiting ctools.")
 
+def disable_ssh(self):
+    """Stop SSH Daemon on a given Filer"""
+    logging.info('Starting task to disable SSH on Filer')
+    filer = get_filer(self)
+    filer.ssh.disable()
+    logging.info('Finished task to disable SSH on Filer')

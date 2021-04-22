@@ -104,7 +104,7 @@ def write_status(self,p_filename):
                     get_max_cpu(),
                     get_max_memory()
                     ])
-    global_admin.logout()
+    self.logout()
 
 def write_header(p_filename):
     """Write CSV header to given filename parameter """
