@@ -145,26 +145,27 @@ def write_header(p_filename):
         print("ERROR: Unable to open filename specified: {}".format(p_filename))
         sys.exit("Make sure you entered a valid file name and it exists")
 
-def create_csv():
+def create_csv(_filename):
     """Prompt to create a CSV or append to existing. Return filename."""
-    _filename = input("Enter output filename. Make sure extension is csv: ")
-    if os.path.exists(_filename):
-        print ('File exists. It will be deleted and a new one will be created')
-        deletefile = input("Delete File? Type Y/n: ")
-        if deletefile in ('Y', 'y'):
-            os.remove(_filename)
+    if _filename is None:
+        _filename = input("Enter output filename. Make sure extension is csv: ")
+        if os.path.exists(_filename):
+            print ('File exists. It will be deleted and a new one will be created')
+            deletefile = input("Delete File? Type Y/n: ")
+            if deletefile in ('Y', 'y'):
+                os.remove(_filename)
+                write_header(_filename)
+            if deletefile in ('N', 'n'):
+                print ('Contents will be appended to the existing file')
+        else:
+            print("Output file does not exist. Creating new file")
             write_header(_filename)
-        if deletefile in ('N', 'n'):
-            print ('Contents will be appended to the existing file')
-    else:
-        print("Output file does not exist. Creating new file")
-        write_header(_filename)
     return _filename
 
 def run_status(self):
     """Log start/end of task and call main function."""
     logging.info('Starting status task')
-    filename = create_csv()
+    filename = create_csv('output.csv')
     write_status(self,filename)
     logging.info('Finished status task.')
 
