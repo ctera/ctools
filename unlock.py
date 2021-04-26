@@ -1,16 +1,18 @@
+import menu
 from login import login
 from filer import get_filer
 from cterasdk import *
 import logging
 
-def unlock(self):
+def unlock():
     logging.info('Starting unlock task')
     global_admin = login()
     filer = get_filer(global_admin)
     info(filer)
     enable(filer)
     logging.info('Finished unlock task')
-    print('Finished task.')
+    print('Finished task. Returning to menu.')
+    menu.menu()
 
 def info(filer):
     mac = filer.get('/status/device/MacAddress')
@@ -32,7 +34,7 @@ def enable(filer):
         logging.warning(error)
         print("Bad code or something went wrong unlocking device.")
 
-def start_ssh(self):
+def start_ssh():
     """Start SSH Daemon and copy public key to a given Filer"""
     logging.info('Starting task to enable SSH on Filer')
     global_admin = login()
@@ -51,7 +53,9 @@ def start_ssh(self):
             logging.warning("Aborted task to enable SSH on Filer")
             print("Error creating new private key")
             print("Does ~/Downloads or %USERPROFILE%\Downloads folder exist?")
+            menu.menu()
     print("You now try to ssh to the Filer:",filer.name)
     print("If connection is refused, make sure public key is valid.")
     logging.info('Finished task to enable SSH on Filer')
+    menu.menu
 

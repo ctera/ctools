@@ -1,3 +1,4 @@
+import menu
 from filer import get_filers
 from login import login
 from cterasdk import *
@@ -42,6 +43,8 @@ def write_status(p_filename):
         License = filer.licenses.get()
         # License = info.config.device.activeLicenseType
         IP1 = info.status.network.ports[0].ip.address
+        DNS1 = info.status.network.ports[0].ip.DNSServer1
+        DNS2 = info.status.network.ports[0].ip.DNSServer2
         storageThresholdPercentTrigger = info.config.cloudsync.cloudExtender.storageThresholdPercentTrigger
         uptime = info.proc.time.uptime
         curr_cpu = info.proc.perfMonitor.current.cpu
@@ -95,6 +98,8 @@ def write_status(p_filename):
                     storageThresholdPercentTrigger,
                     volume,
                     IP1,
+		    DNS1,
+		    DNS2,
                     Alerts,
                     time,
                     uptime,
@@ -129,6 +134,8 @@ def write_header(p_filename):
                                      'EvictionPercentage',
                                      'CurrentVolumeStorage',
                                      'IP Config',
+	         		     'DNS Server1',
+	         		     'DNS Server2',
                                      'Alerts',
                                      'TimeServer',
                                      'uptime',
@@ -157,10 +164,11 @@ def create_csv():
         write_header(_filename)
     return _filename
 
-def run_status(self):
+def run_status():
     """Log start/end of task and call main function."""
     logging.info('Starting status task')
     filename = create_csv()
     write_status(filename)
     logging.info('Finished status task.')
+    menu.menu()
 

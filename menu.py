@@ -19,12 +19,12 @@ def quit():
     logging.info('Exiting ctools')
     sys.exit('Exiting ctools')
 
-def menu(self):
+def menu():
     """Prompt which task integer to run"""
     tasks_str = """
     #################
        ctools menu 
-         v 1.6.0
+         v 1.5.1
     #################
 
     Available tasks:
@@ -47,14 +47,13 @@ def menu(self):
         quit()
 
 # Dictionary to map numbers to functions/tasks user can choose to run.
-self = None
 tasks = {
         0 : quit,
-        1 : run_status.__get__(object),
-        2 : run_cmd.__get__(object),
-        3 : unlock.__get__(object),
-        4 : start_ssh.__get__(object),
-        5 : suspend_filer_sync.__get__(object),
-        6 : unsuspend_filer_sync.__get__(object),
+        1 : run_status,
+        2 : run_cmd,
+        3 : unlock,
+        4 : start_ssh,
+        5 : suspend_filer_sync,
+        6 : unsuspend_filer_sync,
 }
 

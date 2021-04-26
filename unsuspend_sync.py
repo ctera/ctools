@@ -3,7 +3,7 @@ from filer import get_filer
 from cterasdk import *
 import logging
 
-def unsuspend_filer_sync(self):
+def unsuspend_filer_sync():
     """Unsuspend sync on a device"""
     logging.info("Starting unsuspend sync task.")
     global_admin = login()

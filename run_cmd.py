@@ -1,8 +1,9 @@
+import menu
 from login import login
 from cterasdk import *
 import logging
 
-def run_cmd(self):
+def run_cmd():
     logging.info('Starting run_cmd task')
     global_admin = login()
     cmd_str = get_cmd()
@@ -18,7 +19,8 @@ def run_cmd(self):
             print("Something went wrong running the command")
 
     logging.info('Finished run_cmd task')
-    print('Finished task.')
+    print('Finished task. Returning to menu.')
+    menu.menu()
 
 def get_cmd():
     _cmd_str = input("Enter command to run: ")
