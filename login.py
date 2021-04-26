@@ -1,6 +1,7 @@
 from cterasdk import *
 from getpass import getpass
 import logging, sys
+config.http['ssl'] = 'Trust'
 
 def login():
     try:
