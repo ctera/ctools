@@ -1,9 +1,9 @@
 from cterasdk import *
 import logging
 
-def run_cmd(self):
+def run_cmd(self,cmd_str):
     logging.info('Starting run_cmd task')
-    cmd_str = get_cmd()
+    #cmd_str = get_cmd()
     filers = self.devices.filers(allPortals=True)
     for filer in filers:
         try:

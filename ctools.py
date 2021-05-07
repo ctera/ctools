@@ -27,28 +27,51 @@ def set_logging(p_level=logging.INFO,log_file="log.txt"):
         ]
    )
 
-@Gooey(optional_cols=2, program_name="CTools GUI")
+@Gooey(advanced=True, program_name="CTools GUI")
 def main():
     """
     <this is how it works>
     """
     parser = GooeyParser(description='Manage CTERA Edge Filers')
-    FUNCTION_MAP = {'get_status' : run_status}
+    FUNCTION_MAP = {'get_status' : run_status,
+                    'run_cmd'   : run_cmd}
     subs = parser.add_subparsers(help='commands', dest='command')
 
-    status_parser = subs.add_parser('get_status',help='get status of all filers')
+    status_parser = subs.add_parser('get_status',
+                                    help='get status of all filers',
+                                    )
+    status_parser.add_argument('task', choices=FUNCTION_MAP.keys())
     status_parser.add_argument('filename',help='output filename',type=str)
-
-    status_parser.add_argument('task', choices=FUNCTION_MAP.keys(),widget='FilterableDropdown')
     status_parser.add_argument('address',help='Portal IP, hostname, or FQDN')
-    status_parser.add_argument('username',help='Username for portal administrator')
-    status_parser.add_argument('password',help='Password for portal administrator', widget='PasswordField')
+    status_parser.add_argument('username',
+                                help='Username for portal administrator')
+    status_parser.add_argument('password',
+                                help='Password for portal administrator',
+                                widget='PasswordField')
+
+    cmd_parser = subs.add_parser('run_cmd',
+                                help='run command on each Filer.')
+    cmd_parser.add_argument('task', choices=FUNCTION_MAP.keys())
+    cmd_parser.add_argument('cmd')
+    cmd_parser.add_argument('address',help='Portal IP, hostname, or FQDN')
+    cmd_parser.add_argument('username',
+                                help='Username for portal administrator')
+    cmd_parser.add_argument('password',
+                                help='Password for portal administrator',
+                                widget='PasswordField')
+
     args = parser.parse_args()
     logging.info('Starting ctools')
+    logging.debug('Selected task:',args.command)
     global_admin = login(args.address,args.username,args.password)
     selected_task = FUNCTION_MAP[args.task]
-    print('DEBUG. you chose',selected_task)
-    selected_task(global_admin,args.filename)
+    if args.command == 'get_status':
+        selected_task(global_admin,args.filename)
+    elif args.command == 'run_cmd':
+        selected_task(global_admin,args.cmd)
+    else:
+        logging.info('I give up.')
+
 
 if __name__ == "__main__":
     set_logging(logging.DEBUG,'debug.log')
