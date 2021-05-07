@@ -27,27 +27,29 @@ def set_logging(p_level=logging.INFO,log_file="log.txt"):
         ]
    )
 
-@Gooey(advanced=True)
-def parse_args():
-    """Parse CLI Arguments.
-    
-    Required Arguments:
-    See choices in FUNCTION_MAP
-    Optionally, any or all Portal Global Admin creds can be provided.
+@Gooey(optional_cols=2, program_name="CTools GUI")
+def main():
+    """
+    <this is how it works>
     """
     parser = GooeyParser(description='Manage CTERA Edge Filers')
     FUNCTION_MAP = {'get_status' : run_status}
-    parser.add_argument('task', choices=FUNCTION_MAP.keys(),widget='FilterableDropdown')
-    parser.add_argument('address',help='Portal IP, hostname, or FQDN')
-    parser.add_argument('username',help='Username for portal administrator')
-    parser.add_argument('password',help='Password for portal administrator', widget='PasswordField')
+    subs = parser.add_subparsers(help='commands', dest='command')
+
+    status_parser = subs.add_parser('get_status',help='get status of all filers')
+    status_parser.add_argument('filename',help='output filename',type=str)
+
+    status_parser.add_argument('task', choices=FUNCTION_MAP.keys(),widget='FilterableDropdown')
+    status_parser.add_argument('address',help='Portal IP, hostname, or FQDN')
+    status_parser.add_argument('username',help='Username for portal administrator')
+    status_parser.add_argument('password',help='Password for portal administrator', widget='PasswordField')
     args = parser.parse_args()
     logging.info('Starting ctools')
     global_admin = login(args.address,args.username,args.password)
     selected_task = FUNCTION_MAP[args.task]
-    selected_task(global_admin)
-    return parser
+    print('DEBUG. you chose',selected_task)
+    selected_task(global_admin,args.filename)
 
 if __name__ == "__main__":
     set_logging(logging.DEBUG,'debug.log')
-    parse_args()
+    main()
