@@ -35,12 +35,12 @@ def main():
     parser = GooeyParser(description='Manage CTERA Edge Filers')
     FUNCTION_MAP = {'get_status' : run_status,
                     'run_cmd'   : run_cmd}
+    parser.add_argument('--task', choices=FUNCTION_MAP.keys())
     subs = parser.add_subparsers(help='commands', dest='command')
 
     status_parser = subs.add_parser('get_status',
                                     help='get status of all filers',
                                     )
-    status_parser.add_argument('task', choices=FUNCTION_MAP.keys())
     status_parser.add_argument('filename',help='output filename',type=str)
     status_parser.add_argument('address',help='Portal IP, hostname, or FQDN')
     status_parser.add_argument('username',
@@ -51,8 +51,7 @@ def main():
 
     cmd_parser = subs.add_parser('run_cmd',
                                 help='run command on each Filer.')
-    cmd_parser.add_argument('task', choices=FUNCTION_MAP.keys())
-    cmd_parser.add_argument('cmd')
+    cmd_parser.add_argument('cmd_str')
     cmd_parser.add_argument('address',help='Portal IP, hostname, or FQDN')
     cmd_parser.add_argument('username',
                                 help='Username for portal administrator')
@@ -62,15 +61,14 @@ def main():
 
     args = parser.parse_args()
     logging.info('Starting ctools')
-    logging.debug('Selected task:',args.command)
     global_admin = login(args.address,args.username,args.password)
-    selected_task = FUNCTION_MAP[args.task]
+    selected_task = FUNCTION_MAP[args.command]
     if args.command == 'get_status':
         selected_task(global_admin,args.filename)
     elif args.command == 'run_cmd':
-        selected_task(global_admin,args.cmd)
+        selected_task(global_admin,args.cmd_str)
     else:
-        logging.info('I give up.')
+        logging.error('No task found or selected.')
 
 
 if __name__ == "__main__":
