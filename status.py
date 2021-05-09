@@ -45,6 +45,7 @@ def write_status(p_filename):
         IP1 = info.status.network.ports[0].ip.address
         DNS1 = info.status.network.ports[0].ip.DNSServer1
         DNS2 = info.status.network.ports[0].ip.DNSServer2
+        ADStatus = filer.cli.run_command('show /status/fileservices/cifs/joinStatus')
         storageThresholdPercentTrigger = info.config.cloudsync.cloudExtender.storageThresholdPercentTrigger
         uptime = info.proc.time.uptime
         curr_cpu = info.proc.perfMonitor.current.cpu
@@ -94,6 +95,7 @@ def write_status(p_filename):
                     MetaLogMaxSize,
                     MetaLogMaxFiles,
                     CurrentFirmware,
+                    ADStatus,
                     License,
                     storageThresholdPercentTrigger,
                     volume,
@@ -130,6 +132,7 @@ def write_header(p_filename):
                                      'MetaLogMaxSize',
                                      'MetaLogMaxFiles',
                                      'CurrentFirmware',
+                                     'ADStatus',
                                      'License',
                                      'EvictionPercentage',
                                      'CurrentVolumeStorage',
