@@ -2,10 +2,10 @@ from filer import get_filer
 from cterasdk import *
 import logging
 
-def suspend_filer_sync(self):
+def suspend_filer_sync(self,device_name,tenant_name):
     """Suspend sync on a device"""
     logging.info("Starting suspend sync task.")
-    self = get_filer(self)
+    self = self.devices.device(device_name,tenant_name)
     try:
         self.sync.suspend(wait=True)
         print("Suspended sync on",self.name)
