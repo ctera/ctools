@@ -2,26 +2,46 @@
 
 ## Purpose
 
-A tool to check the status of all CTERA filers and more coming soon.
+A toolbox of sorts to check and manage CTERA Edge Filers and more coming soon.
 
 ## Development Requirements
 
-- [Python 3.5+](https://www.python.org/)
+- [Python 3.8.x](https://www.python.org/downloads/release/python-3810/)
 - [git](https://git-scm.com/)
-- [pip](https://pip.pypa.io/en/stable/user_guide/)
+- [CTERA SDK for Python](https://github.com/ctera/ctera-python-sdk)
+- [Gooey](https://github.com/chriskiehl/Gooey)
 - [CTERA Environment](https://www.ctera.com/)
 
 ## Setup
 
+
+### Linux
+
+General instructions. Actual commands will vary by distro and version.
 ```
 git clone https://github.com/ctera/ctools.git
-python3 -m pip install -r ctools/requirements.txt
+python -m pip install -r ctools/requirements.txt
+```
+
+### Windows
+
+Here we use Chocolatey as a commmand line package manager for Windows.
+Run PowerShell as an Administrator to setup. Close and re-open PowerShell
+after to refresh the environment and enable tab completion of commands.
+
+```
+Invoke-WebRequest https://chocolatey.org/install.ps1 -UseBasicParsing | Invoke-Expression
+choco upgrade -y
+choco install python --version=3.8.10 --yes
+choco install git --yes
+git clone https://github.com/ctera/ctools.git
+python -m pip install -r .\ctools\requirements.txt
 ```
 
 ## Run
 
 ```
-python3 ctools.py
+python ctools.py
 ```
 
 ## Example

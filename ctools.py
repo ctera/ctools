@@ -10,6 +10,12 @@ from argparse import ArgumentParser
 from getpass import getpass
 import logging, sys
 
+""" If any args are present, run in CLI mode"""
+if len(sys.argv) >= 2:
+    if not '--ignore-gooey' in sys.argv:
+        sys.argv.append('--ignore-gooey')
+
+
 def set_logging(p_level=logging.INFO,log_file="info-log.txt"):
     """Set up logging to a given file name.
     Doesn't require CTERASDK_LOG_FILE to be set.
