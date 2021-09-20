@@ -2,33 +2,32 @@ from filer import get_filer
 from cterasdk import *
 import logging, sys
 
-def unlock(self):
-    logging.info('Starting unlock task')
-    filer = get_filer(self)
-    info(filer)
-    enable(filer)
-    logging.info('Finished unlock task')
-    print('Finished task.')
-
-def info(filer):
-    mac = filer.get('/status/device/MacAddress')
-    firmware = filer.get('/status/device/runningFirmware')
-    print("Provide the following to CTERA to unlock",filer.name)
-    print(mac)
-    print(firmware)
-
-def enable(filer):
-    try:
-        code = input("Enter unlock code: ")
-    except CTERAException as error:
-        logging.warning(error)
-        print("Something went wrong with the prompt.")
-    try:
-        filer.telnet.enable(code)
-        print("Success. Telnet enabled on",filer.name)
-    except CTERAException as error:
-        logging.warning(error)
-        print("Bad code or something went wrong unlocking device.")
+def enable_telnet(self,device_name,tenant_name,code=None):
+    """Enable telnet if code is given. Else, print info needed for code."""
+    logging.info('Starting enable_telnet task')
+    filer = self.devices.device(device_name,tenant_name)
+    if code is None:
+        print("No code provided. Getting required info.")
+        #get_telnet_info(filer)
+        mac = filer.get('/status/device/MacAddress')
+        firmware = filer.get('/status/device/runningFirmware')
+        print("Provide the following to CTERA to unlock",filer.name)
+        print(mac)
+        print(firmware)
+        print("Then re-run this task with the 6 digit code")
+        logging.info("Provide info CTERA Support: {} {}".format(mac,firmware))
+        logging.info("Finished enable_telnet task with no code given.")
+        exit
+    else:
+        print("Attempting to use telnet unlock code: " + code)
+        try:
+            filer.telnet.enable(code)
+            print("Success. Telnet enabled on",filer.name)
+        except CTERAException as error:
+            logging.warning(error)
+            logging.warning("Bad code or something went wrong unlocking device.")
+            print("Bad code or something went wrong unlocking device.")
+        logging.info("Finished enable_telnet task with code.")
 
 def start_ssh(self,device_name,tenant_name,pubkey=None):
     """Start SSH Daemon on given 7.0+ Filer

@@ -1,6 +1,6 @@
 from login import login
 from status import run_status
-from unlock import unlock, start_ssh, disable_ssh
+from unlock import enable_telnet, start_ssh, disable_ssh
 from run_cmd import run_cmd
 from suspend_sync import suspend_filer_sync
 from unsuspend_sync import unsuspend_filer_sync
@@ -32,7 +32,7 @@ def set_logging(p_level=logging.INFO,log_file="info-log.txt"):
             logging.FileHandler(log_file),
             logging.StreamHandler()])
 
-@Gooey(advanced=True, navigation='TABBED', program_name="CTools GUI")
+@Gooey(advanced=True, navigation='TABBED', program_name="CTools GUI v2.0a")
 def main():
     """
     Create dictionary mapping task names to functions.
@@ -41,6 +41,7 @@ def main():
     """
     FUNCTION_MAP = {'get_status' : run_status,
                     'run_cmd'   : run_cmd,
+                    'enable_telnet' : enable_telnet,
                     'enable_ssh' : start_ssh,
                     'disable_ssh' : disable_ssh,
                     'suspend_sync' : suspend_filer_sync,
@@ -80,6 +81,16 @@ def main():
                                 parents = [portal_parent_parser],
                                 help=cmd_help)
     cmd_parser.add_argument('command', type=str, help=cmd_help)
+
+    # Enable Telnet sub parser
+    enable_telnet_help = "Enable SSH on a Filer."
+    enable_telnet_parser = subs.add_parser('enable_telnet',
+                                parents = [portal_parent_parser],
+                                help=enable_telnet_help)
+    enable_telnet_parser.add_argument('device_name', help='Device Name')
+    enable_telnet_parser.add_argument('tenant_name', help='Tenant Name')
+    enable_telnet_parser.add_argument('-c','--code',
+                                help='Required code to enable telnet')
 
     # Enable SSH sub parser
     enable_ssh_help = "Enable SSH on a Filer."
@@ -137,6 +148,8 @@ def main():
         selected_task(global_admin,args.filename)
     elif args.task == 'run_cmd':
         selected_task(global_admin,args.command)
+    elif args.task == 'enable_telnet':
+        selected_task(global_admin,args.device_name,args.tenant_name,args.code)
     elif args.task == 'enable_ssh':
         selected_task(global_admin,args.device_name,args.tenant_name,args.pubkey)
     elif args.task == 'disable_ssh':
