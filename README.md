@@ -25,80 +25,104 @@ python -m pip install -r ctools/requirements.txt
 
 ### Windows
 
-Here we use Chocolatey as a commmand line package manager for Windows.
+For a machine without Python and git already installed, you can use these steps to simplify setup.
+Here we use [Chocolatey](https://chocolatey.org/) as a commmand line package manager for Windows.
 Run PowerShell as an Administrator to setup. Close and re-open PowerShell
 after to refresh the environment and enable tab completion of commands.
 
 ```
-Invoke-WebRequest https://chocolatey.org/install.ps1 -UseBasicParsing | Invoke-Expression
-choco upgrade -y
-choco install python --version=3.8.10 --yes
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+choco install python --yes
 choco install git --yes
+# Close and re-open your shell
 git clone https://github.com/ctera/ctools.git
+python -m pip install --upgrade pip
 python -m pip install -r .\ctools\requirements.txt
+cd ctools
 ```
 
 ## Run
 
 ```
+# To launch the GUI
 python ctools.py
+# To use on CLI
+python ctools.py -h
 ```
 
-## Example
+## Examples
+
+### GUI
+To launch the GUI, simply invoke python and specify our main module, ctools.py, without specifying any flags.
 
 ```
-[user@localhost ctools]$ ./ctools.py
-2021-01-22 12:27:51,898    INFO [ctools.py:10] [<module>] - Starting ctools
+PS C:\Users\ctera\git\ctools> python ctools.py
+```
 
-    #################
-       ctools menu
-         v 1.5.1
-    #################
+### CLI
 
-    Available tasks:
+Running the CLI from PowerShell
+The (ctools) in the prompt is PyEnv which is not required but helpful.
+Run ctools.py with any flags to run it from CLI
+The first, required, positional argument is the Task choice.
+Specify the task and run to see that task's required and optional arguments.
+Any task can be run with `-h` or `--help` to see usage instructions.
+Any task can be run with the optional flag `-v` or `--verbose` to enable debug logging.
 
-    0. Quit
-    1. Record status details of all connected Edge Filers.
-    2. Enable telnet on one or more connected Edge Filers.
-    3. Run a specified command on all connected Edge Filers.
+```
+(ctools) PS C:\Users\ctera\git\ctools> python ctools.py -h
+usage: ctools.py [-h] {get_status,run_cmd,enable_telnet,enable_ssh,disable_ssh,suspend_sync,unsuspend_sync} ...
 
-Enter a task number to run: 3
-2021-01-22 12:27:53,246    INFO [run_cmd.py:12] [run_cmd] - Starting run_cmd task
-Portal (IP, Hostname or FQDN): portal.example.com
-Admin Username: admin
-Admin Password: password
-2021-01-22 12:27:55,279    INFO [login.py:18] [login] - Logging into portal.example.com
-2021-01-22 12:27:55,347    INFO [login.py:19] [login] - User logged in. {'host': 'portal.example.com', 'user': 'admin'}
-2021-01-22 12:27:55,360    INFO [login.py:21] [login] - Successfully logged in to portal.example.com
-Enter command to run: dbg level backup
-You enetered:  dbg level backup
-### Start command on: todd-vGateway
-2021-01-22 12:28:00,655    INFO [cli.py:16] [run_command] - Executing CLI command. {'cli_command': 'dbg level backup'}
-2021-01-22 12:28:00,782    INFO [cli.py:20] [run_command] - CLI command executed. {'cli_command': 'dbg level backup'}
-Response:
- Setting debug level to 0x00000800
-### End command on: todd-vGateway
-### Start command on: vGateway-5439
-2021-01-22 12:28:00,782    INFO [cli.py:16] [run_command] - Executing CLI command. {'cli_command': 'dbg level backup'}
-2021-01-22 12:28:00,911    INFO [cli.py:20] [run_command] - CLI command executed. {'cli_command': 'dbg level backup'}
-Response:
- Setting debug level to 0x00000800
-### End command on: vGateway-5439
-2021-01-22 12:28:00,911    INFO [run_cmd.py:26] [run_cmd] - Finished run_cmd task
-Finished task. Returning to menu.
+Manage CTERA Edge Filers
 
-    #################
-       ctools menu
-         v 1.5.1
-    #################
+positional arguments:
+  {get_status,run_cmd,enable_telnet,enable_ssh,disable_ssh,suspend_sync,unsuspend_sync}
+                        Task choices.
+    get_status          Record current status of all connected Filers. Use --all to browse all Tenants
+    run_cmd             Run a comand on each connected Filer.
+    enable_telnet       Enable SSH on a Filer.
+    enable_ssh          Enable SSH on a Filer.
+    disable_ssh         Disable SSH on a Filer.
+    suspend_sync        Suspend sync on a given Filer
+    unsuspend_sync      Unsuspend sync on a given Filer
 
-    Available tasks:
+(ctools) PS C:\Users\ctera\git\ctools> python ctools.py get_status
+usage: ctools.py get_status [-h] [-v] [-a] address username password filename
+ctools.py get_status: error: the following arguments are required: address, username, password, filename
 
-    0. Quit
-    1. Record status details of all connected Edge Filers.
-    2. Enable telnet on one or more connected Edge Filers.
-    3. Run a specified command on all connected Edge Filers.
+optional arguments:
+  -h, --help            show this help message and exit
 
-Enter a task number to run: 0
-[user@localhost] ctools]$
+(ctools) PS C:\Users\ctera\git\ctools> python ctools.py get_status -h
+usage: ctools.py get_status [-h] [-v] [-a] address username password filename
+
+positional arguments:
+  address        Portal IP, hostname, or FQDN
+  username       Username for portal administrator
+  password       Password. Enter ? to prompt in CLI
+  filename       output filename
+
+optional arguments:
+  -h, --help     show this help message and exit
+  -v, --verbose  Add verbose logging
+  -a, --all      All Filers, All Tenants
+
+(ctools) PS C:\Users\ctera\git\ctools> python ctools.py get_status portal.ctera.me admin ? report.csv --all
+2021-09-23 17:21:17,257 [INFO] Starting ctools
+Password:
+2021-09-23 17:21:20,109 [INFO] Logging into portal.ctera.me
+2021-09-23 17:21:20,226 [INFO] User logged in. {'host': 'portal.ctera.me', 'user': 'admin'}
+2021-09-23 17:21:20,262 [WARNING] Allow Single Sign On to Devices is not enabled. Some tasks may fail or output may be incomplete
+2021-09-23 17:21:20,262 [INFO] Starting status task
+2021-09-23 17:21:20,287 [INFO] Getting all Filers since tenant is Administration
+2021-09-23 17:21:21,585 [INFO] Executing CLI command. {'cli_command': 'dbg level'}
+2021-09-23 17:21:21,597 [INFO] CLI command executed. {'cli_command': 'dbg level'}
+2021-09-23 17:21:23,237 [INFO] Executing CLI command. {'cli_command': 'dbg level'}
+2021-09-23 17:21:23,247 [INFO] CLI command executed. {'cli_command': 'dbg level'}
+2021-09-23 17:21:24,109 [INFO] Executing CLI command. {'cli_command': 'dbg level'}
+2021-09-23 17:21:24,121 [INFO] CLI command executed. {'cli_command': 'dbg level'}
+2021-09-23 17:21:25,209 [INFO] Executing CLI command. {'cli_command': 'dbg level'}
+2021-09-23 17:21:25,221 [INFO] CLI command executed. {'cli_command': 'dbg level'}
+2021-09-23 17:21:25,246 [INFO] User logged out. {'host': 'portal.ctera.me', 'user': 'admin'}
+2021-09-23 17:21:25,249 [INFO] Finished status task.
 ```
