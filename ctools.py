@@ -69,11 +69,13 @@ def main():
     subs = parser.add_subparsers(help='Task choices.', dest='task')
 
     # Filer Status sub parser
-    status_help = "Record current status of all connected Filers."
+    status_help = "Record current status of all connected Filers. Use --all to browse all Tenants"
     status_parser = subs.add_parser('get_status',
                                     parents = [portal_parent_parser],
                                     help=status_help)
     status_parser.add_argument('filename',type=str, help='output filename')
+    status_parser.add_argument('-a', '--all',action='store_true',
+                               help='All Filers, All Tenants')
 
     # Run device command sub parser
     cmd_help = "Run a comand on each connected Filer."
@@ -145,7 +147,7 @@ def main():
     selected_task = FUNCTION_MAP[args.task]
     # Run selected task with required sub arguments.
     if args.task == 'get_status':
-        selected_task(global_admin,args.filename)
+        selected_task(global_admin,args.filename,args.all)
     elif args.task == 'run_cmd':
         selected_task(global_admin,args.command)
     elif args.task == 'enable_telnet':

@@ -8,7 +8,7 @@ def login(address,username,password):
         global_admin = GlobalAdmin(address)
         global_admin.login(username, password)
         logging.debug("Successfully logged in to " + address)
-        global_admin.portals.browse_global_admin()
+        #global_admin.portals.browse_global_admin()
         allow_device_sso = global_admin.get('rolesSettings/readWriteAdminSettings/allowSSO')
         if allow_device_sso is True:
             logging.debug('Single Sign On to Devices is allowed')
