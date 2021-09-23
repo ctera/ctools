@@ -83,6 +83,16 @@ def write_status(self,p_filename,all_tenants):
                 memory_history.append(i.memUsage)
             return "{}%".format(max(memory_history))
 
+        def get_ad_status():
+            """ Parse domain join value and return the Domain Join Status as string. """
+            # joinStatus: -1 = workgroup, 0 = OK, 2 = Failed
+            result = info.status.fileservices.cifs.joinStatus
+            if result == 0:
+                return 'Ok'
+            elif result == -1:
+                return 'Workgroup'
+            else:
+                return 'Failed'
 
         with open(p_filename, mode='a', newline='', encoding="utf-8-sig") as gatewayList:
             gateway_writer = csv.writer(gatewayList, 
@@ -109,6 +119,7 @@ def write_status(self,p_filename,all_tenants):
                     IP1,
                     DNS1,
                     DNS2,
+                    get_ad_status(),
                     Alerts,
                     time,
                     uptime,
@@ -146,6 +157,7 @@ def write_header(p_filename):
                                      'IP Config',
                                      'DNS Server1',
                                      'DNS Server2',
+                                     'AD Domain Status',
                                      'Alerts',
                                      'TimeServer',
                                      'uptime',
