@@ -58,6 +58,7 @@ To launch the GUI, simply invoke python and specify our main module, ctools.py, 
 ```
 PS C:\Users\ctera\git\ctools> python ctools.py
 ```
+![ctools GUI screenshot](./images/screenshot-ctools-gui.png)
 
 ### CLI
 
