@@ -32,7 +32,33 @@ def set_logging(p_level=logging.INFO,log_file="info-log.txt"):
             logging.FileHandler(log_file),
             logging.StreamHandler()])
 
-@Gooey(advanced=True, navigation='TABBED', program_name="CTools GUI v2.0a")
+@Gooey(advanced=True, navigation='TABBED', program_name="CTools",
+        default_size=(600,600),
+	menu=[{
+	    'name': 'File',
+	    'items': [{
+		    'type': 'AboutDialog',
+		    'menuTitle': 'About',
+		    'name': 'CTools',
+		    'description': 'A toolbox of sorts to check and manage CTERA Edge Filers and more coming soon.',
+		    'version': 'v2.0a',
+		    'copyright': '2021',
+		    'website': 'https://github.com/ctera/ctools/tree/todd/gooey',
+		    'license': 'TBD'
+                    }, {
+		    'type': 'Link',
+		    'menuTitle': 'Visit Our Site',
+                    'url': 'https://www.ctera.com/'
+                    }]
+	    },{
+	    'name': 'Help',
+	    'items': [{
+		'type': 'Link',
+		'menuTitle': 'Open an Issue',
+		'url': 'https://github.com/ctera/ctools/issues'
+	    }]
+	}])
+
 def main():
     """
     Create dictionary mapping task names to functions.
