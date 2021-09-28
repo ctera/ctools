@@ -4,6 +4,7 @@ from unlock import enable_telnet, start_ssh, disable_ssh
 from run_cmd import run_cmd
 from suspend_sync import suspend_filer_sync
 from unsuspend_sync import unsuspend_filer_sync
+from reset_password import reset_filer_password
 from gooey import Gooey, GooeyParser
 from cterasdk import *
 from argparse import ArgumentParser
@@ -33,14 +34,14 @@ def set_logging(p_level=logging.INFO,log_file="info-log.txt"):
             logging.StreamHandler()])
 
 @Gooey(advanced=True, navigation='TABBED', program_name="CTools",
-        default_size=(600,600),
+        default_size=(800,750),
 	menu=[{
 	    'name': 'File',
 	    'items': [{
 		    'type': 'AboutDialog',
 		    'menuTitle': 'About',
 		    'name': 'CTools',
-		    'description': 'A toolbox of sorts to check and manage CTERA Edge Filers and more coming soon.',
+		    'description': 'A toolbox of tasks to check and manage CTERA Edge Filers.',
 		    'version': 'v2.0a',
 		    'copyright': '2021',
 		    'website': 'https://github.com/ctera/ctools/tree/todd/gooey',
@@ -49,15 +50,23 @@ def set_logging(p_level=logging.INFO,log_file="info-log.txt"):
 		    'type': 'Link',
 		    'menuTitle': 'Visit Our Site',
                     'url': 'https://www.ctera.com/'
-                    }]
-	    },{
+                    }
+                    ] # end File menu items
+	    },
+            {
 	    'name': 'Help',
 	    'items': [{
-		'type': 'Link',
-		'menuTitle': 'Open an Issue',
-		'url': 'https://github.com/ctera/ctools/issues'
-	    }]
-	}])
+                    'type': 'Link',
+		    'menuTitle': 'CTERA Support',
+                    'url': 'https://support.ctera.com/'
+                   }, {
+                    'type': 'Link',
+                    'menuTitle': 'Open a CTools Issue',
+                    'url': 'https://github.com/ctera/ctools/issues'
+                    }]
+                } # end Help menu
+            ] # end menu
+        )#end Gooey options
 
 def main():
     """
@@ -72,6 +81,7 @@ def main():
                     'disable_ssh' : disable_ssh,
                     'suspend_sync' : suspend_filer_sync,
                     'unsuspend_sync' : unsuspend_filer_sync,
+                    'reset_password' : reset_filer_password,
                    }
     parser = GooeyParser(description='Manage CTERA Edge Filers')
     # Parent Parser for tasks requiring portal logins.
@@ -154,6 +164,18 @@ def main():
     unsuspend_sync_parser.add_argument('device_name', help='Device Name')
     unsuspend_sync_parser.add_argument('tenant_name', help='Tenant Name')
 
+    # Reset Filer sub parser
+    reset_password_help_text = "Reset a user password on a Filer"
+    reset_password_parser = subs.add_parser('reset_password',
+                                parents = [portal_parent_parser],
+                                help=reset_password_help_text)
+    reset_password_parser.add_argument('device_name', help='Device Name')
+    reset_password_parser.add_argument('tenant_name', help='Tenant Name')
+    reset_password_parser.add_argument('user_name', help='User Name')
+    reset_password_parser.add_argument('filer_password',
+                                help='New Filer Password. Enter ? to prompt in CLI',
+                                widget='PasswordField')
+
     # Parse arguments and run commands of chosen task
     args = parser.parse_args()
     if args.verbose:
@@ -186,6 +208,9 @@ def main():
         selected_task(global_admin,args.device_name,args.tenant_name)
     elif args.task == 'unsuspend_sync':
         selected_task(global_admin,args.device_name,args.tenant_name)
+    elif args.task == 'reset_password':
+        selected_task(global_admin,args.device_name,args.tenant_name,
+                        args.user_name,args.filer_password)
     else:
         logging.error('No task found or selected.')
 
