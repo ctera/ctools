@@ -114,11 +114,16 @@ def main():
                                help='All Filers, All Tenants')
 
     # Run device command sub parser
-    cmd_help = "Run a comand on each connected Filer."
-    cmd_parser = subs.add_parser('run_cmd',
-                                parents = [portal_parent_parser],
-                                help=cmd_help)
+    cmd_help = "Run a comand on one or more connected Filers."
+    all_help = "Run a command globally, on all Filers, on all Tenants."
+    device_help = "Device name to run command against. Overrides --all flag."
+
+    cmd_parser = subs.add_parser('run_cmd'
+                                 ,parents = [portal_parent_parser]
+                                 ,help=cmd_help)
     cmd_parser.add_argument('command', type=str, help=cmd_help)
+    cmd_parser.add_argument('-a', '--all', action='store_true', help=all_help)
+    cmd_parser.add_argument('-d', '--device', help=device_help)
 
     # Enable Telnet sub parser
     enable_telnet_help = "Enable SSH on a Filer."
@@ -197,7 +202,7 @@ def main():
     if args.task == 'get_status':
         selected_task(global_admin,args.filename,args.all)
     elif args.task == 'run_cmd':
-        selected_task(global_admin,args.command)
+        selected_task(global_admin,args.command,args.all,args.device)
     elif args.task == 'enable_telnet':
         selected_task(global_admin,args.device_name,args.tenant_name,args.code)
     elif args.task == 'enable_ssh':
@@ -213,6 +218,8 @@ def main():
                         args.user_name,args.filer_password)
     else:
         logging.error('No task found or selected.')
+    global_admin.logout()
+    logging.info('Exiting ctools')
 
 if __name__ == "__main__":
     main()

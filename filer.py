@@ -3,10 +3,6 @@ import logging,sys
 
 def get_filer(self,device=None,tenant=None):
     """Prompt for Filer and Return Filer object if found"""
-    if device is None:
-        device = input("Enter device name: ")
-    if tenant is None:
-        tenant = input("Enter tenant portal of " + device + " : ")
     try:
         filer = self.devices.device(device, tenant)
         print("Device found.")
