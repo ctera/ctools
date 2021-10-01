@@ -13,7 +13,6 @@ def reset_filer_password(self,device_name,tenant_name,user_name,filer_password):
         filer.users.modify(user_name,filer_password)
         logging.info("Success. Password set for " + user_name)
         logging.info("Finished reset_password task.")
-        exit
     except CTERAException as error:
         logging.error(error)
         logging.info("Error setting password")
