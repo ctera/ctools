@@ -43,7 +43,6 @@ def run_cmd(self,command: str,all_tenants=False,device_name=None):
     if device_name:
         single_filer_run(self,command,device_name)
         logging.info('Finished single run_cmd task.')
-        exit
     elif all_tenants is True:
         multi_filer_run(self,command,all_tenants=True)
         logging.info('Finished run_cmd task on all Tenants.')

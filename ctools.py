@@ -42,7 +42,7 @@ def set_logging(p_level=logging.INFO,log_file="info-log.txt"):
 		    'menuTitle': 'About',
 		    'name': 'CTools',
 		    'description': 'A toolbox of tasks to check and manage CTERA Edge Filers.',
-		    'version': 'v2.0a',
+		    'version': 'v2.1a',
 		    'copyright': '2021',
 		    'website': 'https://github.com/ctera/ctools/tree/todd/gooey',
 		    'license': 'TBD'
