@@ -1,19 +1,18 @@
 # ctools
 
-## Purpose
+## Description
 
-A toolbox of sorts to check and manage CTERA Edge Filers and more coming soon.
+A toolbox of tasks to check and manage CTERA Edge Filers via CLI or GUI.
 
 ## Development Requirements
 
-- [Python 3.8.x](https://www.python.org/downloads/release/python-3810/)
-- [git](https://git-scm.com/)
-- [CTERA SDK for Python](https://github.com/ctera/ctera-python-sdk)
-- [Gooey](https://github.com/chriskiehl/Gooey)
 - [CTERA Environment](https://www.ctera.com/)
+- [CTERA SDK for Python](https://github.com/ctera/ctera-python-sdk)
+- [Python](https://www.python.org/downloads/)
+- [git](https://git-scm.com/)
+- [Gooey](https://github.com/chriskiehl/Gooey)
 
 ## Setup
-
 
 ### Linux
 
@@ -44,10 +43,165 @@ cd ctools
 ## Run
 
 ```
-# To launch the GUI
+# To launch the GUI, invoke ctools.py
 python ctools.py
-# To use on CLI
+# To use on CLI, pass valid arguments to ctools.py
 python ctools.py -h
+```
+
+## Instructions
+
+### Task Usage
+
+The first required argument is the task to run.
+Each task has its own positional arguments, usually login info then any arguments required to complete the task.
+
+**Use a Portal Global Administrator account to login.**
+There is currently no support for tenant admins or direct logins to Filers. All requests are sent through the Portal to connected Filers.
+
+Specify the task and run to see that task's required and optional arguments.
+Any task can be run with `-h` or `--help` to see usage instructions.
+Any task can be run with the optional flag `-v` or `--verbose` to enable debug logging.
+
+```
+Manage CTERA Edge Filers
+
+positional arguments:
+  {get_status,run_cmd,enable_telnet,enable_ssh,disable_ssh,suspend_sync,unsuspend_sync}
+                        Task choices.
+    get_status          Record current status of all connected Filers. Use --all to browse all Tenants
+    run_cmd             Run a comand on each connected Filer.
+    enable_telnet       Enable SSH on a Filer.
+    enable_ssh          Enable SSH on a Filer.
+    disable_ssh         Disable SSH on a Filer.
+    suspend_sync        Suspend sync on a given Filer
+    unsuspend_sync      Unsuspend sync on a given Filer
+```
+
+#### get_status
+
+Record current status of connected Filers to a specified CSV output file.
+Provide a portal URL, e.g. portal.ctera.me, to scan all connected Filers to that tenant and write various bits of
+information to a specified CSV file.
+If an IP address is provided, the Default Tenant Portal will be used.
+Or you can use/check the `-a, --all` flag to scan all connected Filers across all Tenant Portals.
+If the output filename already exists, the results will be appended to the existing file.
+
+```
+positional arguments:
+  address        Portal IP, hostname, or FQDN
+  username       Username for portal administrator
+  password       Password. Enter ? to prompt in CLI
+  filename       output filename
+
+optional arguments:
+  -h, --help     show this help message and exit
+  -v, --verbose  Add verbose logging
+  -a, --all      All Filers, All Tenants
+```
+#### run_cmd
+
+Run a "hidden CLI command", i.e. execute a RESTful API request to each connected Filer.
+
+```
+usage: ctools.py run_cmd [-h] [-v] [-i] [-a] [-d DEVICE] address username password command
+
+positional arguments:
+  address               Portal IP, hostname, or FQDN
+  username              Username for portal administrator
+  password              Password. Enter ? to prompt in CLI
+  command               Run a comand on one or more connected Filers.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -v, --verbose         Add verbose logging
+  -i, --ignore_cert     Ignore cert warnings
+  -a, --all             Run a command globally, on all Filers, on all Tenants.
+  -d DEVICE, --device DEVICE
+                        Device name to run command against. Overrides --all flag.
+```
+#### enable_telnet
+
+Enable the telnet service on a given Filer. If no unlock code is provided, return the required MAC address
+and firmware version to get an unlock code from CTERA Support.
+
+```
+usage: ctools.py enable_telnet [-h] [-v] [-i] [-c CODE] address username password device_name tenant_name
+
+positional arguments:
+  address               Portal IP, hostname, or FQDN
+  username              Username for portal administrator
+  password              Password. Enter ? to prompt in CLI
+  device_name           Device Name
+  tenant_name           Tenant Name
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -v, --verbose         Add verbose logging
+  -i, --ignore_cert     Ignore cert warnings
+  -c CODE, --code CODE  Required code to enable telnet
+```
+
+#### enable_ssh
+
+Enable the ssh service on a given Filer and add the public key to the authorized_keys of the Filer.
+If no public key is provided, a new keypair will generated and saved to the Downloads folder.
+
+```
+usage: ctools.py enable_ssh [-h] [-v] [-i] [-p PUBKEY] address username password device_name tenant_name
+
+positional arguments:
+  address               Portal IP, hostname, or FQDN
+  username              Username for portal administrator
+  password              Password. Enter ? to prompt in CLI
+  device_name           Device Name
+  tenant_name           Tenant Name
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -v, --verbose         Add verbose logging
+  -i, --ignore_cert     Ignore cert warnings
+  -p PUBKEY, --pubkey PUBKEY
+                        Provide an SSH Public Key
+```
+
+#### suspend_sync / unsuspend_sync
+Suspend or Unususpend Cloud Drive syncing on a Filer.
+
+```
+usage: ctools.py suspend_sync [-h] [-v] [-i] address username password device_name tenant_name
+
+positional arguments:
+  address            Portal IP, hostname, or FQDN
+  username           Username for portal administrator
+  password           Password. Enter ? to prompt in CLI
+  device_name        Device Name
+  tenant_name        Tenant Name
+
+optional arguments:
+  -h, --help         show this help message and exit
+  -v, --verbose      Add verbose logging
+  -i, --ignore_cert  Ignore cert warnings
+```
+
+#### reset_password
+Reset a local user account password on a Filer.
+```
+usage: ctools.py reset_password [-h] [-v] [-i] address username password device_name tenant_name user_name filer_password
+
+positional arguments:
+  address            Portal IP, hostname, or FQDN
+  username           Username for portal administrator
+  password           Password. Enter ? to prompt in CLI
+  device_name        Device Name
+  tenant_name        Tenant Name
+  user_name          User Name
+  filer_password     New Filer Password. Enter ? to prompt in CLI
+
+optional arguments:
+  -h, --help         show this help message and exit
+  -v, --verbose      Add verbose logging
+  -i, --ignore_cert  Ignore cert warnings
 ```
 
 ## Examples
@@ -62,68 +216,39 @@ PS C:\Users\ctera\git\ctools> python ctools.py
 
 ### CLI
 
-Running the CLI from PowerShell
-The (ctools) in the prompt is PyEnv which is not required but helpful.
-Run ctools.py with any flags to run it from CLI
-The first, required, positional argument is the Task choice.
-Specify the task and run to see that task's required and optional arguments.
-Any task can be run with `-h` or `--help` to see usage instructions.
-Any task can be run with the optional flag `-v` or `--verbose` to enable debug logging.
+Run ctools.py with any flags to run it from a CLI.
 
 ```
-(ctools) PS C:\Users\ctera\git\ctools> python ctools.py -h
-usage: ctools.py [-h] {get_status,run_cmd,enable_telnet,enable_ssh,disable_ssh,suspend_sync,unsuspend_sync} ...
-
-Manage CTERA Edge Filers
-
-positional arguments:
-  {get_status,run_cmd,enable_telnet,enable_ssh,disable_ssh,suspend_sync,unsuspend_sync}
-                        Task choices.
-    get_status          Record current status of all connected Filers. Use --all to browse all Tenants
-    run_cmd             Run a comand on each connected Filer.
-    enable_telnet       Enable SSH on a Filer.
-    enable_ssh          Enable SSH on a Filer.
-    disable_ssh         Disable SSH on a Filer.
-    suspend_sync        Suspend sync on a given Filer
-    unsuspend_sync      Unsuspend sync on a given Filer
-
-(ctools) PS C:\Users\ctera\git\ctools> python ctools.py get_status
-usage: ctools.py get_status [-h] [-v] [-a] address username password filename
-ctools.py get_status: error: the following arguments are required: address, username, password, filename
-
-optional arguments:
-  -h, --help            show this help message and exit
-
-(ctools) PS C:\Users\ctera\git\ctools> python ctools.py get_status -h
-usage: ctools.py get_status [-h] [-v] [-a] address username password filename
-
-positional arguments:
-  address        Portal IP, hostname, or FQDN
-  username       Username for portal administrator
-  password       Password. Enter ? to prompt in CLI
-  filename       output filename
-
-optional arguments:
-  -h, --help     show this help message and exit
-  -v, --verbose  Add verbose logging
-  -a, --all      All Filers, All Tenants
-
-(ctools) PS C:\Users\ctera\git\ctools> python ctools.py get_status portal.ctera.me admin ? report.csv --all
-2021-09-23 17:21:17,257 [INFO] Starting ctools
+(ctools) PS C:\Users\ctera\git\ctools> python ctools.py run_cmd portal.ctera.me admin ? 'show /config/logging/log2File' --all --ignore_cert
+2021-10-06 02:09:08,677 [INFO] Starting ctools
 Password:
-2021-09-23 17:21:20,109 [INFO] Logging into portal.ctera.me
-2021-09-23 17:21:20,226 [INFO] User logged in. {'host': 'portal.ctera.me', 'user': 'admin'}
-2021-09-23 17:21:20,262 [WARNING] Allow Single Sign On to Devices is not enabled. Some tasks may fail or output may be incomplete
-2021-09-23 17:21:20,262 [INFO] Starting status task
-2021-09-23 17:21:20,287 [INFO] Getting all Filers since tenant is Administration
-2021-09-23 17:21:21,585 [INFO] Executing CLI command. {'cli_command': 'dbg level'}
-2021-09-23 17:21:21,597 [INFO] CLI command executed. {'cli_command': 'dbg level'}
-2021-09-23 17:21:23,237 [INFO] Executing CLI command. {'cli_command': 'dbg level'}
-2021-09-23 17:21:23,247 [INFO] CLI command executed. {'cli_command': 'dbg level'}
-2021-09-23 17:21:24,109 [INFO] Executing CLI command. {'cli_command': 'dbg level'}
-2021-09-23 17:21:24,121 [INFO] CLI command executed. {'cli_command': 'dbg level'}
-2021-09-23 17:21:25,209 [INFO] Executing CLI command. {'cli_command': 'dbg level'}
-2021-09-23 17:21:25,221 [INFO] CLI command executed. {'cli_command': 'dbg level'}
-2021-09-23 17:21:25,246 [INFO] User logged out. {'host': 'portal.ctera.me', 'user': 'admin'}
-2021-09-23 17:21:25,249 [INFO] Finished status task.
+2021-10-06 02:09:11,683 [INFO] Logging into portal.ctera.me
+2021-10-06 02:09:12,014 [INFO] User logged in. {'host': 'portal.ctera.me', 'user': 'admin'}
+2021-10-06 02:09:12,202 [WARNING] Allow Single Sign On to Devices is not enabled.
+Some tasks may fail or output may be incomplete
+2021-10-06 02:09:12,203 [INFO] Starting run_cmd task
+2021-10-06 02:09:12,272 [INFO] Getting all Filers since tenant is Administration
+2021-10-06 02:09:12,986 [INFO] Running command on: vgw-1b6c
+2021-10-06 02:09:12,988 [INFO] Executing CLI command. {'cli_command': 'show /config/logging/log2File'}
+2021-10-06 02:09:13,047 [INFO] CLI command executed. {'cli_command': 'show /config/logging/log2File'}
+2021-10-06 02:09:13,048 [INFO] No such attribute log2File
+2021-10-06 02:09:13,049 [INFO] Finished command on: vgw-1b6c
+2021-10-06 02:09:13,049 [INFO] Running command on: svtvgw
+2021-10-06 02:09:13,050 [INFO] Executing CLI command. {'cli_command': 'show /config/logging/log2File'}
+2021-10-06 02:09:13,113 [INFO] CLI command executed. {'cli_command': 'show /config/logging/log2File'}
+2021-10-06 02:09:13,114 [INFO] {
+   type: log2FileSetting
+   maxFileSizeMB: "100"
+   maxfiles: "70"
+}
+2021-10-06 02:09:13,116 [INFO] Finished command on: svtvgw
+2021-10-06 02:09:13,116 [INFO] Running command on: team-vGateway1
+2021-10-06 02:09:13,117 [INFO] Executing CLI command. {'cli_command': 'show /config/logging/log2File'}
+2021-10-06 02:09:13,178 [INFO] CLI command executed. {'cli_command': 'show /config/logging/log2File'}
+2021-10-06 02:09:13,179 [INFO] No such attribute log2File
+2021-10-06 02:09:13,180 [INFO] Finished command on: team-vGateway1
+2021-10-06 02:09:13,181 [INFO] Finished run_cmd task on all Tenants.
+2021-10-06 02:09:13,243 [INFO] User logged out. {'host': 'portal.ctera.me', 'user': 'admin'}
+2021-10-06 02:09:13,244 [INFO] Exiting ctools
+
 ```

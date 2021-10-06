@@ -100,6 +100,8 @@ def main():
     # If not specified/checked, default to INFO level.
     portal_parent_parser.add_argument('-v', '--verbose', help='Add verbose logging',
                                       action='store_true')
+    portal_parent_parser.add_argument('-i', '--ignore_cert', help='Ignore cert warnings',
+            action='store_true')
 
     # Create a subparser
     subs = parser.add_subparsers(help='Task choices.', dest='task')
@@ -195,7 +197,7 @@ def main():
         args.password = getpass(prompt='Password: ')
     # Create a global_admin object and login.
     # In the future, if we add device login tasks, we'll need to change this.
-    global_admin = login(args.address,args.username,args.password)
+    global_admin = login(args.address,args.username,args.password,args.ignore_cert)
     ### Set the chosen task.
     selected_task = FUNCTION_MAP[args.task]
     # Run selected task with required sub arguments.

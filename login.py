@@ -1,21 +1,63 @@
-from cterasdk import *
 from getpass import getpass
+from io import StringIO
 import logging, sys
+import urllib3
 
-def login(address,username,password):
+from cterasdk import *
+
+def check_allow_device_sso(self):
+    """
+    Check if 'Allow Single Sign On to Devices' is enabled for
+    read-write admins of the current tenant. If not, log a warning.
+
+    :param self: GlobalAdmin instance
+    """
+    device_sso = self.get('rolesSettings/readWriteAdminSettings/allowSSO')
+    if device_sso is True:
+        logging.debug('Single Sign On to Devices is allowed')
+    else:
+        logging.warning("Allow Single Sign On to Devices is not enabled.\n" +
+                        "Some tasks may fail or output may be incomplete")
+
+def handle_exceptions(address: str,error):
+    """
+    Catch and log exceptions then exit.
+    If untrusted cert is detected, cancel task and suggest ignore flag.
+
+    :param str address: Portal IP, hostname, or FQDN
+    """
+    if error.message == 'Untrusted security certificate':
+        logging.info("Not proceeding with login.")
+        logging.warning(f"Invalid or expired certificate found at {address}")
+        logging.info("Verify certificate or use ignore_cert flag to proceed.")
+        sys.exit("Exiting ctools.")
+    else:
+        logging.info("There was a problem logging in. Check error below.")
+        logging.warning(error)
+        sys.exit("Exiting ctools.")
+
+def login(address: str,username: str,password: str, ignore_cert=False):
+    """
+    Log into provided portal address and return GlobalAdmin object.
+    If prompted to proceed with insecure connection, answer no.
+    If --ignore_cert is set, then trust the cert and disable warnings.
+
+    :param str address: Portal IP, hostname, or FQDN
+    :param str username: User name to log in as
+    :param str password: User password
+    :param bool,optional ignore_cert: Ignore and disable certificate warnings
+    """
+    if ignore_cert is True:
+        config.http['ssl'] = 'Trust'
+        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+    sys.stdin = StringIO('n') # if prompted, answer no
     try:
         logging.info("Logging into " + address)
         global_admin = GlobalAdmin(address)
         global_admin.login(username, password)
         logging.debug("Successfully logged in to " + address)
-        #global_admin.portals.browse_global_admin()
-        allow_device_sso = global_admin.get('rolesSettings/readWriteAdminSettings/allowSSO')
-        if allow_device_sso is True:
-            logging.debug('Single Sign On to Devices is allowed')
-        else:
-            logging.warning("Allow Single Sign On to Devices is not enabled. " +
-                            "Some tasks may fail or output may be incomplete")
+        check_allow_device_sso(global_admin)
         return global_admin
     except CTERAException as error:
-        logging.warning(error)
-        sys.exit("There was a problem logging in. Please try again.")
+        handle_exceptions(address,error)
+

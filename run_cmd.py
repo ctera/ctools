@@ -25,6 +25,7 @@ def multi_filer_run(self, command: str,all_tenants=False):
         try:
             logging.info(f"Running command on: {filer.name}")
             response = filer.cli.run_command(command)
+            logging.info(response)
             logging.info(f"Finished command on: {filer.name}")
         except CTERAException as error:
             logging.warning(error)
@@ -33,10 +34,10 @@ def multi_filer_run(self, command: str,all_tenants=False):
 def run_cmd(self,command: str,all_tenants=False,device_name=None):
     """Run a "hidden CLI command" on connected Filers.
     i.e. execute a RESTful API request to connected Filers, and
-    print the response. On CLI, use quotes around the command.
+    print the response. On CLI, quote the command string.
 
     :param str command: command to be run
-    :param bool,optional all_tenants: Scan all tenants ture or false
+    :param bool,optional all_tenants: Scan all tenants true or false
     :param str,optional device_name: Name of device on current tenant
     """
     logging.info('Starting run_cmd task')

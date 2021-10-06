@@ -17,7 +17,6 @@ def enable_telnet(self,device_name,tenant_name,code=None):
         print("Then re-run this task with the 6 digit code")
         logging.info("Provide info CTERA Support: {} {}".format(mac,firmware))
         logging.info("Finished enable_telnet task with no code given.")
-        exit
     else:
         print("Attempting to use telnet unlock code: " + code)
         try:
