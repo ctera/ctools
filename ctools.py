@@ -1,27 +1,21 @@
-from login import login
+import logging
+from getpass import getpass
+
+from gooey import Gooey, GooeyParser
+
+from login import global_admin_login
 from status import run_status
 from unlock import enable_telnet, start_ssh, disable_ssh
 from run_cmd import run_cmd
 from suspend_sync import suspend_filer_sync
 from unsuspend_sync import unsuspend_filer_sync
 from reset_password import reset_filer_password
-from gooey import Gooey, GooeyParser
-from cterasdk import *
-from argparse import ArgumentParser
-from getpass import getpass
-import logging, sys
 
-""" If any args are present, run in CLI mode"""
-if len(sys.argv) >= 2:
-    if not '--ignore-gooey' in sys.argv:
-        sys.argv.append('--ignore-gooey')
-
-
-def set_logging(p_level=logging.INFO,log_file="info-log.txt"):
-    """Set up logging to a given file name.
+def set_logging(p_level=logging.INFO, log_file="info-log.txt"):
+    """
+    Set up logging to a given file name.
     Doesn't require CTERASDK_LOG_FILE to be set.
-    
-    Keyword arguments:
+
     p_level --  DEBUG, INFO, WARNING, ERROR, Critical. (default INFO)
     log_file -- file name for log file. (default "log.txt")
     """
@@ -33,8 +27,8 @@ def set_logging(p_level=logging.INFO,log_file="info-log.txt"):
             logging.FileHandler(log_file),
             logging.StreamHandler()])
 
-@Gooey(advanced=True, navigation='TABBED', program_name="CTools",
-        default_size=(800,750),
+@Gooey(advanced=True, navigation='TABBED', program_name="CTools", use_cmd_args=True,
+        default_size=(800, 750),
 	menu=[{
 	    'name': 'File',
 	    'items': [{
@@ -50,9 +44,7 @@ def set_logging(p_level=logging.INFO,log_file="info-log.txt"):
 		    'type': 'Link',
 		    'menuTitle': 'Visit Our Site',
                     'url': 'https://www.ctera.com/'
-                    }
-                    ] # end File menu items
-	    },
+                    }]},
             {
 	    'name': 'Help',
 	    'items': [{
@@ -62,11 +54,7 @@ def set_logging(p_level=logging.INFO,log_file="info-log.txt"):
                    }, {
                     'type': 'Link',
                     'menuTitle': 'Open a CTools Issue',
-                    'url': 'https://github.com/ctera/ctools/issues'
-                    }]
-                } # end Help menu
-            ] # end menu
-        )#end Gooey options
+                    'url': 'https://github.com/ctera/ctools/issues'}]}])
 
 def main():
     """
@@ -84,9 +72,10 @@ def main():
                     'reset_password' : reset_filer_password,
                    }
     parser = GooeyParser(description='Manage CTERA Edge Filers')
+    parser.add_argument('--ignore-gooey', help='Run in CLI mode')
     # Parent Parser for tasks requiring portal logins.
     portal_parent_parser = GooeyParser(add_help=False)
-    portal_parent_parser.add_argument('address',help='Portal IP, hostname, or FQDN')
+    portal_parent_parser.add_argument('address', help='Portal IP, hostname, or FQDN')
     portal_parent_parser.add_argument('username',
                                 help='Username for portal administrator')
     # This makes password required.
@@ -107,12 +96,12 @@ def main():
     subs = parser.add_subparsers(help='Task choices.', dest='task')
 
     # Filer Status sub parser
-    status_help = "Record current status of all connected Filers. Use --all to browse all Tenants"
+    status_help = "Record current status of connected Filers."
     status_parser = subs.add_parser('get_status',
                                     parents = [portal_parent_parser],
                                     help=status_help)
-    status_parser.add_argument('filename',type=str, help='output filename')
-    status_parser.add_argument('-a', '--all',action='store_true',
+    status_parser.add_argument('filename', type=str, help='output filename')
+    status_parser.add_argument('-a', '--all', action='store_true',
                                help='All Filers, All Tenants')
 
     # Run device command sub parser
@@ -197,27 +186,27 @@ def main():
         args.password = getpass(prompt='Password: ')
     # Create a global_admin object and login.
     # In the future, if we add device login tasks, we'll need to change this.
-    global_admin = login(args.address,args.username,args.password,args.ignore_cert)
+    global_admin = global_admin_login(args.address, args.username, args.password, args.ignore_cert)
     ### Set the chosen task.
     selected_task = FUNCTION_MAP[args.task]
     # Run selected task with required sub arguments.
     if args.task == 'get_status':
-        selected_task(global_admin,args.filename,args.all)
+        selected_task(global_admin, args.filename, args.all)
     elif args.task == 'run_cmd':
-        selected_task(global_admin,args.command,args.all,args.device)
+        selected_task(global_admin, args.command, args.all, args.device)
     elif args.task == 'enable_telnet':
-        selected_task(global_admin,args.device_name,args.tenant_name,args.code)
+        selected_task(global_admin, args.device_name, args.tenant_name, args.code)
     elif args.task == 'enable_ssh':
-        selected_task(global_admin,args.device_name,args.tenant_name,args.pubkey)
+        selected_task(global_admin, args.device_name, args.tenant_name, args.pubkey)
     elif args.task == 'disable_ssh':
-        selected_task(global_admin,args.device_name,args.tenant_name)
+        selected_task(global_admin, args.device_name, args.tenant_name)
     elif args.task == 'suspend_sync':
-        selected_task(global_admin,args.device_name,args.tenant_name)
+        selected_task(global_admin, args.device_name, args.tenant_name)
     elif args.task == 'unsuspend_sync':
-        selected_task(global_admin,args.device_name,args.tenant_name)
+        selected_task(global_admin, args.device_name, args.tenant_name)
     elif args.task == 'reset_password':
-        selected_task(global_admin,args.device_name,args.tenant_name,
-                        args.user_name,args.filer_password)
+        selected_task(global_admin, args.device_name, args.tenant_name,
+                        args.user_name, args.filer_password)
     else:
         logging.error('No task found or selected.')
     global_admin.logout()

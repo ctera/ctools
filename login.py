@@ -1,9 +1,11 @@
-from getpass import getpass
+import logging
+import sys
 from io import StringIO
-import logging, sys
 import urllib3
 
-from cterasdk import *
+from cterasdk.client import http
+from cterasdk.object import GlobalAdmin
+from cterasdk import CTERAException
 
 def check_allow_device_sso(self):
     """
@@ -14,12 +16,12 @@ def check_allow_device_sso(self):
     """
     device_sso = self.get('rolesSettings/readWriteAdminSettings/allowSSO')
     if device_sso is True:
-        logging.debug('Single Sign On to Devices is allowed')
+        logging.debug('Single Sign On to Devices is allowed.')
     else:
-        logging.warning("Allow Single Sign On to Devices is not enabled.\n" +
-                        "Some tasks may fail or output may be incomplete")
+        logging.warning("Allow Single Sign On to Devices is not enabled.")
+        logging.warning("Some tasks may fail or output may be incomplete.")
 
-def handle_exceptions(address: str,error):
+def handle_exceptions(address: str, error):
     """
     Catch and log exceptions then exit.
     If untrusted cert is detected, cancel task and suggest ignore flag.
@@ -28,15 +30,18 @@ def handle_exceptions(address: str,error):
     """
     if error.message == 'Untrusted security certificate':
         logging.info("Not proceeding with login.")
-        logging.warning(f"Invalid or expired certificate found at {address}")
+        logging.warning('Invalid or expired certificate found at %s', address)
         logging.info("Verify certificate or use ignore_cert flag to proceed.")
         sys.exit("Exiting ctools.")
+    elif error.reason == "Forbidden":
+        logging.debug(error)
+        logging.info("Access denied")
     else:
-        logging.info("There was a problem logging in. Check error below.")
-        logging.warning(error)
+        logging.info("There was a problem logging in.")
+        logging.debug(error)
         sys.exit("Exiting ctools.")
 
-def login(address: str,username: str,password: str, ignore_cert=False):
+def global_admin_login(address: str, username: str, password: str, ignore_cert=False):
     """
     Log into provided portal address and return GlobalAdmin object.
     If prompted to proceed with insecure connection, answer no.
@@ -48,16 +53,16 @@ def login(address: str,username: str,password: str, ignore_cert=False):
     :param bool,optional ignore_cert: Ignore and disable certificate warnings
     """
     if ignore_cert is True:
-        config.http['ssl'] = 'Trust'
+        http.config.http['ssl'] = 'Trust'
         urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
     sys.stdin = StringIO('n') # if prompted, answer no
     try:
-        logging.info("Logging into " + address)
+        logging.info("Logging into %s", address)
         global_admin = GlobalAdmin(address)
         global_admin.login(username, password)
-        logging.debug("Successfully logged in to " + address)
+        logging.debug("Successfully logged in to %s", address)
         check_allow_device_sso(global_admin)
         return global_admin
     except CTERAException as error:
-        handle_exceptions(address,error)
-
+        handle_exceptions(address, error)
+        return None
