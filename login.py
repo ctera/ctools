@@ -7,6 +7,7 @@ from cterasdk.object import GlobalAdmin
 from cterasdk import CTERAException
 from cterasdk import config as cterasdk_config
 
+
 def check_allow_device_sso(self):
     """
     Check if 'Allow Single Sign On to Devices' is enabled for
@@ -20,6 +21,7 @@ def check_allow_device_sso(self):
     else:
         logging.warning("Allow Single Sign On to Devices is not enabled.")
         logging.warning("Some tasks may fail or output may be incomplete.")
+
 
 def handle_exceptions(address: str, error):
     """
@@ -41,6 +43,7 @@ def handle_exceptions(address: str, error):
         logging.debug(error)
         sys.exit("Exiting ctools.")
 
+
 def global_admin_login(address: str, username: str, password: str, ignore_cert=False):
     """
     Log into provided portal address and return GlobalAdmin object.
@@ -55,7 +58,7 @@ def global_admin_login(address: str, username: str, password: str, ignore_cert=F
     if ignore_cert is True:
         cterasdk_config.http['ssl'] = 'Trust'
         urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-    sys.stdin = StringIO('n') # if prompted, answer no
+    sys.stdin = StringIO('n')  # if prompted, answer no
     try:
         logging.info("Logging into %s", address)
         global_admin = GlobalAdmin(address)

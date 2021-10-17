@@ -1,6 +1,7 @@
 import logging
 from cterasdk import CTERAException
 
+
 def suspend_filer_sync(self=None, device_name=None, tenant_name=None):
     """Suspend sync on a device"""
     logging.info("Starting suspend sync task.")

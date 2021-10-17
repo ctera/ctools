@@ -4,6 +4,7 @@ import os
 import sys
 from filer import get_filers
 
+
 def write_status(self, p_filename, all_tenants):
     """Save and write Filer status information to given filename."""
     get_list = ['config',
@@ -18,34 +19,34 @@ def write_status(self, p_filename, all_tenants):
         sync_id = info.proc.cloudsync.serviceStatus.id
         try:
             selfScanIntervalInHours = info.config.cloudsync.selfScanVerificationIntervalInHours
-        except:
-            selfScanIntervalInHours = ('Not Applicable')
+        except AttributeError:
+            selfScanIntervalInHours = 'Not Applicable'
         uploadingFiles = info.proc.cloudsync.serviceStatus.uploadingFiles
         scanningFiles = info.proc.cloudsync.serviceStatus.scanningFiles
         try:
             selfVerificationscanningFiles = info.proc.cloudsync.serviceStatus.selfVerificationScanningFiles
-        except:
-            selfVerificationscanningFiles = ('Not Applicable')
+        except AttributeError:
+            selfVerificationscanningFiles = 'Not Applicable'
         CurrentFirmware = info.status.device.runningFirmware
         try:
             MetaLogMaxSize = info.config.logging.metalog.maxFileSizeMB
-        except:
+        except AttributeError:
             try:
                 MetaLogMaxSize = info.config.logging.log2File.maxFileSizeMB
-            except:
-                MetaLogMaxSize = ('Not Applicable')
+            except AttributeError:
+                MetaLogMaxSize = 'Not Applicable'
         try:
             MetaLogMaxFiles = info.config.logging.metalog.maxfiles
-        except:
+        except AttributeError:
             try:
                 MetaLogMaxFiles = info.config.logging.log2File.maxfiles
-            except:
-                MetaLogMaxFiles = ('Not Applicable')
+            except AttributeError:
+                MetaLogMaxFiles = 'Not Applicable'
         try:
             MetaLogs = filer.cli.run_command('dbg level')
             MetaLogs1 = MetaLogs[-28:-18]
-        except:
-            MetaLogs1 = ('Not Applicable')
+        except AttributeError:
+            MetaLogs1 = 'Not Applicable'
         License = filer.licenses.get()
         # License = info.config.device.activeLicenseType
         IP1 = info.status.network.ports[0].ip.address
@@ -53,7 +54,7 @@ def write_status(self, p_filename, all_tenants):
         DNS2 = info.status.network.ports[0].ip.DNSServer2
         try:
             storageThresholdPercentTrigger = info.config.cloudsync.cloudExtender.storageThresholdPercentTrigger
-        except:
+        except AttributeError:
             storageThresholdPercentTrigger = 'Not Applicable'
         uptime = info.proc.time.uptime
         curr_cpu = info.proc.perfMonitor.current.cpu
@@ -62,8 +63,8 @@ def write_status(self, p_filename, all_tenants):
         _used = info.proc.storage.summary.usedVolumeSpace
         _free = info.proc.storage.summary.freeVolumeSpace
         volume = (f"Total: {_total} Used: {_used} Free: {_free}")
-        #dbg_level = filer.support.set_debug_level()
-        #MetaLogs1 = dbg_level[-28:-18]
+        # dbg_level = filer.support.set_debug_level()
+        # MetaLogs1 = dbg_level[-28:-18]
         Alerts = info.config.logging.alert
         TimeServer = info.config.time
         _mode = TimeServer.NTPMode
@@ -87,7 +88,7 @@ def write_status(self, p_filename, all_tenants):
             max_memory = format(max(memory_history))
             return f"{max_memory}%"
 
-        def get_ad_status(result = info.status.fileservices.cifs.joinStatus):
+        def get_ad_status(result=info.status.fileservices.cifs.joinStatus):
             """
             Parse domain join value and return the Domain Join Status as string.
             joinStatus: -1 = workgroup, 0 = OK, 2 = Failed
@@ -102,10 +103,10 @@ def write_status(self, p_filename, all_tenants):
 
         with open(p_filename, mode='a', newline='', encoding="utf-8-sig") as gatewayList:
             gateway_writer = csv.writer(gatewayList,
-                    dialect='excel',
-                    delimiter=',',
-                    quotechar='"',
-                    quoting=csv.QUOTE_MINIMAL)
+                                        dialect='excel',
+                                        delimiter=',',
+                                        quotechar='"',
+                                        quoting=csv.QUOTE_MINIMAL)
 
             gateway_writer.writerow([
                     tenant,
@@ -134,6 +135,7 @@ def write_status(self, p_filename, all_tenants):
                     get_max_memory()
                     ])
     self.logout()
+
 
 def write_header(p_filename):
     """Write CSV header to given filename parameter """
@@ -176,7 +178,8 @@ def write_header(p_filename):
         logging.info("ERROR: Unable to open filename specified: %s", p_filename)
         sys.exit("Make sure you entered a valid file name and it exists")
 
-def run_status(self,filename,all_tenants):
+
+def run_status(self, filename, all_tenants):
     """Log start/end of task and call main function."""
     logging.info('Starting status task')
     if os.path.exists(filename):
@@ -184,5 +187,5 @@ def run_status(self,filename,all_tenants):
     else:
         logging.debug('File does not exist. Creating it.')
         write_header(filename)
-    write_status(self,filename,all_tenants)
+    write_status(self, filename, all_tenants)
     logging.info('Finished status task.')

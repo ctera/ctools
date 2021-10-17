@@ -1,6 +1,7 @@
 import logging
 from cterasdk import CTERAException
 
+
 def get_filer(self, device=None, tenant=None):
     """Return Filer object if found"""
     try:
@@ -9,6 +10,7 @@ def get_filer(self, device=None, tenant=None):
     except CTERAException as error:
         logging.debug(error)
         logging.error("Device not found.")
+
 
 def get_filers(self, all_tenants=False):
     """Return all connected Filers from Admin Portal or Tenant"""
