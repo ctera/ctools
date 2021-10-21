@@ -1,61 +1,61 @@
-import menu
-from login import login
-from filer import get_filer
-from cterasdk import *
 import logging
+from cterasdk import CTERAException
 
-def unlock():
-    logging.info('Starting unlock task')
-    global_admin = login()
-    filer = get_filer(global_admin)
-    info(filer)
-    enable(filer)
-    logging.info('Finished unlock task')
-    print('Finished task. Returning to menu.')
-    menu.menu()
 
-def info(filer):
-    mac = filer.get('/status/device/MacAddress')
-    firmware = filer.get('/status/device/runningFirmware')
-    print("Provide the following to CTERA to unlock",filer.name)
-    print(mac)
-    print(firmware)
+def catch(error=None, device_name=None):
+    logging.debug(error)
+    logging.error("Unable to complete task for device: %s", device_name)
 
-def enable(filer):
+
+def enable_telnet(self, device_name, tenant_name, code=None):
+    """Enable telnet if code is given. Else, print info needed for code."""
+    logging.info('Starting enable_telnet task')
     try:
-        code = input("Enter unlock code: ")
+        filer = self.devices.device(device_name, tenant_name)
     except CTERAException as error:
-        logging.warning(error)
-        print("Something went wrong with the prompt.")
-    try:
-        filer.telnet.enable(code)
-        print("Success. Telnet enabled on",filer.name)
-    except CTERAException as error:
-        logging.warning(error)
-        print("Bad code or something went wrong unlocking device.")
-
-def start_ssh():
-    """Start SSH Daemon and copy public key to a given Filer"""
-    logging.info('Starting task to enable SSH on Filer')
-    global_admin = login()
-    filer = get_filer(global_admin)
-    pubkey = input("Enter a public key or press Enter to create one:\n")
-    if pubkey:
-        print("Copying existing public key to",filer.name)
-        filer.ssh.enable(pubkey)
+        catch(error, device_name)
+    if code is None:
+        logging.info("No code provided. Getting required info.")
+        mac = filer.get('/status/device/MacAddress')
+        firmware = filer.get('/status/device/runningFirmware')
+        logging.info("Provide info CTERA Support: %s %s", mac, firmware)
+        logging.info("Then re-run this task with the 7 digit code.")
+        logging.info("Finished enable_telnet task with no code given.")
     else:
-        print("Creating a new private key and copying its public key to",
-                filer.name)
+        logging.info("Attempting to use telnet unlock code: %s", code)
         try:
-            filer.ssh.enable()
-        except (CTERAException) as e:
-            logging.warning(e)
-            logging.warning("Aborted task to enable SSH on Filer")
-            print("Error creating new private key")
-            print("Does ~/Downloads or %USERPROFILE%\Downloads folder exist?")
-            menu.menu()
-    print("You now try to ssh to the Filer:",filer.name)
-    print("If connection is refused, make sure public key is valid.")
-    logging.info('Finished task to enable SSH on Filer')
-    menu.menu
+            filer.telnet.enable(code)
+            logging.info("Success. Telnet enabled on %s.", filer.name)
+            logging.info("Finished enable_telnet task with code.")
+        except CTERAException as error:
+            logging.debug(error)
+            logging.info("Bad code or something went wrong unlocking device.")
 
+
+def start_ssh(self, device_name, tenant_name, pubkey=None):
+    """
+    Start SSH Daemon on given 7.0+ Filer
+    If provided, copy public key to given Filer
+    If no public key, create a new keypair using device_name
+    Save device_name.pub and device_name.pem to Downloads folder.
+    """
+    logging.info("Starting task to enable SSH on Filer.")
+    try:
+        filer = self.devices.device(device_name, tenant_name)
+        filer.ssh.enable(public_key=pubkey)
+        logging.info("Finished task to enable SSH on Filer.")
+    except (CTERAException) as error:
+        catch(error, device_name)
+        logging.info("Failed task to enable SSH on Filer.")
+
+
+def disable_ssh(self, device_name, tenant_name):
+    """Stop SSH Daemon on a given Filer"""
+    logging.info("Starting task to disable SSH on Filer: %s on Tenant: %s", device_name, tenant_name)
+    try:
+        filer = self.devices.device(device_name, tenant_name)
+        filer.ssh.disable()
+        logging.info("Finished task to disable SSH on Filer: %s on Tenant: %s.", device_name, tenant_name)
+    except (CTERAException) as error:
+        catch(error, device_name)
+        logging.info("Failed task to disable SSH on Filer.")

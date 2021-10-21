@@ -1,20 +1,14 @@
-from login import login
-from filer import get_filer
-from cterasdk import *
 import logging
+from cterasdk import CTERAException
 
-def suspend_filer_sync():
+
+def suspend_filer_sync(self=None, device_name=None, tenant_name=None):
     """Suspend sync on a device"""
     logging.info("Starting suspend sync task.")
-    global_admin = login()
-    self = get_filer(global_admin)
+    device = self.devices.device(device_name, tenant_name)
     try:
-        self.sync.suspend(wait=True)
-        print("Suspended sync on",self.name)
+        device.sync.suspend(wait=True)
+        logging.info("Suspended sync on %s", device.name)
     except CTERAException as e:
         logging.warning(e)
-        print("Error suspending sync on",self.name)
-
-if __name__ == "__main__":
-    suspend_filer_sync()
-
+        logging.info("Error suspending sync on %s", device.name)

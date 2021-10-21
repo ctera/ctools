@@ -1,5 +1,11 @@
 *.csv
 *.log
 *.swp
+*-log.txt
+ctools.spec
+pyvenv.cfg
 __pycache__
-
+build/
+dist/
+Lib/
+Scripts/
