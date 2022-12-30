@@ -1,2 +1,6 @@
-cterasdk 
+cterasdk
 Gooey
+itsdangerous==2.0.1
+Flask==2.1.0
+Werkzeug==2.0.1
+flask-socketio==4.3.2
