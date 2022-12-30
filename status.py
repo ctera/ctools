@@ -43,10 +43,26 @@ def write_status(self, p_filename, all_tenants):
             except AttributeError:
                 MetaLogMaxFiles = 'Not Applicable'
         try:
+            AuditLogsStatus = filer.cli.run_command('show /config/logging/files/mode')
+        except AttributeError:
+            AuditLogsStatus = 'Not Applicable'
+        try:
+            DeviceLocation = filer.cli.run_command('show /config/device/location')
+        except AttributeError:
+            AuditLogsStatus = 'Not Applicable'
+        try:
+            AuditLogsPath = filer.cli.run_command('show /config/logging/files/path')
+        except AttributeError:
+            AuditLogsStatus = 'Not Applicable'
+        try:
             MetaLogs = filer.cli.run_command('dbg level')
             MetaLogs1 = MetaLogs[-28:-18]
         except AttributeError:
             MetaLogs1 = 'Not Applicable'
+        try:
+            MetaLogs = filer.cli.run_command('dbg level')
+        except AttributeError:
+            MetaLogs = 'Not Applicable'
         License = filer.licenses.get()
         # License = info.config.device.activeLicenseType
         IP1 = info.status.network.ports[0].ip.address
@@ -117,6 +133,9 @@ def write_status(self, p_filename, all_tenants):
                     scanningFiles,
                     selfVerificationscanningFiles,
                     MetaLogs1,
+                    AuditLogsStatus,
+                    DeviceLocation,
+                    AuditLogsPath,
                     MetaLogMaxSize,
                     MetaLogMaxFiles,
                     CurrentFirmware,
@@ -156,6 +175,9 @@ def write_header(p_filename):
                                      'scanningFiles',
                                      'selfVerificationscanningFiles',
                                      'MetaLogsSetting',
+                                     'AuditLogsStatus',
+                                     'DeviceLocation',
+                                     'AuditLogsPath',
                                      'MetaLogMaxSize',
                                      'MetaLogMaxFiles',
                                      'CurrentFirmware',
