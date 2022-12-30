@@ -19,6 +19,7 @@ A toolbox of tasks to check and manage CTERA Edge Filers via CLI or GUI.
 General instructions. Actual commands will vary by distro and version.
 ```
 git clone https://github.com/ctera/ctools.git
+pip install pandas matplotlib feather pyarrow escape
 python -m pip install -r ctools/requirements.txt
 ```
 

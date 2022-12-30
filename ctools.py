@@ -15,6 +15,8 @@ from smb_audit import convert_size, extract_epoch, convert_time, show_ftr_detail
 from pandas.api.types import CategoricalDtype
 import re
 
+version = "2.1b"
+name = "CTools "
 
 def set_logging(p_level=logging.INFO, log_file="info-log.txt"):
     """
@@ -33,20 +35,11 @@ def set_logging(p_level=logging.INFO, log_file="info-log.txt"):
             logging.StreamHandler()])
 
 
-@Gooey(advanced=True, navigation='SIDEBAR', program_name="CTools", use_cmd_args=True,
+@Gooey(advanced=True, navigation='SIDEBAR', program_name=name + version, use_cmd_args=True,
        default_size=(800, 750),
        menu=[{
             'name': 'File',
             'items': [{
-                    'type': 'AboutDialog',
-                    'menuTitle': 'About',
-                    'name': 'CTools',
-                    'description': 'A toolbox of tasks to check and manage CTERA Edge Filers.',
-                    'version': 'v2.1a',
-                    'copyright': '2021',
-                    'website': 'https://github.com/ctera/ctools/tree/todd/gooey',
-                    'license': 'TBD'
-                    }, {
                     'type': 'Link',
                     'menuTitle': 'Visit Our Site',
                     'url': 'https://www.ctera.com/'
@@ -59,7 +52,16 @@ def set_logging(p_level=logging.INFO, log_file="info-log.txt"):
                    }, {
                     'type': 'Link',
                     'menuTitle': 'Open a CTools Issue',
-                    'url': 'https://github.com/ctera/ctools/issues'}]}])
+                    'url': 'https://github.com/ctera/ctools/issues'}, {
+                    'type': 'AboutDialog',
+                    'menuTitle': 'About',
+                    'name': 'CTools',
+                    'description': 'A toolbox of tasks to check and manage CTERA Edge Filers.',
+                    'version': version,
+                    'copyright': '2023',
+                    'website': 'https://github.com/ctera/ctools/',
+                    'license': 'TBD'
+                    },]}])
 def main():
     """
     Create dictionary mapping task names to functions.
