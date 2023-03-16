@@ -1,6 +1,11 @@
-cterasdk
-Gooey
+colored==1.4.4
+cterasdk==2.18.27
+escape==1.1
+feather==0.1.2
+Gooey==1.0.8.1
 itsdangerous==2.0.1
-Flask==2.1.0
+Jinja2==3.0.3
+matplotlib==3.6.3
+pandas==1.4.4
+pyarrow==11.0.0
 Werkzeug==2.0.1
-flask-socketio==4.3.2

@@ -1,8 +1,24 @@
-# ctools
+# CTools
 
 ## Description
 
 A toolbox of tasks to check and manage CTERA Edge Filers via CLI or GUI.
+
+## Prerequisites
+
+### Required Settings
+
+1. Ensure necessary Remote Administration settings are enabled on the portal:
+
+    Access the Global Administration view > Navigate to Settings > Control Panel > User Roles > Read/Write Administrator -> Ensure "Allow Single Sign On to Devices" is checked
+
+[documentation](https://kb.ctera.com/v1/docs/en/portaladmin3-02-7?highlight=user%20roles%20portal)
+
+2. Ensure Remote Access is enabled on the Gateway: 
+
+    Navigate to the Configuration tab > Cloud Services > Remote Access -> (if disabled) click "Enable Remote Access"
+
+[documentation](https://kb.ctera.com/docs/setting-up-the-ctera-edge-filer-2?highlight=Enable%20Remote%20Access)
 
 ## Development Requirements
 
@@ -19,7 +35,6 @@ A toolbox of tasks to check and manage CTERA Edge Filers via CLI or GUI.
 General instructions. Actual commands will vary by distro and version.
 ```
 git clone https://github.com/ctera/ctools.git
-pip install pandas matplotlib feather pyarrow escape
 python -m pip install -r ctools/requirements.txt
 ```
 
@@ -54,7 +69,7 @@ python ctools.py -h
 
 ### Task Usage
 
-The first required argument is the task to run.
+If desired, it's possible to add optional arguments to pre-populate fields for each task.
 Each task has its own positional arguments, usually login info then any arguments required to complete the task.
 
 **Use a Portal Global Administrator account to login.**
@@ -199,6 +214,24 @@ positional arguments:
   user_name          User Name
   filer_password     New Filer Password. Enter ? to prompt in CLI
 
+optional arguments:
+  -h, --help         show this help message and exit
+  -v, --verbose      Add verbose logging
+  -i, --ignore_cert  Ignore cert warnings
+```
+
+#### cloud_folders
+Create folder_groups and cloud folders using a pre-populated CSV file (download template [here](./templates/cloud_folders.csv)
+- Replace content in file above with desired folder_group and cloud_folder names
+
+```
+usage: ctools.py cloud_folders [-h] [-v] [-i] address username password /path/to/cloud_folders.csv
+
+positional arguments:
+  address            Portal IP, hostname, or FQDN
+  username           Username for portal administrator
+  password           Password. Enter ? to prompt in CLI
+  cloud_folders.csv  Configured Template File
 optional arguments:
   -h, --help         show this help message and exit
   -v, --verbose      Add verbose logging

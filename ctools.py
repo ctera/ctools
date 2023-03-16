@@ -10,9 +10,10 @@ from run_cmd import run_cmd
 from suspend_sync import suspend_filer_sync
 from unsuspend_sync import unsuspend_filer_sync
 from reset_password import reset_filer_password
-from cloudfs import ask,create_folders,usage
+from cloud_folders import ask,create_folders,usage
 from smb_audit import convert_size, extract_epoch, convert_time, show_ftr_details, summarize_audit, parse_audit, search_audit, smb_audit
 from pandas.api.types import CategoricalDtype
+from view_prereqs import text
 import re
 
 version = "2.1b"
@@ -35,7 +36,7 @@ def set_logging(p_level=logging.INFO, log_file="info-log.txt"):
             logging.StreamHandler()])
 
 
-@Gooey(advanced=True, navigation='SIDEBAR', program_name=name + version, use_cmd_args=True,
+@Gooey(advanced=True, navigation='SIDEBAR', program_name=name + version, use_cmd_args=True, richtext_controls=True, auto_start=True,
        default_size=(800, 750),
        menu=[{
             'name': 'File',
@@ -68,7 +69,8 @@ def main():
     Add parent parser(s) for re-use in task sub parsers.
     Add a subparser to present options based on chosen task.
     """
-    FUNCTION_MAP = {'get_status': run_status,
+    FUNCTION_MAP = {'view_prereqs': text,
+		    'get_status': run_status,
                     'run_cmd': run_cmd,
                     'enable_telnet': enable_telnet,
                     'enable_ssh': start_ssh,
@@ -76,7 +78,7 @@ def main():
                     'suspend_sync': suspend_filer_sync,
                     'unsuspend_sync': unsuspend_filer_sync,
                     'reset_password': reset_filer_password,
-                    'cloudfs': create_folders,
+                    'cloud_folders': create_folders,
                     'smb_audit': smb_audit,
                     }
     parser = GooeyParser(description='Manage CTERA Edge Filers')
@@ -98,6 +100,11 @@ def main():
     # Create a subparser
     subs = parser.add_subparsers(help='Task choices.', dest='task')
 
+    # view_prereqs sub parser
+    view_prereqs_help = "link to online readme"                                             
+    view_prereqs_parser = subs.add_parser('view_prereqs', help=view_prereqs_help)
+    view_prereqs_parser.add_argument('-v', '--verbose', help='Add verbose logging', action='store_true')
+    
     # Filer Status sub parser
     status_help = "Record current status of connected Filers."
     status_parser = subs.add_parser('get_status', parents=[portal_parent_parser], help=status_help)
@@ -155,10 +162,10 @@ def main():
     reset_password_parser.add_argument('user_name', help='User Name')
     reset_password_parser.add_argument('filer_password', widget='PasswordField', help=new_pw_help_text)
 
-    # cloudfs sub parser
-    cloudfs_help = "Create zones, folder groups, cloud folders"
-    cloudfs_parser = subs.add_parser('cloudfs', parents=[portal_parent_parser], help=cloudfs_help)
-    cloudfs_parser.add_argument('csv_file', widget='FileChooser', help='csv file') 
+    # cloud_folders sub parser
+    cloud_folders_help = "Create zones, folder groups, cloud folders"
+    cloud_folders_parser = subs.add_parser('cloud_folders', parents=[portal_parent_parser], help=cloud_folders_help)
+    cloud_folders_parser.add_argument('csv_file', widget='FileChooser', help='csv file') 
 
     # SMB Audit subparsers
     smb_audit_help_text = "Parse, summarize, and search Samba audit logs from CTEA devices."
@@ -196,19 +203,21 @@ def main():
         
     # Uncomment to log the arguments. Will reveal a GUI password in plain text.
     # logging.debug(args)
-    logging.info('Starting ctools')
+    if args.task != 'view_prereqs': logging.info('###Starting Task###')
     # For CLI, if required password arg is a ?, prompt for password
-    if args.task != 'smb_audit':
+    if args.task != 'smb_audit' and args.task != 'view_prereqs':
         if args.password == '?':
             args.password = getpass(prompt='Password: ')
         # Create a global_admin object and login.
     # In the future, if we add device login tasks, we'll need to change this.
-    if args.task != 'smb_audit':  #added this since smb_audit does not require portal login
+    if args.task != 'smb_audit' and args.task != 'view_prereqs':  #added this since smb_audit does not require portal login
         global_admin = global_admin_login(args.address, args.username, args.password, args.ignore_cert)
     # Set the chosen task.
     selected_task = FUNCTION_MAP[args.task]
     # Run selected task with required sub arguments.
-    if args.task == 'get_status':
+    if args.task == 'view_prereqs':
+        selected_task()
+    elif args.task == 'get_status':
         selected_task(global_admin, args.filename, args.all)
     elif args.task == 'run_cmd':
         selected_task(global_admin, args.command, args.all, args.device)
@@ -224,15 +233,15 @@ def main():
         selected_task(global_admin, args.device_name, args.tenant_name)
     elif args.task == 'reset_password':
         selected_task(global_admin, args.device_name, args.tenant_name, args.user_name, args.filer_password)
-    elif args.task == 'cloudfs':
+    elif args.task == 'cloud_folders':
         selected_task(global_admin, args.csv_file)
     elif args.task == 'smb_audit':
         selected_task(args)
     else:
         logging.error('No task found or selected.')
-    if args.task != 'smb_audit':  #added this since smb_audit does not require portal login
+    if args.task != 'smb_audit' and args.task != 'view_prereqs':  #added this since smb_audit does not require portal login
         global_admin.logout()
-    logging.info('Exiting ctools')
+    if args.task != 'view_prereqs': logging.info('###Finished Task###')
 
 
 if __name__ == "__main__":
