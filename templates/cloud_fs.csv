@@ -1,0 +1,4 @@
+folder_group,cloud_drive_folder,cloud_drive_folder_description,user_owner,zone,zone_description,deduplication_method
+example-FolderGroup,example-Groups,example-Groups,portaladmin,example-zone,example-zone,FixedBlockSize
+example-FolderGroup,example-Apps,example-Apps,portaladmin,example-zone,example-zone,FixedBlockSize
+example-FolderGroup,example-Temp,example-emp,portaladmin,example-zone,example-zone,FixedBlockSize

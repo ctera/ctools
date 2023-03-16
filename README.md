@@ -14,11 +14,7 @@ A toolbox of tasks to check and manage CTERA Edge Filers via CLI or GUI.
 
 [documentation](https://kb.ctera.com/v1/docs/en/portaladmin3-02-7?highlight=user%20roles%20portal)
 
-2. Ensure Remote Access is enabled on the Gateway: 
-
-    Navigate to the Configuration tab > Cloud Services > Remote Access -> (if disabled) click "Enable Remote Access"
-
-[documentation](https://kb.ctera.com/docs/setting-up-the-ctera-edge-filer-2?highlight=Enable%20Remote%20Access)
+## Please review this document to learn more about using each tool
 
 ## Development Requirements
 
@@ -221,7 +217,7 @@ optional arguments:
 ```
 
 #### cloud_folders
-Create folder_groups and cloud folders using a pre-populated CSV file (download template [here](./templates/cloud_folders.csv)
+Create folder_groups and cloud folders using a pre-populated CSV file - download template [here](./templates/cloud_folders.csv)
 - Replace content in file above with desired folder_group and cloud_folder names
 
 ```
