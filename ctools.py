@@ -14,9 +14,11 @@ from cloud_folders import ask,create_folders,usage
 from smb_audit import convert_size, extract_epoch, convert_time, show_ftr_details, summarize_audit, parse_audit, search_audit, smb_audit
 from pandas.api.types import CategoricalDtype
 from view_prereqs import text
+#from filer_config import find_file, ask, confirm, from_console, evaluate_secrets
+#import filer_config as fc
 import re
 
-version = "2.1b"
+version = "2.2"
 name = "CTools "
 
 def set_logging(p_level=logging.INFO, log_file="info-log.txt"):
@@ -80,6 +82,7 @@ def main():
                     'reset_password': reset_filer_password,
                     'cloud_folders': create_folders,
                     'smb_audit': smb_audit,
+                    #'filer_config': fc,
                     }
     parser = GooeyParser(description='Manage CTERA Edge Filers')
     parser.add_argument('--ignore-gooey', help='Run in CLI mode')
@@ -167,6 +170,13 @@ def main():
     cloud_folders_parser = subs.add_parser('cloud_folders', parents=[portal_parent_parser], help=cloud_folders_help)
     cloud_folders_parser.add_argument('csv_file', widget='FileChooser', help='csv file') 
 
+    # filer_config sub parser
+    #filer_config_help = "configure filer"
+    #filer_config_parser = subs.add_parser('filer_config', help=filer_config_help)
+    #filer_config_parser.add_argument('-c', dest='configuration_file', widget='FileChooser', help='config file')
+    #filer_config_parser.add_argument('--debug', action='store_true', dest='is_debug', default=False, help='Enables debug output of arguments')
+    #filer_config_parser.add_argument('-v', '--verbose', help='Add verbose logging', action='store_true')
+
     # SMB Audit subparsers
     smb_audit_help_text = "Parse, summarize, and search Samba audit logs from CTEA devices."
     smb_audit_parser = subs.add_parser('smb_audit', help=smb_audit_help_text)
@@ -205,12 +215,12 @@ def main():
     # logging.debug(args)
     if args.task != 'view_prereqs': logging.info('###Starting Task###')
     # For CLI, if required password arg is a ?, prompt for password
-    if args.task != 'smb_audit' and args.task != 'view_prereqs':
+    if args.task != 'smb_audit' and args.task != 'view_prereqs' and args.task != 'filer_config':  #added this since smb_audit does not require portal login
         if args.password == '?':
             args.password = getpass(prompt='Password: ')
         # Create a global_admin object and login.
     # In the future, if we add device login tasks, we'll need to change this.
-    if args.task != 'smb_audit' and args.task != 'view_prereqs':  #added this since smb_audit does not require portal login
+    if args.task != 'smb_audit' and args.task != 'view_prereqs' and args.task != 'filer_config':  #added this since smb_audit does not require portal login
         global_admin = global_admin_login(args.address, args.username, args.password, args.ignore_cert)
     # Set the chosen task.
     selected_task = FUNCTION_MAP[args.task]
@@ -237,9 +247,11 @@ def main():
         selected_task(global_admin, args.csv_file)
     elif args.task == 'smb_audit':
         selected_task(args)
+    #elif args.task == 'filer_config':
+    #    selected_task(fc.filer_config(args))
     else:
         logging.error('No task found or selected.')
-    if args.task != 'smb_audit' and args.task != 'view_prereqs':  #added this since smb_audit does not require portal login
+    if args.task != 'smb_audit' and args.task != 'view_prereqs' and args.task != 'filer_config':  #added this since smb_audit does not require portal login
         global_admin.logout()
     if args.task != 'view_prereqs': logging.info('###Finished Task###')
 

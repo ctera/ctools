@@ -6,9 +6,13 @@ A toolbox of tasks to check and manage CTERA Edge Filers via CLI or GUI.
 
 ## Prerequisites
 
-### Required Settings
+### Requirements
 
-1. Ensure necessary Remote Administration settings are enabled on the portal:
+1. **Use a Portal Global Administrator account to login.**
+
+- There is currently no support for tenant admins or direct logins to Filers. All requests are sent through the Portal to connected Filers.
+
+2. **Ensure necessary Remote Administration settings are enabled on the portal:**
 
     Access the Global Administration view > Navigate to Settings > Control Panel > User Roles > Read/Write Administrator -> Ensure "Allow Single Sign On to Devices" is checked
 
@@ -68,8 +72,6 @@ python ctools.py -h
 If desired, it's possible to add optional arguments to pre-populate fields for each task.
 Each task has its own positional arguments, usually login info then any arguments required to complete the task.
 
-**Use a Portal Global Administrator account to login.**
-There is currently no support for tenant admins or direct logins to Filers. All requests are sent through the Portal to connected Filers.
 
 Specify the task and run to see that task's required and optional arguments.
 Any task can be run with `-h` or `--help` to see usage instructions.

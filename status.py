@@ -65,6 +65,7 @@ def write_status(self, p_filename, all_tenants):
             MetaLogs = 'Not Applicable'
         License = filer.licenses.get()
         # License = info.config.device.activeLicenseType
+        SN = info.status.device.SerialNumber
         MAC = info.status.device.MacAddress
         IP1 = info.status.network.ports[0].ip.address
         DNS1 = info.status.network.ports[0].ip.DNSServer1
@@ -143,6 +144,7 @@ def write_status(self, p_filename, all_tenants):
                     License,
                     storageThresholdPercentTrigger,
                     volume,
+                    SN,
                     MAC,
                     IP1,
                     DNS1,
@@ -186,6 +188,7 @@ def write_header(p_filename):
                                      'License',
                                      'EvictionPercentage',
                                      'CurrentVolumeStorage',
+                                     'SN',
                                      'MAC',
                                      'IP Config',
                                      'DNS Server1',
