@@ -68,4 +68,4 @@ def global_admin_login(address: str, username: str, password: str, ignore_cert=F
         return global_admin
     except CTERAException as error:
         handle_exceptions(address, error)
-        return Nones
+        return None
