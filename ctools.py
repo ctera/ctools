@@ -4,7 +4,8 @@
 
 import sys
 
-from run_cmd import run_cmd
+from status import run_status
+from functools import partial
 
 from PySide2.QtWidgets import (
     QApplication,
@@ -20,7 +21,9 @@ from PySide2.QtWidgets import (
 )
 
 WINDOW_WIDTH = 600
-WINDOW_HEIGHT = 400
+WINDOW_HEIGHT = 800
+OUTPUT_HEIGHT = 200
+
 class CToolsWindow(QMainWindow):
     """PyCalc's main window (GUI or view)."""
 
@@ -35,6 +38,7 @@ class CToolsWindow(QMainWindow):
         self._createToolBar()
         self._createRunCMDDisplay()
         self._createActionButtons()
+        self._createOutput()
 
     def _createToolBar(self):
         tools = QToolBar()
@@ -49,32 +53,53 @@ class CToolsWindow(QMainWindow):
         username = QLabel("Portal Admin Username:")
         password = QLabel("Password")
         filename = QLabel("Output Filename")
-        addressField = QLineEdit()
-        usernameField = QLineEdit()
-        passwordField = QLineEdit()
-        filenameField = QLineEdit()
+        self.addressField = QLineEdit()
+        self.usernameField = QLineEdit()
+        self.passwordField = QLineEdit()
+        self.commandField = QLineEdit()
 
         RunCMDLayout.addWidget(requiredArgs, 0, 0, 1, 2)
         RunCMDLayout.addWidget(address, 1, 0)
         RunCMDLayout.addWidget(username, 1, 1)
-        RunCMDLayout.addWidget(addressField, 2, 0)
-        RunCMDLayout.addWidget(usernameField, 2, 1)
+        RunCMDLayout.addWidget(self.addressField, 2, 0)
+        RunCMDLayout.addWidget(self.usernameField, 2, 1)
         RunCMDLayout.addWidget(password, 3, 0)
         RunCMDLayout.addWidget(filename, 3, 1)
-        RunCMDLayout.addWidget(passwordField, 4, 0)
-        RunCMDLayout.addWidget(filenameField, 4, 1)
+        RunCMDLayout.addWidget(self.passwordField, 4, 0)
+        RunCMDLayout.addWidget(self.commandField, 4, 1)
 
         self.generalLayout.addLayout(RunCMDLayout)
 
     def _createActionButtons(self):
         actionButtonLayout = QHBoxLayout()
-        cancel = QPushButton("Cancel")
-        start = QPushButton("Start")
+        self.cancel = QPushButton("Cancel")
+        self.start = QPushButton("Start")
 
-        actionButtonLayout.addWidget(cancel)
-        actionButtonLayout.addWidget(start)
+        actionButtonLayout.addWidget(self.cancel)
+        actionButtonLayout.addWidget(self.start)
 
         self.generalLayout.addLayout(actionButtonLayout)
+
+    def _createOutput(self):
+        self.output = QLineEdit()
+        self.output.setFixedHeight(OUTPUT_HEIGHT)
+        self.output.setReadOnly(True)
+        self.generalLayout.addWidget(self.output)
+
+class CTools:
+    """CTools controller class"""
+    def __init__(self, model, view):
+        self._evaluate = model
+        self._view = view
+        self._connectSignalsAndSlots()
+
+    def _runCmd(self):
+        output = run_status(self._view.addressField, self._view.usernameField, self._view.passwordField, self._view.commandField)
+        
+
+    def _connectSignalsAndSlots(self):
+        startButton = self._view.start
+        startButton.clicked.connect(self._runCmd)
 
 
 
