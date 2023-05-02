@@ -4,8 +4,9 @@
 
 import sys
 
-from status import run_status
+from run_cmd import run_cmd
 from functools import partial
+from login import global_admin_login
 
 from PySide2.QtWidgets import (
     QApplication,
@@ -17,7 +18,8 @@ from PySide2.QtWidgets import (
     QVBoxLayout,
     QToolBar,
     QLabel,
-    QHBoxLayout
+    QHBoxLayout,
+    QTextEdit
 )
 
 WINDOW_WIDTH = 600
@@ -81,10 +83,16 @@ class CToolsWindow(QMainWindow):
         self.generalLayout.addLayout(actionButtonLayout)
 
     def _createOutput(self):
-        self.output = QLineEdit()
+        self.output = QTextEdit()
         self.output.setFixedHeight(OUTPUT_HEIGHT)
         self.output.setReadOnly(True)
         self.generalLayout.addWidget(self.output)
+        
+    def _updateOutput(self):
+        current = self.output.toPlainText()
+        result = str(current) + 'Clicked\n'
+        self.output.setText(str(result))
+
 
 class CTools:
     """CTools controller class"""
@@ -94,21 +102,36 @@ class CTools:
         self._connectSignalsAndSlots()
 
     def _runCmd(self):
-        output = run_status(self._view.addressField.text(), self._view.usernameField.text(), self._view.passwordField.text(), self._view.commandField.text())
-        
+        address = self._view.addressField
+        username = self._view.usernameField
+        password = self._view.passwordField
+        command = self._view.commandField
+
+        global_admin = global_admin_login(str(address), str(username), str(password))
+
+        result = self._evaluate(global_admin, command)
+        #self._view._updateOutput()
+        print(result)
+    
+    def _test(self):
+        print("testing")
 
     def _connectSignalsAndSlots(self):
-        startButton = self._view.start
-        startButton.clicked.connect(self._runCmd)
+        #self._view.start.clicked.connect(self._view._updateOutput)
+        #self._view.cancel.clicked.connect(lambda: print("Cancel"))
+        self._view.start.clicked.connect(self._runCmd)
+        #self._view.start.clicked.connect(self._test)
 
-
+def model(address, username, password, command):
+    run_cmd(address, username, password, command)
+    return "HI"
 
 def main():
     """PyCalc's main function."""
     ctoolsApp = QApplication(sys.argv)
     ctoolsWindow = CToolsWindow()
     ctoolsWindow.show()
-
+    controller = CTools(model=model, view=ctoolsWindow)
     ctoolsApp.exec_()
 
 if __name__ == "__main__":

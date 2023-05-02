@@ -94,13 +94,16 @@ class PyCalc:
         expression = self._view.displayText() + subExpression
         self._view.setDisplayText(expression)
 
+    def _test(self):
+        print("Testing")
+
     def _connectSignalsAndSlots(self):
         for keySymbol, button in self._view.buttonMap.items():
             if keySymbol not in {"=", "C"}:
                 button.clicked.connect(
                     partial(self._buildExpression, keySymbol)
                 )
-        self._view.buttonMap["="].clicked.connect(self._calculateResult)
+        self._view.buttonMap["="].clicked.connect(self._test)
         self._view.display.returnPressed.connect(self._calculateResult)
         self._view.buttonMap["C"].clicked.connect(self._view.clearDisplay)
 
