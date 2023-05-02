@@ -94,7 +94,7 @@ class CTools:
         self._connectSignalsAndSlots()
 
     def _runCmd(self):
-        output = run_status(self._view.addressField, self._view.usernameField, self._view.passwordField, self._view.commandField)
+        output = run_status(self._view.addressField.text(), self._view.usernameField.text(), self._view.passwordField.text(), self._view.commandField.text())
         
 
     def _connectSignalsAndSlots(self):
