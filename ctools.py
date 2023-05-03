@@ -5,8 +5,13 @@
 import sys
 
 from run_cmd import run_cmd
+
+from testfuncs import fakeFunc
+
 from functools import partial
 from login import global_admin_login
+
+from PySide2.QtCore import Qt
 
 from PySide2.QtWidgets import (
     QApplication,
@@ -19,11 +24,12 @@ from PySide2.QtWidgets import (
     QToolBar,
     QLabel,
     QHBoxLayout,
-    QTextEdit
+    QTextEdit,
+    QSizePolicy,
 )
 
 WINDOW_WIDTH = 600
-WINDOW_HEIGHT = 800
+WINDOW_HEIGHT = 450
 OUTPUT_HEIGHT = 200
 
 class CToolsWindow(QMainWindow):
@@ -34,27 +40,39 @@ class CToolsWindow(QMainWindow):
         self.setWindowTitle("CTools 3.0")
         self.setFixedSize(WINDOW_WIDTH, WINDOW_HEIGHT)
         self.generalLayout = QVBoxLayout()
+        self.top = QLabel("<h2>Welcome to CTools!</h2>")
+        self.mainContent = QHBoxLayout()
         centralWidget = QWidget(self)
         centralWidget.setLayout(self.generalLayout)
         self.setCentralWidget(centralWidget)
+        self.generalLayout.addWidget(self.top)
+        self.generalLayout.addLayout(self.mainContent)
         self._createToolBar()
-        self._createRunCMDDisplay()
-        self._createActionButtons()
-        self._createOutput()
+        self._createToolViewLayout()
 
     def _createToolBar(self):
-        tools = QToolBar()
-        tools.addAction("Run CMD", self.close)
-        tools.addAction("Exit", self.close)
-        self.addToolBar(tools)
-    
-    def _createRunCMDDisplay(self):
+        tools = QVBoxLayout()
+
+        label = QLabel("<h4><b>Actions:</b></h4>")
+        self.run_cmd = QPushButton("Run_CMD")
+        self.exit = QPushButton("Exit")
+
+        tools.addWidget(label)
+        tools.addWidget(self.run_cmd)
+        tools.addWidget(self.exit)
+
+        self.mainContent.addLayout(tools)
+
+    def _createToolViewLayout(self):
+        toolView = QVBoxLayout()
+
+        # Create Run CMD Layout
         RunCMDLayout = QGridLayout()
         requiredArgs = QLabel("<h4><b>Required Arguments:</b></h4>")
         address = QLabel("Address (Portal IP, hostname, or FQDN):")
         username = QLabel("Portal Admin Username:")
         password = QLabel("Password")
-        filename = QLabel("Output Filename")
+        command = QLabel("Command")
         self.addressField = QLineEdit()
         self.usernameField = QLineEdit()
         self.passwordField = QLineEdit()
@@ -66,13 +84,14 @@ class CToolsWindow(QMainWindow):
         RunCMDLayout.addWidget(self.addressField, 2, 0)
         RunCMDLayout.addWidget(self.usernameField, 2, 1)
         RunCMDLayout.addWidget(password, 3, 0)
-        RunCMDLayout.addWidget(filename, 3, 1)
+        RunCMDLayout.addWidget(command, 3, 1)
         RunCMDLayout.addWidget(self.passwordField, 4, 0)
         RunCMDLayout.addWidget(self.commandField, 4, 1)
 
-        self.generalLayout.addLayout(RunCMDLayout)
+        toolView.addLayout(RunCMDLayout)
 
-    def _createActionButtons(self):
+
+        # Create action buttons
         actionButtonLayout = QHBoxLayout()
         self.cancel = QPushButton("Cancel")
         self.start = QPushButton("Start")
@@ -80,19 +99,21 @@ class CToolsWindow(QMainWindow):
         actionButtonLayout.addWidget(self.cancel)
         actionButtonLayout.addWidget(self.start)
 
-        self.generalLayout.addLayout(actionButtonLayout)
-
-    def _createOutput(self):
+        toolView.addLayout(actionButtonLayout)
+        
+        # Create Output box
         self.output = QTextEdit()
         self.output.setFixedHeight(OUTPUT_HEIGHT)
         self.output.setReadOnly(True)
-        self.generalLayout.addWidget(self.output)
-        
+        toolView.addWidget(self.output)
+
+        self.mainContent.addLayout(toolView)
+    
+    
     def _updateOutput(self):
         current = self.output.toPlainText()
         result = str(current) + 'Clicked\n'
         self.output.setText(str(result))
-
 
 class CTools:
     """CTools controller class"""
@@ -102,29 +123,27 @@ class CTools:
         self._connectSignalsAndSlots()
 
     def _runCmd(self):
-        address = self._view.addressField
+        """address = self._view.addressField
         username = self._view.usernameField
-        password = self._view.passwordField
-        command = self._view.commandField
+        password = self._view.passwordField"""
+        command = self._view.commandField.text()
 
-        global_admin = global_admin_login(str(address), str(username), str(password))
+        #global_admin = global_admin_login(str(address), str(username), str(password))
 
-        result = self._evaluate(global_admin, command)
-        #self._view._updateOutput()
-        print(result)
+        #result = self._evaluate(global_admin, command)
+        result = self._evaluate(command)
     
     def _test(self):
         print("testing")
 
     def _connectSignalsAndSlots(self):
-        #self._view.start.clicked.connect(self._view._updateOutput)
-        #self._view.cancel.clicked.connect(lambda: print("Cancel"))
         self._view.start.clicked.connect(self._runCmd)
         #self._view.start.clicked.connect(self._test)
 
-def model(address, username, password, command):
-    run_cmd(address, username, password, command)
-    return "HI"
+def model(argument):
+    #run_cmd(address, username, password, command)
+    
+    return fakeFunc(argument)
 
 def main():
     """PyCalc's main function."""
