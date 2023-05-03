@@ -2,7 +2,7 @@
 
 """CTools is a GUI toolset to interact with your CTERA Environment"""
 
-import sys
+import sys, logging
 
 from run_cmd import run_cmd
 
@@ -26,11 +26,30 @@ from PySide2.QtWidgets import (
     QHBoxLayout,
     QTextEdit,
     QSizePolicy,
+    QFileDialog,
+    QFrame
 )
 
 WINDOW_WIDTH = 600
 WINDOW_HEIGHT = 450
 OUTPUT_HEIGHT = 200
+
+
+def set_logging(p_level=logging.INFO, log_file="info-log.txt"):
+    """
+    Set up logging to a given file name.
+    Doesn't require CTERASDK_LOG_FILE to be set.
+
+    p_level --  DEBUG, INFO, WARNING, ERROR, Critical. (default INFO)
+    log_file -- file name for log file. (default "log.txt")
+    """
+    logging.root.handlers = []
+    logging.basicConfig(
+        level=p_level,
+        format="%(asctime)s [%(levelname)s] %(message)s",
+        handlers=[
+            logging.FileHandler(log_file, mode="w"),
+            logging.StreamHandler()])
 
 class CToolsWindow(QMainWindow):
     """PyCalc's main window (GUI or view)."""
@@ -54,14 +73,23 @@ class CToolsWindow(QMainWindow):
         tools = QVBoxLayout()
 
         label = QLabel("<h4><b>Actions:</b></h4>")
+        label.setFixedHeight(50)
         self.run_cmd = QPushButton("Run_CMD")
         self.exit = QPushButton("Exit")
 
-        tools.addWidget(label)
+        tools.addWidget(label, alignment=Qt.AlignTop)
         tools.addWidget(self.run_cmd)
         tools.addWidget(self.exit)
+        tools.addStretch()
+
+        # Add line separator between Tool List and Tool View
+        line = QFrame()
+        line.setFrameShape(QFrame.VLine)
+        line.setFrameShadow(QFrame.Sunken)
+        line.setLineWidth(1)
 
         self.mainContent.addLayout(tools)
+        self.mainContent.addWidget(line)
 
     def _createToolViewLayout(self):
         toolView = QVBoxLayout()
@@ -111,9 +139,18 @@ class CToolsWindow(QMainWindow):
     
     
     def _updateOutput(self):
-        current = self.output.toPlainText()
-        result = str(current) + 'Clicked\n'
-        self.output.setText(str(result))
+        file = open("info-log.txt", 'r')
+
+        with file:
+            text = file.read()
+            self.output.setText(text)
+
+
+        """current = self.output.toPlainText()
+        result = str(current) + 'Clicked '
+        self.output.setText(str(result))"""
+
+
 
 class CTools:
     """CTools controller class"""
@@ -131,7 +168,10 @@ class CTools:
         #global_admin = global_admin_login(str(address), str(username), str(password))
 
         #result = self._evaluate(global_admin, command)
-        result = self._evaluate(command)
+
+        self._evaluate(command)
+        self._view._updateOutput()
+
     
     def _test(self):
         print("testing")
@@ -147,11 +187,18 @@ def model(argument):
 
 def main():
     """PyCalc's main function."""
+    
+    set_logging()
+    logging.info("Test")
+
+
     ctoolsApp = QApplication(sys.argv)
     ctoolsWindow = CToolsWindow()
     ctoolsWindow.show()
     controller = CTools(model=model, view=ctoolsWindow)
     ctoolsApp.exec_()
+
+    
 
 if __name__ == "__main__":
     main()
