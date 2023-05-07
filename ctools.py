@@ -21,18 +21,15 @@ from PySide2.QtWidgets import (
     QLineEdit,
     QPushButton,
     QVBoxLayout,
-    QToolBar,
     QLabel,
     QHBoxLayout,
     QTextEdit,
-    QSizePolicy,
-    QFileDialog,
     QFrame
 )
 
 WINDOW_WIDTH = 600
 WINDOW_HEIGHT = 450
-OUTPUT_HEIGHT = 200
+OUTPUT_HEIGHT = 250
 
 
 def set_logging(p_level=logging.INFO, log_file="info-log.txt"):
@@ -189,8 +186,6 @@ def main():
     """PyCalc's main function."""
     
     set_logging()
-    logging.info("Test")
-
 
     ctoolsApp = QApplication(sys.argv)
     ctoolsWindow = CToolsWindow()
