@@ -2,7 +2,7 @@
 
 """CTools is a GUI toolset to interact with your CTERA Environment"""
 
-import sys, logging
+import sys, logging, os
 
 from run_cmd import run_cmd
 
@@ -231,7 +231,10 @@ def main():
     
     set_logging()
 
+    os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
     ctoolsApp = QApplication(sys.argv)
+    ctoolsApp.setAttribute(Qt.AA_EnableHighDpiScaling)
+
     
     
     widget = QStackedWidget()
