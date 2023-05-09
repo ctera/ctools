@@ -7,6 +7,7 @@ import sys, logging
 from run_cmd import run_cmd
 
 from testfuncs import fakeFunc
+from ui_help import gen_tool_layout, gen_custom_tool_layout
 
 from functools import partial
 from login import global_admin_login
@@ -29,7 +30,7 @@ from PySide2.QtWidgets import (
 )
 
 WINDOW_WIDTH = 600
-WINDOW_HEIGHT = 450
+WINDOW_HEIGHT = 500
 OUTPUT_HEIGHT = 250
 
 
@@ -75,6 +76,7 @@ class runCmdWindow(QMainWindow):
         label = QLabel("<h4><b>Actions:</b></h4>")
         label.setFixedHeight(50)
         self.run_cmd = QPushButton("Run CMD")
+        self.run_cmd.setStyleSheet("color: grey")
         self.show_status = QPushButton("Show Status")
         self.exit = QPushButton("Exit")
 
@@ -99,27 +101,7 @@ class runCmdWindow(QMainWindow):
     def _createToolViewLayout(self):
         toolView = QVBoxLayout()
 
-        # Create Run CMD Layout
-        RunCMDLayout = QGridLayout()
-        requiredArgs = QLabel("<h4><b>Required Arguments:</b></h4>")
-        address = QLabel("Address (Portal IP, hostname, or FQDN):")
-        username = QLabel("Portal Admin Username:")
-        password = QLabel("Password")
-        command = QLabel("Command")
-        self.addressField = QLineEdit()
-        self.usernameField = QLineEdit()
-        self.passwordField = QLineEdit()
-        self.commandField = QLineEdit()
-
-        RunCMDLayout.addWidget(requiredArgs, 0, 0, 1, 2)
-        RunCMDLayout.addWidget(address, 1, 0)
-        RunCMDLayout.addWidget(username, 1, 1)
-        RunCMDLayout.addWidget(self.addressField, 2, 0)
-        RunCMDLayout.addWidget(self.usernameField, 2, 1)
-        RunCMDLayout.addWidget(password, 3, 0)
-        RunCMDLayout.addWidget(command, 3, 1)
-        RunCMDLayout.addWidget(self.passwordField, 4, 0)
-        RunCMDLayout.addWidget(self.commandField, 4, 1)
+        RunCMDLayout, self.input_widgets = gen_custom_tool_layout(["Command"])
 
         toolView.addLayout(RunCMDLayout)
 
@@ -139,14 +121,13 @@ class runCmdWindow(QMainWindow):
         
         # Create Output box
         self.output = QTextEdit()
-        self.output.setFixedHeight(OUTPUT_HEIGHT)
         self.output.setReadOnly(True)
         toolView.addWidget(self.output)
 
         self.mainContent.addLayout(toolView)
     
     def runTool(self):
-        fakeFunc(self.commandField.text())
+        fakeFunc(self.input_widgets[3].text())
         self._updateOutput()
 
     def _updateOutput(self):
@@ -155,11 +136,6 @@ class runCmdWindow(QMainWindow):
         with file:
             text = file.read()
             self.output.setText(text)
-
-
-        """current = self.output.toPlainText()
-        result = str(current) + 'Clicked '
-        self.output.setText(str(result))"""
 
     def goToShowStatus(self):
         self.widget.setCurrentIndex(1)
@@ -191,6 +167,7 @@ class showStatusWindow(QMainWindow):
         label.setFixedHeight(50)
         self.run_cmd = QPushButton("Run CMD")
         self.show_status = QPushButton("Show Status")
+        self.show_status.setStyleSheet("color: grey")
         self.exit = QPushButton("Exit")
 
         tools.addWidget(label, alignment=Qt.AlignTop)
@@ -214,29 +191,9 @@ class showStatusWindow(QMainWindow):
     def _createToolViewLayout(self):
         toolView = QVBoxLayout()
 
-        # Create Run CMD Layout
-        RunCMDLayout = QGridLayout()
-        requiredArgs = QLabel("<h4><b>Required Arguments:</b></h4>")
-        address = QLabel("Address (Portal IP, hostname, or FQDN):")
-        username = QLabel("Portal Admin Username:")
-        password = QLabel("Password")
-        command = QLabel("Command")
-        self.addressField = QLineEdit()
-        self.usernameField = QLineEdit()
-        self.passwordField = QLineEdit()
-        self.commandField = QLineEdit()
+        show_status_layout, self.input_widgets = gen_custom_tool_layout(["File Name", "Test 1"])
 
-        RunCMDLayout.addWidget(requiredArgs, 0, 0, 1, 2)
-        RunCMDLayout.addWidget(address, 1, 0)
-        RunCMDLayout.addWidget(username, 1, 1)
-        RunCMDLayout.addWidget(self.addressField, 2, 0)
-        RunCMDLayout.addWidget(self.usernameField, 2, 1)
-        RunCMDLayout.addWidget(password, 3, 0)
-        RunCMDLayout.addWidget(command, 3, 1)
-        RunCMDLayout.addWidget(self.passwordField, 4, 0)
-        RunCMDLayout.addWidget(self.commandField, 4, 1)
-
-        toolView.addLayout(RunCMDLayout)
+        toolView.addLayout(show_status_layout)
 
 
         # Create action buttons
@@ -251,7 +208,7 @@ class showStatusWindow(QMainWindow):
         
         # Create Output box
         self.output = QTextEdit()
-        self.output.setFixedHeight(OUTPUT_HEIGHT)
+        #self.output.setFixedHeight(OUTPUT_HEIGHT)
         self.output.setReadOnly(True)
         toolView.addWidget(self.output)
 
@@ -278,7 +235,7 @@ def main():
     
     
     widget = QStackedWidget()
-    #######
+    
     run_cmd = runCmdWindow(widget)
     widget.addWidget(run_cmd)   # create an instance of the first page class and add it to stackedwidget
 
