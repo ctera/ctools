@@ -231,10 +231,10 @@ def main():
     
     set_logging()
 
+    QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
+
     os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
     ctoolsApp = QApplication(sys.argv)
-    ctoolsApp.setAttribute(Qt.AA_EnableHighDpiScaling)
-
     
     
     widget = QStackedWidget()
