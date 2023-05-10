@@ -61,6 +61,8 @@ def gen_custom_tool_layout(fields, base=True):
         address_field = QLineEdit()
         username_field = QLineEdit()
         password_field = QLineEdit()
+
+        password_field.setEchoMode(QLineEdit.Password)
     
         #add input fields to widgets to be returned
         input_widgets.append(address_field)

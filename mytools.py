@@ -117,7 +117,7 @@ class runCmdWindow(QMainWindow):
         toolView.addLayout(actionButtonLayout)
 
         # Add button listeners
-        self.start.clicked.connect(self.runTool)
+        self.start.clicked.connect(self.runCmd)
         
         # Create Output box
         self.output = QTextEdit()
@@ -128,6 +128,16 @@ class runCmdWindow(QMainWindow):
     
     def runTool(self):
         fakeFunc(self.input_widgets[3].text())
+        self._updateOutput()
+    
+    def runCmd(self):
+        portal_address = self.input_widgets[0].text()
+        portal_username = self.input_widgets[1].text()
+        portal_password = self.input_widgets[2].text()
+        command = self.input_widgets[3].text()
+        global_admin = global_admin_login(portal_address, portal_username, portal_password, True)
+        
+        run_cmd(global_admin, command, True)
         self._updateOutput()
 
     def _updateOutput(self):
