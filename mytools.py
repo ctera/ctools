@@ -218,7 +218,7 @@ class showStatusWindow(QMainWindow):
         toolView.addLayout(actionButtonLayout)
 
         # Add button listeners
-        self.start.clicked.connect(self.show_status)
+        self.start.clicked.connect(self.showStatus)
         
         # Create Output box
         self.output = QTextEdit()
@@ -228,7 +228,7 @@ class showStatusWindow(QMainWindow):
 
         self.mainContent.addLayout(toolView)
     
-    def show_status(self):
+    def showStatus(self):
         portal_address = self.input_widgets[0].text()
         portal_username = self.input_widgets[1].text()
         portal_password = self.input_widgets[2].text()
