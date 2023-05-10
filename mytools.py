@@ -216,6 +216,9 @@ class showStatusWindow(QMainWindow):
         actionButtonLayout.addWidget(self.start)
 
         toolView.addLayout(actionButtonLayout)
+
+        # Add button listeners
+        self.start.clicked.connect(self.show_status)
         
         # Create Output box
         self.output = QTextEdit()
