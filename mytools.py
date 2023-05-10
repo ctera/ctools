@@ -5,6 +5,7 @@
 import sys, logging, os
 
 from run_cmd import run_cmd
+from status import run_status
 
 from testfuncs import fakeFunc
 from ui_help import gen_tool_layout, gen_custom_tool_layout
@@ -201,7 +202,7 @@ class showStatusWindow(QMainWindow):
     def _createToolViewLayout(self):
         toolView = QVBoxLayout()
 
-        show_status_layout, self.input_widgets = gen_custom_tool_layout(["File Name", "Test 1"])
+        show_status_layout, self.input_widgets = gen_custom_tool_layout(["File Name"])
 
         toolView.addLayout(show_status_layout)
 
@@ -224,6 +225,15 @@ class showStatusWindow(QMainWindow):
 
         self.mainContent.addLayout(toolView)
     
+    def show_status(self):
+        portal_address = self.input_widgets[0].text()
+        portal_username = self.input_widgets[1].text()
+        portal_password = self.input_widgets[2].text()
+        filename = self.input_widgets[3].text()
+        global_admin = global_admin_login(portal_address, portal_username, portal_password, True)
+
+        run_status(global_admin, filename, True)
+        self._updateOutput()
     
     def _updateOutput(self):
         file = open("info-log.txt", 'r')
