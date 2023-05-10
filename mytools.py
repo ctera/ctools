@@ -139,6 +139,9 @@ class runCmdWindow(QMainWindow):
         device_name = self.input_widgets[4].text()
         all_filers_flag = self.input_widgets[5].checkState()
         ignore_cert = self.input_widgets[6].checkState()
+
+        print(all_filers_flag)
+        print(ignore_cert)
         global_admin = global_admin_login(portal_address, portal_username, portal_password, ignore_cert)
         
         run_cmd(global_admin, command, all_filers_flag)
