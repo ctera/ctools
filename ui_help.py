@@ -4,6 +4,7 @@ from PySide2.QtWidgets import (
     QGridLayout,
     QLineEdit,
     QLabel,
+    QCheckBox
 )
 
 
@@ -44,10 +45,12 @@ def gen_tool_layout():
     return grid, input_widgets
 
 # Generate the base tool layout
-def gen_custom_tool_layout(fields, base=True):
+def gen_custom_tool_layout(fields, checkboxes, base=True):
     input_widgets = []
     input_labels = {}
     input_fields = {}
+
+    cb_widgets = {}
 
     grid = QGridLayout()
 
@@ -74,6 +77,10 @@ def gen_custom_tool_layout(fields, base=True):
         input_fields[index] = QLineEdit()
         input_widgets.append(input_fields[index])
 
+    for index, checkbox in enumerate(checkboxes):
+        cb_widgets[index] = QCheckBox(checkbox)
+        input_widgets.append(cb_widgets[index])
+
     # add widgets to layout
     grid.addWidget(requiredArgs, 0, 0, 1, 2)
     
@@ -97,18 +104,34 @@ def gen_custom_tool_layout(fields, base=True):
                     row_counter += 2
                 else: 
                     col_counter += 1
+                    
+            # Populate the checkboxes into the layout
+            for i in range(len(checkboxes)):
+                grid.addWidget(cb_widgets[i], row_counter, col_counter)
 
+                if col_counter >= 1:
+                    col_counter = 0
+                    row_counter += 1
+                else:
+                    col_counter += 1
         else:
             row_counter = 3
             col_counter = 1
+
+            # Populate the fields into the Grid Layout
             for i in range(len(fields)):
                 if i >= len(fields) - 1:
                     if col_counter == 1:
                         grid.addWidget(input_labels[i], row_counter, col_counter)
                         grid.addWidget(input_fields[i], row_counter + 1, col_counter)
+
+                        col_counter = 0
+                        row_counter += 2
                     elif col_counter == 0:
                         grid.addWidget(input_labels[i], row_counter, col_counter, 1, 2)
                         grid.addWidget(input_fields[i], row_counter + 1, col_counter, 1, 2)
+
+                        row_counter += 2
                 else:
                     grid.addWidget(input_labels[i], row_counter, col_counter)
                     grid.addWidget(input_fields[i], row_counter + 1, col_counter)
@@ -118,7 +141,17 @@ def gen_custom_tool_layout(fields, base=True):
                         row_counter += 2
                     else: 
                         col_counter += 1
-        
+
+            # Populate the checkboxes into the layout
+            for i in range(len(checkboxes)):
+                grid.addWidget(cb_widgets[i], row_counter, col_counter)
+
+                if col_counter >= 1:
+                    col_counter = 0
+                    row_counter += 1
+                else:
+                    col_counter += 1
+
     else:
         row_counter = 1
         col_counter = 0
@@ -127,9 +160,14 @@ def gen_custom_tool_layout(fields, base=True):
                 if col_counter == 1:
                     grid.addWidget(input_labels[i], row_counter, col_counter)
                     grid.addWidget(input_fields[i], row_counter + 1, col_counter)
+
+                    col_counter = 0
+                    row_counter += 2
                 elif col_counter == 0:
                     grid.addWidget(input_labels[i], row_counter, col_counter, 1, 2)
                     grid.addWidget(input_fields[i], row_counter + 1, col_counter, 1, 2)
+
+                    row_counter += 2
             else:
                 grid.addWidget(input_labels[i], row_counter, col_counter)
                 grid.addWidget(input_fields[i], row_counter + 1, col_counter)
@@ -139,5 +177,13 @@ def gen_custom_tool_layout(fields, base=True):
                     row_counter += 2
                 else: 
                     col_counter += 1
+        # Populate the checkboxes into the layout
+        for i in range(len(checkboxes)):
+            grid.addWidget(cb_widgets[i], row_counter, col_counter)
 
+            if col_counter >= 1:
+                col_counter = 0
+                row_counter += 1
+            else:
+                col_counter += 1
     return grid, input_widgets

@@ -102,7 +102,7 @@ class runCmdWindow(QMainWindow):
     def _createToolViewLayout(self):
         toolView = QVBoxLayout()
 
-        RunCMDLayout, self.input_widgets = gen_custom_tool_layout(["Command"])
+        RunCMDLayout, self.input_widgets = gen_custom_tool_layout(["Command", "Device Name (Overrides the \"All Filers\" checkbox)"], ["Run on all Filers (No device name needed)", "Ignore Cert Warnings for Login"])
 
         toolView.addLayout(RunCMDLayout)
 
@@ -136,9 +136,12 @@ class runCmdWindow(QMainWindow):
         portal_username = self.input_widgets[1].text()
         portal_password = self.input_widgets[2].text()
         command = self.input_widgets[3].text()
-        global_admin = global_admin_login(portal_address, portal_username, portal_password, True)
+        device_name = self.input_widgets[4].text()
+        all_filers_flag = self.input_widgets[5].checkState()
+        ignore_cert = self.input_widgets[6].checkState()
+        global_admin = global_admin_login(portal_address, portal_username, portal_password, ignore_cert)
         
-        run_cmd(global_admin, command, True)
+        run_cmd(global_admin, command, all_filers_flag)
         self._updateOutput()
 
     def _updateOutput(self):
@@ -202,7 +205,7 @@ class showStatusWindow(QMainWindow):
     def _createToolViewLayout(self):
         toolView = QVBoxLayout()
 
-        show_status_layout, self.input_widgets = gen_custom_tool_layout(["File Name"])
+        show_status_layout, self.input_widgets = gen_custom_tool_layout(["File Name"], [])
 
         toolView.addLayout(show_status_layout)
 
