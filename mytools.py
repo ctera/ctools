@@ -137,13 +137,14 @@ class runCmdWindow(QMainWindow):
         portal_password = self.input_widgets[2].text()
         command = self.input_widgets[3].text()
         device_name = self.input_widgets[4].text()
-        all_filers_flag = self.input_widgets[5].checkState()
-        ignore_cert = self.input_widgets[6].checkState()
+        all_filers_flag = self.input_widgets[5].isChecked()
+        ignore_cert = self.input_widgets[6].isChecked()
 
         print(all_filers_flag)
         print(ignore_cert)
         global_admin = global_admin_login(portal_address, portal_username, portal_password, ignore_cert)
         
+        print("Device name: " + device_name)
         run_cmd(global_admin, command, all_filers_flag)
         self._updateOutput()
 
