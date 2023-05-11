@@ -102,7 +102,7 @@ class runCmdWindow(QMainWindow):
     def _createToolViewLayout(self):
         toolView = QVBoxLayout()
 
-        RunCMDLayout, self.input_widgets = gen_custom_tool_layout(["Command", "Device Name (Overrides the \"All Filers\" checkbox)"], ["Run on all Filers (No device name needed)", "Ignore Cert Warnings for Login"])
+        RunCMDLayout, self.input_widgets = gen_custom_tool_layout(["Command", "Device Name (Overrides the \"All Tenants\" checkbox)"], ["Run on all Tenants (No device name needed)", "Ignore Cert Warnings for Login"])
 
         toolView.addLayout(RunCMDLayout)
 
