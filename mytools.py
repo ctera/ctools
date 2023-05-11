@@ -155,7 +155,7 @@ class runCmdWindow(QMainWindow):
             text = file.read()
             self.output.setText(text)
         
-        self.output.verticalScrollBar().setValue(QTextEdit.verticalScrollBar().maximum())
+        self.output.verticalScrollBar().setValue(self.output.verticalScrollBar().maximum())
 
     def goToShowStatus(self):
         self.widget.setCurrentIndex(1)
