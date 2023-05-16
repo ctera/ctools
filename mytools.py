@@ -48,7 +48,8 @@ def set_logging(p_level=logging.INFO, log_file="info-log.txt"):
         level=p_level,
         format="%(asctime)s [%(levelname)s] %(message)s",
         handlers=[
-            logging.FileHandler(log_file, 'w'),
+            logging.FileHandler(log_file),
+            logging.FileHandler("output.tmp", 'w'),
             logging.StreamHandler()])
 
 
@@ -152,13 +153,10 @@ class runCmdWindow(QMainWindow):
             run_cmd(global_admin, command, all_tenants_flag)
         else:
             run_cmd(global_admin, command, all_tenants_flag, device_name)
-        self._updateOutput(verbose)
+        self._updateOutput()
 
-    def _updateOutput(self, verbose):
-        if verbose:
-            file = open("debug-log.txt", 'r')
-        else:
-            file = open("info-log.txt", 'r')
+    def _updateOutput(self):
+        file = open("output.tmp", 'r')
 
         with file:
             text = file.read()
@@ -262,14 +260,10 @@ class showStatusWindow(QMainWindow):
             set_logging()
 
         run_status(global_admin, filename, all_tenants_flag)
-        self._updateOutput(verbose)
+        self._updateOutput()
     
-    def _updateOutput(self, verbose):
-        if verbose:
-            file = open("debug-log.txt", 'r')
-        else:
-            file = open("info-log.txt", 'r')
-
+    def _updateOutput(self):
+        file = open("output.tmp", 'r')
 
         with file:
             text = file.read()
@@ -283,10 +277,6 @@ def main():
     """PyCalc's main function."""
     
     # Store initial contents of log file
-    with open("info-log.txt") as f:
-        with open("text.tmp", "w") as tmp:
-            for line in f:
-                tmp.write(line)
 
     QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
 
