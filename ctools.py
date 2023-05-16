@@ -5,6 +5,7 @@
 import sys, logging, os
 
 from run_cmd import run_cmd
+from status import run_status
 
 from testfuncs import fakeFunc
 from ui_help import gen_tool_layout, gen_custom_tool_layout
@@ -47,7 +48,8 @@ def set_logging(p_level=logging.INFO, log_file="info-log.txt"):
         level=p_level,
         format="%(asctime)s [%(levelname)s] %(message)s",
         handlers=[
-            logging.FileHandler(log_file, mode="w"),
+            logging.FileHandler(log_file),
+            logging.FileHandler("output.tmp", 'w'),
             logging.StreamHandler()])
 
 
@@ -101,7 +103,7 @@ class runCmdWindow(QMainWindow):
     def _createToolViewLayout(self):
         toolView = QVBoxLayout()
 
-        RunCMDLayout, self.input_widgets = gen_custom_tool_layout(["Command"])
+        RunCMDLayout, self.input_widgets = gen_custom_tool_layout(["Command", "Device Name (Overrides the \"All Tenants\" checkbox)"], ["Run on all Tenants (No device name needed)", "Ignore Cert Warnings for Login", "Verbose Logging"])
 
         toolView.addLayout(RunCMDLayout)
 
@@ -135,17 +137,32 @@ class runCmdWindow(QMainWindow):
         portal_username = self.input_widgets[1].text()
         portal_password = self.input_widgets[2].text()
         command = self.input_widgets[3].text()
-        global_admin = global_admin_login(portal_address, portal_username, portal_password, True)
+        device_name = self.input_widgets[4].text()
+        all_tenants_flag = self.input_widgets[5].isChecked()
+        ignore_cert = self.input_widgets[6].isChecked()
+        verbose = self.input_widgets[7].isChecked()
+
+        if verbose:
+            set_logging(logging.DEBUG, 'debug-log.txt')
+        else:
+            set_logging()
+
+        global_admin = global_admin_login(portal_address, portal_username, portal_password, ignore_cert)
         
-        run_cmd(global_admin, command, True)
+        if not device_name:
+            run_cmd(global_admin, command, all_tenants_flag)
+        else:
+            run_cmd(global_admin, command, all_tenants_flag, device_name)
         self._updateOutput()
 
     def _updateOutput(self):
-        file = open("info-log.txt", 'r')
+        file = open("output.tmp", 'r')
 
         with file:
             text = file.read()
             self.output.setText(text)
+        
+        self.output.verticalScrollBar().setValue(self.output.verticalScrollBar().maximum())
 
     def goToShowStatus(self):
         self.widget.setCurrentIndex(1)
@@ -201,7 +218,7 @@ class showStatusWindow(QMainWindow):
     def _createToolViewLayout(self):
         toolView = QVBoxLayout()
 
-        show_status_layout, self.input_widgets = gen_custom_tool_layout(["File Name", "Test 1"])
+        show_status_layout, self.input_widgets = gen_custom_tool_layout(["File Name"], ["Run on all Tenants (No device name needed)", "Ignore Cert Warnings for Login", "Verbose Logging"])
 
         toolView.addLayout(show_status_layout)
 
@@ -215,6 +232,9 @@ class showStatusWindow(QMainWindow):
         actionButtonLayout.addWidget(self.start)
 
         toolView.addLayout(actionButtonLayout)
+
+        # Add button listeners
+        self.start.clicked.connect(self.showStatus)
         
         # Create Output box
         self.output = QTextEdit()
@@ -224,9 +244,26 @@ class showStatusWindow(QMainWindow):
 
         self.mainContent.addLayout(toolView)
     
+    def showStatus(self):
+        portal_address = self.input_widgets[0].text()
+        portal_username = self.input_widgets[1].text()
+        portal_password = self.input_widgets[2].text()
+        filename = self.input_widgets[3].text()
+        all_tenants_flag = self.input_widgets[4].isChecked()
+        ignore_cert = self.input_widgets[5].isChecked()
+        verbose = self.input_widgets[6].isChecked()
+        global_admin = global_admin_login(portal_address, portal_username, portal_password, ignore_cert)
+
+        if verbose:
+            set_logging(logging.DEBUG, 'debug-log.txt')
+        else:
+            set_logging()
+
+        run_status(global_admin, filename, all_tenants_flag)
+        self._updateOutput()
     
     def _updateOutput(self):
-        file = open("info-log.txt", 'r')
+        file = open("output.tmp", 'r')
 
         with file:
             text = file.read()
@@ -239,7 +276,7 @@ class showStatusWindow(QMainWindow):
 def main():
     """PyCalc's main function."""
     
-    set_logging()
+    # Store initial contents of log file
 
     QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
 
