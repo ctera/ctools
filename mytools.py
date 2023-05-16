@@ -102,7 +102,7 @@ class runCmdWindow(QMainWindow):
     def _createToolViewLayout(self):
         toolView = QVBoxLayout()
 
-        RunCMDLayout, self.input_widgets = gen_custom_tool_layout(["Command", "Device Name (Overrides the \"All Tenants\" checkbox)"], ["Run on all Tenants (No device name needed)", "Ignore Cert Warnings for Login"])
+        RunCMDLayout, self.input_widgets = gen_custom_tool_layout(["Command", "Device Name (Overrides the \"All Tenants\" checkbox)"], ["Run on all Tenants (No device name needed)", "Ignore Cert Warnings for Login", "Verbose Logging"])
 
         toolView.addLayout(RunCMDLayout)
 
@@ -139,6 +139,12 @@ class runCmdWindow(QMainWindow):
         device_name = self.input_widgets[4].text()
         all_filers_flag = self.input_widgets[5].isChecked()
         ignore_cert = self.input_widgets[6].isChecked()
+        verbose = self.input_widgets[7].isChecked()
+
+        if verbose:
+            set_logging(logging.DEBUG, 'debug-log.txt')
+        else:
+            set_logging()
 
         global_admin = global_admin_login(portal_address, portal_username, portal_password, ignore_cert)
         
@@ -211,7 +217,7 @@ class showStatusWindow(QMainWindow):
     def _createToolViewLayout(self):
         toolView = QVBoxLayout()
 
-        show_status_layout, self.input_widgets = gen_custom_tool_layout(["File Name"], [])
+        show_status_layout, self.input_widgets = gen_custom_tool_layout(["File Name"], ["Run on all Tenants (No device name needed)", "Ignore Cert Warnings for Login", "Verbose Logging"])
 
         toolView.addLayout(show_status_layout)
 
@@ -261,7 +267,7 @@ class showStatusWindow(QMainWindow):
 def main():
     """PyCalc's main function."""
     
-    set_logging()
+    #set_logging()
 
     QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
 
