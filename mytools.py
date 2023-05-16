@@ -48,7 +48,7 @@ def set_logging(p_level=logging.INFO, log_file="info-log.txt"):
         level=p_level,
         format="%(asctime)s [%(levelname)s] %(message)s",
         handlers=[
-            logging.FileHandler(log_file, mode="w"),
+            logging.FileHandler(log_file, 'w'),
             logging.StreamHandler()])
 
 
@@ -282,7 +282,11 @@ class showStatusWindow(QMainWindow):
 def main():
     """PyCalc's main function."""
     
-    #set_logging()
+    # Store initial contents of log file
+    with open("info-log.txt") as f:
+        with open("text.tmp", "w") as tmp:
+            for line in f:
+                tmp.write(line)
 
     QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
 
