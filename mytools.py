@@ -152,10 +152,13 @@ class runCmdWindow(QMainWindow):
             run_cmd(global_admin, command, all_filers_flag)
         else:
             run_cmd(global_admin, command, all_filers_flag, device_name)
-        self._updateOutput()
+        self._updateOutput(verbose)
 
-    def _updateOutput(self):
-        file = open("info-log.txt", 'r')
+    def _updateOutput(self, verbose):
+        if verbose:
+            file = open("debug-log.txt", 'r')
+        else:
+            file = open("info-log.txt", 'r')
 
         with file:
             text = file.read()
