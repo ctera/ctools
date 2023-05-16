@@ -2,49 +2,22 @@
 
 """CTools is a GUI toolset to interact with your CTERA Environment"""
 
-import sys, logging, os
+import sys, os
 
 from status import run_status
 
 from windows.RunCmdWindow import runCmdWindow
 from windows.ShowStatusWindow import showStatusWindow
 
-from ui_help import gen_custom_tool_layout
-
-from log_setter import set_logging
-
 from PySide2.QtCore import Qt
 
 from PySide2.QtWidgets import (
     QApplication,
-    QMainWindow,
-    QWidget,
-    QGridLayout,
-    QLineEdit,
-    QPushButton,
-    QVBoxLayout,
-    QLabel,
-    QHBoxLayout,
-    QTextEdit,
-    QFrame,
     QStackedWidget
 )
 
-WINDOW_WIDTH = 600
-WINDOW_HEIGHT = 500
-OUTPUT_HEIGHT = 250
-
-
-
-
-
-
-
-
 def main():
     """PyCalc's main function."""
-    
-    # Store initial contents of log file
 
     QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
 
