@@ -137,7 +137,7 @@ class runCmdWindow(QMainWindow):
         portal_password = self.input_widgets[2].text()
         command = self.input_widgets[3].text()
         device_name = self.input_widgets[4].text()
-        all_filers_flag = self.input_widgets[5].isChecked()
+        all_tenants_flag = self.input_widgets[5].isChecked()
         ignore_cert = self.input_widgets[6].isChecked()
         verbose = self.input_widgets[7].isChecked()
 
@@ -149,9 +149,9 @@ class runCmdWindow(QMainWindow):
         global_admin = global_admin_login(portal_address, portal_username, portal_password, ignore_cert)
         
         if not device_name:
-            run_cmd(global_admin, command, all_filers_flag)
+            run_cmd(global_admin, command, all_tenants_flag)
         else:
-            run_cmd(global_admin, command, all_filers_flag, device_name)
+            run_cmd(global_admin, command, all_tenants_flag, device_name)
         self._updateOutput(verbose)
 
     def _updateOutput(self, verbose):
@@ -251,13 +251,25 @@ class showStatusWindow(QMainWindow):
         portal_username = self.input_widgets[1].text()
         portal_password = self.input_widgets[2].text()
         filename = self.input_widgets[3].text()
-        global_admin = global_admin_login(portal_address, portal_username, portal_password, True)
+        all_tenants_flag = self.input_widgets[4].isChecked()
+        ignore_cert = self.input_widgets[6].isChecked()
+        verbose = self.input_widgets[7].isChecked()
+        global_admin = global_admin_login(portal_address, portal_username, portal_password, ignore_cert)
 
-        run_status(global_admin, filename, True)
-        self._updateOutput()
+        if verbose:
+            set_logging(logging.DEBUG, 'debug-log.txt')
+        else:
+            set_logging()
+
+        run_status(global_admin, filename, all_tenants_flag)
+        self._updateOutput(verbose)
     
-    def _updateOutput(self):
-        file = open("info-log.txt", 'r')
+    def _updateOutput(self, verbose):
+        if verbose:
+            file = open("debug-log.txt", 'r')
+        else:
+            file = open("info-log.txt", 'r')
+
 
         with file:
             text = file.read()
