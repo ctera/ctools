@@ -1,7 +1,8 @@
 import logging
 
 from log_setter import set_logging
-from status import run_status
+## STEP6a - import the tool function from the file you imported into the CTOOLS3 project folder
+from suspend_sync import suspend_filer_sync
 
 from ui_help import gen_tool_layout, gen_custom_tool_layout, create_tool_bar
 from login import global_admin_login
@@ -23,16 +24,16 @@ WINDOW_WIDTH = 600
 WINDOW_HEIGHT = 500
 OUTPUT_HEIGHT = 250
 
-class showStatusWindow(QMainWindow):
+class suspendSyncWindow(QMainWindow):
     """PyCalc's main window (GUI or view)."""
 
     def __init__(self, widget):
-        self.widget = widget
         super().__init__()
+        self.widget = widget
         self.setWindowTitle("CTools 3.0")
         self.setFixedSize(WINDOW_WIDTH, WINDOW_HEIGHT)
         self.generalLayout = QVBoxLayout()
-        self.top = QLabel("<h2>Show Status</h2>")
+        self.top = QLabel("<h2>Welcome to CTools!</h2>")
         self.mainContent = QHBoxLayout()
         centralWidget = QWidget(self)
         centralWidget.setLayout(self.generalLayout)
@@ -43,7 +44,7 @@ class showStatusWindow(QMainWindow):
         self._createToolViewLayout()
 
     def _createToolBar(self):
-        tools = create_tool_bar(self.widget, 1)
+        tools = create_tool_bar(self.widget, 0)
 
         # Add line separator between Tool List and Tool View
         line = QFrame()
@@ -57,10 +58,9 @@ class showStatusWindow(QMainWindow):
     def _createToolViewLayout(self):
         toolView = QVBoxLayout()
 
-        show_status_layout, self.input_widgets = gen_custom_tool_layout(["File Name"], ["Run on all Tenants (No device name needed)", "Ignore Cert Warnings for Login", "Verbose Logging"])
-
-        toolView.addLayout(show_status_layout)
-
+        # Step3 - You will change the next two lines according to the KB
+        SuspendSyncLayout, self.input_widgets = gen_custom_tool_layout(["Device Name", "Tenant Name"], ["Run on all Tenants", "Ignore cert warnings for login", "Verbose Logging"])
+        toolView.addLayout(SuspendSyncLayout)
 
         # Create action buttons
         actionButtonLayout = QHBoxLayout()
@@ -72,8 +72,8 @@ class showStatusWindow(QMainWindow):
 
         toolView.addLayout(actionButtonLayout)
 
-        # Add button listeners
-        self.start.clicked.connect(self.showStatus)
+        # STEP5 - Add button listeners
+        self.start.clicked.connect(self.tool)
         
         # Create Output box
         self.output = QTextEdit()
@@ -82,14 +82,16 @@ class showStatusWindow(QMainWindow):
 
         self.mainContent.addLayout(toolView)
     
-    def showStatus(self):
+    # STEP4 - Grab the arguments for you tool
+    def tool(self):
         portal_address = self.input_widgets[0].text()
         portal_username = self.input_widgets[1].text()
         portal_password = self.input_widgets[2].text()
-        filename = self.input_widgets[3].text()
-        all_tenants_flag = self.input_widgets[4].isChecked()
-        ignore_cert = self.input_widgets[5].isChecked()
-        verbose = self.input_widgets[6].isChecked()
+        device_name = self.input_widgets[3].text()
+        tenant_name = self.input_widgets[4].text()
+        all_tenants = self.input_widgets[5].isChecked()
+        ignore_cert = self.input_widgets[6].isChecked()
+        verbose = self.input_widgets[7].isChecked()
 
         if verbose:
             set_logging(logging.DEBUG, 'debug-log.txt')
@@ -97,14 +99,19 @@ class showStatusWindow(QMainWindow):
             set_logging()
 
         global_admin = global_admin_login(portal_address, portal_username, portal_password, ignore_cert)
+        
+        ## Step6 - Run the tool here
+        # Ex: run_status(global_admin, filename, all_tenants_flag)
+        suspend_filer_sync(global_admin, device_name, tenant_name)
 
-        run_status(global_admin, filename, all_tenants_flag)
+
         self._updateOutput()
-    
+
     def _updateOutput(self):
         file = open("output.tmp", 'r')
 
         with file:
             text = file.read()
             self.output.setText(text)
-    
+        
+        self.output.verticalScrollBar().setValue(self.output.verticalScrollBar().maximum())

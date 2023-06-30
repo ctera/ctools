@@ -3,7 +3,7 @@ import logging
 from log_setter import set_logging
 from run_cmd import run_cmd
 
-from ui_help import gen_tool_layout, gen_custom_tool_layout
+from ui_help import gen_tool_layout, gen_custom_tool_layout, create_tool_bar
 from login import global_admin_login
 
 from PySide2.QtCore import Qt
@@ -43,29 +43,13 @@ class runCmdWindow(QMainWindow):
         self._createToolViewLayout()
 
     def _createToolBar(self):
-        tools = QVBoxLayout()
-
-        label = QLabel("<h4><b>Actions:</b></h4>")
-        label.setFixedHeight(50)
-        self.run_cmd = QPushButton("Run CMD")
-        self.run_cmd.setStyleSheet("color: grey")
-        self.show_status = QPushButton("Show Status")
-        self.exit = QPushButton("Exit")
-
-        tools.addWidget(label, alignment=Qt.AlignTop)
-        tools.addWidget(self.run_cmd)
-        tools.addWidget(self.show_status)
-        tools.addWidget(self.exit)
-        tools.addStretch()
+        tools = create_tool_bar(self.widget, 0)
 
         # Add line separator between Tool List and Tool View
         line = QFrame()
         line.setFrameShape(QFrame.VLine)
         line.setFrameShadow(QFrame.Sunken)
         line.setLineWidth(1)
-
-        #Add button listeners
-        self.show_status.clicked.connect(self.goToShowStatus)
 
         self.mainContent.addLayout(tools)
         self.mainContent.addWidget(line)
@@ -129,6 +113,3 @@ class runCmdWindow(QMainWindow):
             self.output.setText(text)
         
         self.output.verticalScrollBar().setValue(self.output.verticalScrollBar().maximum())
-
-    def goToShowStatus(self):
-        self.widget.setCurrentIndex(1)

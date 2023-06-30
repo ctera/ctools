@@ -8,6 +8,7 @@ from status import run_status
 
 from windows.RunCmdWindow import runCmdWindow
 from windows.ShowStatusWindow import showStatusWindow
+from windows.SuspendSyncWindow import suspendSyncWindow
 
 from PySide2.QtCore import Qt
 
@@ -28,10 +29,16 @@ def main():
     widget = QStackedWidget()
     
     run_cmd = runCmdWindow(widget)
-    widget.addWidget(run_cmd)   # create an instance of the first page class and add it to stackedwidget
+    widget.addWidget(run_cmd)
 
     show_status = showStatusWindow(widget) 
-    widget.addWidget(show_status)   # adding second page
+    widget.addWidget(show_status)
+
+
+    suspend_sync = suspendSyncWindow(widget) 
+    widget.addWidget(suspend_sync)
+
+    ## STEP7- Add new windows above this line ##
 
     widget.setCurrentWidget(run_cmd)   # setting the page that you want to load when application starts up. you can also use setCurrentIndex(int)
 

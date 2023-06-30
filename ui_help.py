@@ -4,8 +4,46 @@ from PySide2.QtWidgets import (
     QGridLayout,
     QLineEdit,
     QLabel,
-    QCheckBox
+    QCheckBox,
+    QVBoxLayout,
+    QPushButton
 )
+
+
+# Create toolbar given the QStacked Widget and the current selected window
+def create_tool_bar(widget, currentWindow):
+    tools = QVBoxLayout()
+
+    label = QLabel("<h4><b>Actions:</b></h4>")
+    label.setFixedHeight(50)
+
+    run_cmd = QPushButton("Run CMD")
+    show_status = QPushButton("Show Status")
+    suspend_sync = QPushButton("Suspend Sync")
+
+    #STEP8 - Create the push button above so you can navigate to the tool
+
+    # ADD NEW TOOLS ABOVE THIS LINE
+    exit = QPushButton("Exit")
+
+    # STEP9 - Add the button you just created to the list below. MAKE SURE YOU PUT IT BEFORE EXIT
+    tool_list = [run_cmd, show_status, suspend_sync, exit]
+
+    tool_list[currentWindow].setStyleSheet("color: grey")
+
+    tools.addWidget(label, alignment=Qt.AlignTop)
+    
+    for tool in tool_list:
+        tools.addWidget(tool)
+
+    tools.addStretch()
+
+
+    #Add button listeners
+    for i in range(len(tool_list) - 1):
+        if i != currentWindow:
+            tool_list[i].clicked.connect(lambda idx=i, i=i: widget.setCurrentIndex(i)) # The idx=i, i=i is a weird type issue with lambdas and the way the listener works
+    return tools
 
 
 # Generate the base tool layout
