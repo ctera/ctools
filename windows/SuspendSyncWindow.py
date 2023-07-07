@@ -44,7 +44,7 @@ class suspendSyncWindow(QMainWindow):
         self._createToolViewLayout()
 
     def _createToolBar(self):
-        tools = create_tool_bar(self.widget, 0)
+        tools = create_tool_bar(self.widget, 2)
 
         # Add line separator between Tool List and Tool View
         line = QFrame()
