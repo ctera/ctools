@@ -22,8 +22,10 @@ from PySide2.QtCore import Qt
 
 from PySide2.QtWidgets import (
     QApplication,
-    QStackedWidget
+    QStackedWidget,
 )
+
+from PySide2.QtGui import QIcon
 
 def main():
     """PyCalc's main function."""
@@ -35,6 +37,10 @@ def main():
     
     
     widget = QStackedWidget()
+
+    widget.setWindowTitle("CTools v3")
+
+    widget.setWindowIcon(QIcon('icon.jpeg'))
     
     run_cmd = runCmdWindow(widget)
     widget.addWidget(run_cmd)

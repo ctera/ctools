@@ -29,8 +29,8 @@ class runCmdWindow(QMainWindow):
     def __init__(self, widget):
         super().__init__()
         self.widget = widget
-        self.setWindowTitle("CTools 3.0")
         self.setFixedSize(WINDOW_WIDTH, WINDOW_HEIGHT)
+        self.setWindowTitle("CTools 3.0")
         self.generalLayout = QVBoxLayout()
         self.top = QLabel("<h2>Welcome to CTools!</h2>")
         self.mainContent = QHBoxLayout()

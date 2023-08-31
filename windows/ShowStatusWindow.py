@@ -32,7 +32,7 @@ class showStatusWindow(QMainWindow):
         self.setWindowTitle("CTools 3.0")
         self.setFixedSize(WINDOW_WIDTH, WINDOW_HEIGHT)
         self.generalLayout = QVBoxLayout()
-        self.top = QLabel("<h2>Show Status</h2>")
+        self.top = QLabel("<h2>Welcome to CTools!</h2>")
         self.mainContent = QHBoxLayout()
         centralWidget = QWidget(self)
         centralWidget.setLayout(self.generalLayout)
