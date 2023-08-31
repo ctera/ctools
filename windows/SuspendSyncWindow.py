@@ -59,7 +59,7 @@ class suspendSyncWindow(QMainWindow):
         toolView = QVBoxLayout()
 
         # Step3 - You will change the next two lines according to the KB
-        SuspendSyncLayout, self.input_widgets = gen_custom_tool_layout(["Device Name", "Tenant Name"], ["Run on all Tenants", "Ignore cert warnings for login", "Verbose Logging"])
+        SuspendSyncLayout, self.input_widgets = gen_custom_tool_layout(["Device Name", "Tenant Name"], ["Ignore cert warnings for login", "Verbose Logging"])
         toolView.addLayout(SuspendSyncLayout)
 
         # Create action buttons
@@ -89,9 +89,8 @@ class suspendSyncWindow(QMainWindow):
         portal_password = self.input_widgets[2].text()
         device_name = self.input_widgets[3].text()
         tenant_name = self.input_widgets[4].text()
-        all_tenants = self.input_widgets[5].isChecked()
-        ignore_cert = self.input_widgets[6].isChecked()
-        verbose = self.input_widgets[7].isChecked()
+        ignore_cert = self.input_widgets[5].isChecked()
+        verbose = self.input_widgets[6].isChecked()
 
         if verbose:
             set_logging(logging.DEBUG, 'debug-log.txt')
