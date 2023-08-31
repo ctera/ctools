@@ -50,7 +50,7 @@ class cloudFoldersWindow(QMainWindow):
         self._createToolViewLayout()
 
     def _createToolBar(self):
-        tools = create_tool_bar(self.widget, 9)
+        tools = create_tool_bar(self.widget, 8)
 
         # Add line separator between Tool List and Tool View
         line = QFrame()

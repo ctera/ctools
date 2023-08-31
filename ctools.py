@@ -52,8 +52,8 @@ def main():
     suspend_sync = suspendSyncWindow(widget) 
     widget.addWidget(suspend_sync)
 
-    test_func = testFuncWindow(widget) 
-    widget.addWidget(test_func)
+    #test_func = testFuncWindow(widget) 
+    #widget.addWidget(test_func)
 
     enable_telnet = enableTelnetWindow(widget)
     widget.addWidget(enable_telnet)

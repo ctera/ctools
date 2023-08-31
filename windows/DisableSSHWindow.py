@@ -44,7 +44,7 @@ class disableSSHWindow(QMainWindow):
         self._createToolViewLayout()
 
     def _createToolBar(self):
-        tools = create_tool_bar(self.widget, 6)
+        tools = create_tool_bar(self.widget, 5)
 
         # Add line separator between Tool List and Tool View
         line = QFrame()

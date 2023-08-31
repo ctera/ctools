@@ -51,7 +51,7 @@ class smbAuditWindow(QMainWindow):
         self._createToolViewLayout()
 
     def _createToolBar(self):
-        tools = create_tool_bar(self.widget, 10)
+        tools = create_tool_bar(self.widget, 9)
 
         # Add line separator between Tool List and Tool View
         line = QFrame()
@@ -93,7 +93,7 @@ class smbAuditWindow(QMainWindow):
         output_file = QLabel("Label for output files")
         self.output_file_field = QLineEdit()
 
-        ftr_file = QLabel("Name of input file")
+        ftr_file = QLabel("Name of input file (Format: customer_location.ftr)")
         self.ftr_file_field = QHBoxLayout()
         self.ftr_filename_edit = QLineEdit()
 
@@ -171,10 +171,7 @@ class smbAuditWindow(QMainWindow):
         self.mainContent.addLayout(toolView)
     
     def open_file_dialog_source(self):
-        filename, _ = QFileDialog.getOpenFileName(
-            self,
-            "Select a file",
-        )
+        filename = QFileDialog.getExistingDirectory(self, "Select a directory")
 
         if filename:
             path = Path(filename)

@@ -35,7 +35,7 @@ def create_tool_bar(widget, currentWindow):
     exit = QPushButton("Exit")
 
     # STEP9 - Add the button you just created to the list below. MAKE SURE YOU PUT IT BEFORE EXIT
-    tool_list = [run_cmd, show_status, suspend_sync, test_func, enable_telnet, enable_ssh, disable_ssh, unsuspend_sync, reset_password, cloud_folders, smb_audit, exit]
+    tool_list = [run_cmd, show_status, suspend_sync, enable_telnet, enable_ssh, disable_ssh, unsuspend_sync, reset_password, cloud_folders, smb_audit, exit]
 
     tool_list[currentWindow].setStyleSheet("color: grey")   
 

@@ -36,7 +36,7 @@ class enableTelnetWindow(QMainWindow):
         self._createToolBar()
         self._createToolViewLayout()
     def _createToolBar(self):
-        tools = create_tool_bar(self.widget, 4)
+        tools = create_tool_bar(self.widget, 3)
         # Add line separator between Tool List and Tool View
         line = QFrame()
         line.setFrameShape(QFrame.VLine)

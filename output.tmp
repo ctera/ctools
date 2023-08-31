@@ -1,1 +1,6 @@
-2023-08-31 12:39:51,463 [INFO] hello
+2023-08-31 15:28:56,129 [INFO] Logging into 192.168.80.201
+2023-08-31 15:28:56,152 [INFO] User logged in. {'host': '192.168.80.201', 'user': 'admin'}
+2023-08-31 15:28:56,185 [INFO] Starting suspend sync task.
+2023-08-31 15:28:56,203 [INFO] Suspending cloud sync.
+2023-08-31 15:28:57,303 [INFO] Cloud sync suspended.
+2023-08-31 15:28:57,303 [INFO] Suspended sync on LabGW
