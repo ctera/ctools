@@ -9,6 +9,8 @@ from login import global_admin_login
 
 from PySide2.QtCore import Qt
 
+from pathlib import Path
+
 from PySide2.QtWidgets import (
     QMainWindow,
     QWidget,
@@ -18,6 +20,10 @@ from PySide2.QtWidgets import (
     QHBoxLayout,
     QTextEdit,
     QFrame,
+    QGridLayout,
+    QLineEdit,
+    QFileDialog,
+    QCheckBox
 )
 
 WINDOW_WIDTH = 600
@@ -59,7 +65,50 @@ class cloudFoldersWindow(QMainWindow):
         toolView = QVBoxLayout()
 
         # Step3 - You will change the next two lines according to the KB
-        CloudFoldersLayout, self.input_widgets = gen_custom_tool_layout(["CSV File"], ["Ignore cert warnings for login", "Verbose Logging"])
+        #CloudFoldersLayout, self.input_widgets = gen_custom_tool_layout(["CSV File"], ["Ignore cert warnings for login", "Verbose Logging"])
+        
+        CloudFoldersLayout = QGridLayout()
+        requiredArgs = QLabel ("<h4><b>Required Arguments</b></h4>")
+        
+        address = QLabel("Portal Address, hostname, or FQDN")
+        self.address_field = QLineEdit()
+        
+        username = QLabel("Username for portal admin")
+        self.username_field = QLineEdit()
+
+        password = QLabel("Password")
+        self.password_field = QLineEdit()
+
+        csv_file = QLabel("CSV File")
+        self.csv_file_field = QHBoxLayout()
+        self.filename_edit = QLineEdit()
+
+        file_browse = QPushButton("Browse")
+        file_browse.clicked.connect(self.open_file_dialog)
+
+        self.csv_file_field.addWidget(self.filename_edit)
+        self.csv_file_field.addWidget(file_browse)
+
+        verbose = QLabel("Add verbose logging")
+        self.verbose_box = QCheckBox("Verbose")
+        ignore_cert = QLabel("Ignore cert warnings")
+        self.ignore_cert_box = QCheckBox("ignore_cert")
+
+        CloudFoldersLayout.addWidget(requiredArgs, 0, 0, 1, 2)
+        CloudFoldersLayout.addWidget(address, 1, 0)
+        CloudFoldersLayout.addWidget(username, 1, 1)
+        CloudFoldersLayout.addWidget(self.address_field, 2, 0)
+        CloudFoldersLayout.addWidget(self.username_field, 2, 1)
+        CloudFoldersLayout.addWidget(password, 3, 0)
+        CloudFoldersLayout.addWidget(csv_file, 3, 1)
+        CloudFoldersLayout.addWidget(self.password_field, 4, 0)
+        CloudFoldersLayout.addLayout(self.csv_file_field, 4, 1)
+        CloudFoldersLayout.addWidget(verbose, 5, 0)
+        CloudFoldersLayout.addWidget(ignore_cert, 5, 1)
+        CloudFoldersLayout.addWidget(self.verbose_box, 6, 0)
+        CloudFoldersLayout.addWidget(self.ignore_cert_box, 6, 1)
+
+
         toolView.addLayout(CloudFoldersLayout)
 
         # Create action buttons
@@ -82,14 +131,24 @@ class cloudFoldersWindow(QMainWindow):
 
         self.mainContent.addLayout(toolView)
     
+    def open_file_dialog(self):
+        filename, _ = QFileDialog.getOpenFileName(
+            self,
+            "Select a file",
+        )
+
+        if filename:
+            path = Path(filename)
+            self.filename_edit.setText(str(path))
+
     # STEP4 - Grab the arguments for you tool
     def tool(self):
-        portal_address = self.input_widgets[0].text()
-        portal_username = self.input_widgets[1].text()
-        portal_password = self.input_widgets[2].text()
-        csv_file = self.input_widgets[3].text()
-        ignore_cert = self.input_widgets[4].isChecked()
-        verbose = self.input_widgets[5].isChecked()
+        portal_address = self.address_field.text()
+        portal_username = self.username_field.text()
+        portal_password = self.password_field.text()
+        csv_file = self.filename_edit.text()
+        ignore_cert = self.ignore_cert_box.isChecked()
+        verbose = self.verbose_box.isChecked()
 
         if verbose:
             set_logging(logging.DEBUG, 'debug-log.txt')

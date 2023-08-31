@@ -9,6 +9,8 @@ from login import global_admin_login
 
 from PySide2.QtCore import Qt
 
+from pathlib import Path
+
 from PySide2.QtWidgets import (
     QMainWindow,
     QWidget,
@@ -18,6 +20,11 @@ from PySide2.QtWidgets import (
     QHBoxLayout,
     QTextEdit,
     QFrame,
+    QGridLayout,
+    QComboBox,
+    QFileDialog,
+    QLineEdit,
+    QCheckBox
 )
 
 WINDOW_WIDTH = 600
@@ -59,7 +66,88 @@ class smbAuditWindow(QMainWindow):
         toolView = QVBoxLayout()
 
         # Step3 - You will change the next two lines according to the KB
-        SMBAuditLayout, self.input_widgets = gen_custom_tool_layout(["Function", "Source Directory", "Output file", "Input file", "Time interval", "Search String", "Search Field"], ["Enable Debug output of args", "Verbose Logging"], False)
+        #SMBAuditLayout, self.input_widgets = gen_custom_tool_layout(["Function", "Source Directory", "Output file", "Input file", "Time interval", "Search String", "Search Field"], ["Enable Debug output of args", "Verbose Logging"], False)
+        
+        SMBAuditLayout = QGridLayout()
+        requiredArgs = QLabel("<h4><b>Required Arguments:</b></h4>")
+
+        #Create input fields for SMB Audit
+        function = QLabel("Function")
+        self.function_field = QComboBox()
+        self.function_field.addItem("Parse")
+        self.function_field.addItem("Summarize")
+        self.function_field.addItem("Search")
+
+        source_directory = QLabel("Source log directory containing only audit log files")
+        self.source_directory_field = QHBoxLayout()
+        self.filename_edit = QLineEdit()
+        
+        file_browse = QPushButton("Browse")
+        file_browse.clicked.connect(self.open_file_dialog_source)
+
+        self.source_directory_field.addWidget(self.filename_edit)
+        self.source_directory_field.addWidget(file_browse)
+        #source_directory_field = QFileDialog()
+        #source_directory_field.setFileMode(QFileDialog.FileMode.ExistingFiles)
+        
+        output_file = QLabel("Label for output files")
+        self.output_file_field = QLineEdit()
+
+        ftr_file = QLabel("Name of input file")
+        self.ftr_file_field = QHBoxLayout()
+        self.ftr_filename_edit = QLineEdit()
+
+        ftr_file_browse = QPushButton("Browse")
+        ftr_file_browse.clicked.connect(self.open_file_dialog_ftr)
+
+        self.ftr_file_field.addWidget(self.ftr_filename_edit)
+        self.ftr_file_field.addWidget(ftr_file_browse)
+        #ftr_file_field = QFileDialog()
+        #ftr_file_field.setFileMode(QFileDialog.FileMode.ExistingFiles)
+
+        time_interval = QLabel("Time interval for summary computations")
+        self.time_interval_field = QComboBox()
+        self.time_interval_field.addItem("5min")
+        self.time_interval_field.addItem("10min")
+        self.time_interval_field.addItem("15min")
+        self.time_interval_field.addItem("20min")
+        self.time_interval_field.addItem("30min")
+        self.time_interval_field.addItem("60min")
+
+        search_string = QLabel("String to search for in the specified area")
+        self.search_string_field = QLineEdit()
+
+        search_field= QLabel("Fields to be searched from the audit logs:")
+        self.search_field_field = QComboBox()
+        self.search_field_field.addItem("path")
+        self.search_field_field.addItem("share")
+        self.search_field_field.addItem("user")
+
+        is_debug = QLabel("Enable debug output of arguments")
+        self.is_debug_box = QCheckBox("is_debug")
+        verbose = QLabel("Add verbose logging")
+        self.verbose_box = QCheckBox("Verbose")
+
+        SMBAuditLayout.addWidget(requiredArgs, 0, 0, 1, 2)
+        SMBAuditLayout.addWidget(function, 1, 0)
+        SMBAuditLayout.addWidget(source_directory, 1, 1)
+        SMBAuditLayout.addWidget(self.function_field, 2, 0)
+        SMBAuditLayout.addLayout(self.source_directory_field, 2, 1)
+        SMBAuditLayout.addWidget(output_file, 3, 0)
+        SMBAuditLayout.addWidget(ftr_file, 3, 1)
+        SMBAuditLayout.addWidget(self.output_file_field, 4, 0)
+        SMBAuditLayout.addLayout(self.ftr_file_field, 4, 1)
+        SMBAuditLayout.addWidget(time_interval, 5, 0)
+        SMBAuditLayout.addWidget(search_string, 5, 1)
+        SMBAuditLayout.addWidget(self.time_interval_field, 6, 0)
+        SMBAuditLayout.addWidget(self.search_string_field, 6, 1)
+        SMBAuditLayout.addWidget(search_field, 7, 0)
+        SMBAuditLayout.addWidget(is_debug, 7, 1)
+        SMBAuditLayout.addWidget(self.search_field_field, 8, 0)
+        SMBAuditLayout.addWidget(self.is_debug_box, 8, 1)
+        SMBAuditLayout.addWidget(verbose, 9, 0)
+        SMBAuditLayout.addWidget(self.verbose_box, 10, 0)
+        
         toolView.addLayout(SMBAuditLayout)
 
         # Create action buttons
@@ -82,24 +170,43 @@ class smbAuditWindow(QMainWindow):
 
         self.mainContent.addLayout(toolView)
     
+    def open_file_dialog_source(self):
+        filename, _ = QFileDialog.getOpenFileName(
+            self,
+            "Select a file",
+        )
+
+        if filename:
+            path = Path(filename)
+            self.filename_edit.setText(str(path))
+
+    def open_file_dialog_ftr(self):
+        filename, _ = QFileDialog.getOpenFileName(
+            self,
+            "Select a file",
+        )
+
+        if filename:
+            path = Path(filename)
+            self.ftr_filename_edit.setText(str(path))
+
     # STEP4 - Grab the arguments for you tool
     def tool(self):
-        function = self.input_widgets[0].text()
-        source_directory = self.input_widgets[1].text()
-        output_file = self.input_widgets[2].text()
-        ftr_file = self.input_widgets[3].text()
-        time_interval = self.input_widgets[4].text()
-        search_string = self.input_widgets[5].text()
-        search_field = self.input_widgets[6].text()
-        is_debug = self.input_widgets[7].isChecked()
-        verbose = self.input_widgets[8].isChecked()
+        function = self.function_field.currentText()
+        source_directory = self.source_directory_field.text()
+        output_file = self.output_file_field.text()
+        ftr_file = self.ftr_filename_edit.text()
+        time_interval = self.time_interval_field.currentText()
+        search_string = self.search_string_field.text()
+        search_field = self.filename_edit.text()
+        is_debug = self.is_debug_box.isChecked()
+        verbose = self.verbose_box.isChecked()
 
         if verbose:
             set_logging(logging.DEBUG, 'debug-log.txt')
         else:
             set_logging()
 
-        global_admin = global_admin_login(portal_address, portal_username, portal_password, ignore_cert)
         
         ## Step6 - Run the tool here
         # Ex: run_status(global_admin, filename, all_tenants_flag)
