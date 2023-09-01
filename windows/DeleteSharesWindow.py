@@ -22,11 +22,12 @@ from PySide2.QtWidgets import (
     QHBoxLayout,
     QTextEdit,
     QFrame,
-    QInputDialog
+    QInputDialog,
+    QMessageBox
 )
 
 from PySide2.QtGui import (
-    QPixmap
+    QPixmap,
 )
 
 WINDOW_WIDTH = 600
@@ -148,16 +149,21 @@ class deleteSharesWindow(QMainWindow):
                     logging.info(f"The following shares from filer {filer.name} will be deleted:")
                     for share in shares_to_delete:
                         logging.info(f"Share {share.name}")
-                    with open('deleted_shares.csv', 'a', newline='') as f:
-                        writer = csv.writer(f)
-                        for share in shares_to_delete:
-                            try:
-                                filer.shares.delete(share.name)
-                                logging.info(f'Share {share.name} deleted')
-                                writer.writerow([filer.name, share.name, 'Deleted'])
-                            except CTERAException as error:
-                                logging.info(f"Failed to delete Share: {share.name} from Filer: {filer.name}")
-                                writer.writerow([filer.name, share.name, 'NotDeleted'])
+
+                    confirm = QMessageBox(self, 'Confirm', f"Are you sure you want to delete share: '{share.name}'", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+                    if confirm == QMessageBox.Yes:
+                        with open('deleted_shares.csv', 'a', newline='') as f:
+                            writer = csv.writer(f)
+                            for share in shares_to_delete:
+                                try:
+                                    filer.shares.delete(share.name)
+                                    logging.info(f'Share {share.name} deleted')
+                                    writer.writerow([filer.name, share.name, 'Deleted'])
+                                except CTERAException as error:
+                                    logging.info(f"Failed to delete Share: {share.name} from Filer: {filer.name}")
+                                    writer.writerow([filer.name, share.name, 'NotDeleted'])
+                    else:
+                        logging.info("Request to delete share was not approved.")
 
         
 
