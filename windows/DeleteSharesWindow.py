@@ -4,7 +4,7 @@ from log_setter import set_logging
 ## STEP6a - import the tool function from the file you imported into the CTOOLS3 project folder
 from filer import get_filers
 
-from ui_help import gen_tool_layout, gen_custom_tool_layout, create_tool_bar
+from ui_help import gen_custom_tool_layout, create_tool_bar
 from login import global_admin_login
 
 import csv
