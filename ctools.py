@@ -9,7 +9,7 @@ from status import run_status
 from windows.RunCmdWindow import runCmdWindow
 from windows.ShowStatusWindow import showStatusWindow
 from windows.SuspendSyncWindow import suspendSyncWindow
-from windows.TestFuncWindow import testFuncWindow
+from windows.DeleteSharesWindow import deleteSharesWindow
 from windows.EnableTelnetWindow import enableTelnetWindow
 from windows.EnableSSHWindow import enableSSHWindow
 from windows.DisableSSHWindow import disableSSHWindow
@@ -52,9 +52,6 @@ def main():
     suspend_sync = suspendSyncWindow(widget) 
     widget.addWidget(suspend_sync)
 
-    #test_func = testFuncWindow(widget) 
-    #widget.addWidget(test_func)
-
     enable_telnet = enableTelnetWindow(widget)
     widget.addWidget(enable_telnet)
 
@@ -72,6 +69,9 @@ def main():
 
     cloud_folders = cloudFoldersWindow(widget)
     widget.addWidget(cloud_folders)
+
+    delete_shares = deleteSharesWindow(widget) 
+    widget.addWidget(delete_shares)
 
     #smb_audit = smbAuditWindow(widget)
     #widget.addWidget(smb_audit)
