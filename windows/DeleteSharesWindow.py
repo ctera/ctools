@@ -108,6 +108,13 @@ class deleteSharesWindow(QMainWindow):
         else:
             self.stop = True
     
+    def _getConfirmation(self, share):
+        confirm = QMessageBox()
+        confirm.setIcon(QMessageBox.Warning)
+        confirm.setText("Are you sure you want to delete share: " + str(share))
+        confirm.setWindowTitle("Warning!")
+        confirm.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+
     # STEP4 - Grab the arguments for you tool
     def test_func(self):
         set_logging()
@@ -150,7 +157,7 @@ class deleteSharesWindow(QMainWindow):
                     for share in shares_to_delete:
                         logging.info(f"Share {share.name}")
 
-                    confirm = QMessageBox(self, 'Confirm', f"Are you sure you want to delete share: '{share.name}'", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+                    confirm = QMessageBox.question(self, 'Confirm', f"Are you sure you want to delete share: '{share.name}'", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
                     if confirm == QMessageBox.Yes:
                         with open('deleted_shares.csv', 'a', newline='') as f:
                             writer = csv.writer(f)
