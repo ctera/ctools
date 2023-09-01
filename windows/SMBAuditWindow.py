@@ -3,6 +3,7 @@ import logging
 from log_setter import set_logging
 ## STEP6a - import the tool function from the file you imported into the CTOOLS3 project folder
 from suspend_sync import suspend_filer_sync
+from smb_audit import smb_audit
 
 from ui_help import gen_tool_layout, gen_custom_tool_layout, create_tool_bar
 from login import global_admin_login
@@ -190,7 +191,7 @@ class smbAuditWindow(QMainWindow):
     # STEP4 - Grab the arguments for you tool
     def tool(self):
         function = self.function_field.currentText()
-        source_directory = self.source_directory_field.text()
+        source_directory = self.filename_edit.text()
         output_file = self.output_file_field.text()
         ftr_file = self.ftr_filename_edit.text()
         time_interval = self.time_interval_field.currentText()
@@ -207,7 +208,7 @@ class smbAuditWindow(QMainWindow):
         
         ## Step6 - Run the tool here
         # Ex: run_status(global_admin, filename, all_tenants_flag)
-        suspend_filer_sync(function, source_directory, output_file, ftr_file, time_interval, search_field, search_string, is_debug, verbose)
+        smb_audit({"function": function, "source_directory": source_directory, "output_file": output_file, "ftr_file": ftr_file, "time_interval": time_interval, "search_field": search_field, "search_string": search_string, "is_debug": is_debug, "verbose": verbose})
 
 
         self._updateOutput()
