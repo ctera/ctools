@@ -148,19 +148,16 @@ class deleteSharesWindow(QMainWindow):
                     logging.info(f"The following shares from filer {filer.name} will be deleted:")
                     for share in shares_to_delete:
                         logging.info(f"Share {share.name}")
-
-                    prompt = input('Do you want to proceed? Type Y to confirm:')
-                    if prompt.lower() == 'y':
-                        with open('deleted_shares.csv', 'a', newline='') as f:
-                            writer = csv.writer(f)
-                            for share in shares_to_delete:
-                                try:
-                                    filer.shares.delete(share.name)
-                                    logging.info(f'Share {share.name} deleted')
-                                    writer.writerow([filer.name, share.name, 'Deleted'])
-                                except CTERAException as error:
-                                    logging.info(f"Failed to delete Share: {share.name} from Filer: {filer.name}")
-                                    writer.writerow([filer.name, share.name, 'NotDeleted'])
+                    with open('deleted_shares.csv', 'a', newline='') as f:
+                        writer = csv.writer(f)
+                        for share in shares_to_delete:
+                            try:
+                                filer.shares.delete(share.name)
+                                logging.info(f'Share {share.name} deleted')
+                                writer.writerow([filer.name, share.name, 'Deleted'])
+                            except CTERAException as error:
+                                logging.info(f"Failed to delete Share: {share.name} from Filer: {filer.name}")
+                                writer.writerow([filer.name, share.name, 'NotDeleted'])
 
         
 
