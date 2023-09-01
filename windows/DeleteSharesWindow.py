@@ -107,13 +107,6 @@ class deleteSharesWindow(QMainWindow):
             self.inputText = str(text)
         else:
             self.stop = True
-    
-    def _getConfirmation(self, share):
-        confirm = QMessageBox()
-        confirm.setIcon(QMessageBox.Warning)
-        confirm.setText("Are you sure you want to delete share: " + str(share))
-        confirm.setWindowTitle("Warning!")
-        confirm.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
 
     # STEP4 - Grab the arguments for you tool
     def test_func(self):
