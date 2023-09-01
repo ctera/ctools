@@ -18,15 +18,37 @@ Module {
         isCreatable: false
         isSingleton: true
         exportMetaObjectRevisions: [515, 1536]
-        Property { name: "lightShade"; type: "QColor"; read: "lightShade"; index: 0; isReadonly: true }
-        Property { name: "darkShade"; type: "QColor"; read: "darkShade"; index: 1; isReadonly: true }
-        Property { name: "topShadow"; type: "QColor"; read: "topShadow"; index: 2; isReadonly: true }
+        Property {
+            name: "lightShade"
+            type: "QColor"
+            read: "lightShade"
+            index: 0
+            isReadonly: true
+            isConstant: true
+        }
+        Property {
+            name: "darkShade"
+            type: "QColor"
+            read: "darkShade"
+            index: 1
+            isReadonly: true
+            isConstant: true
+        }
+        Property {
+            name: "topShadow"
+            type: "QColor"
+            read: "topShadow"
+            index: 2
+            isReadonly: true
+            isConstant: true
+        }
         Property {
             name: "innerContrastLine"
             type: "QColor"
             read: "innerContrastLine"
             index: 3
             isReadonly: true
+            isConstant: true
         }
         Method {
             name: "highlight"
@@ -64,6 +86,7 @@ Module {
         Method {
             name: "buttonColor"
             type: "QColor"
+            isCloned: true
             Parameter { name: "palette"; type: "QQuickPalette"; isPointer: true }
             Parameter { name: "highlighted"; type: "bool" }
             Parameter { name: "down"; type: "bool" }
@@ -71,12 +94,14 @@ Module {
         Method {
             name: "buttonColor"
             type: "QColor"
+            isCloned: true
             Parameter { name: "palette"; type: "QQuickPalette"; isPointer: true }
             Parameter { name: "highlighted"; type: "bool" }
         }
         Method {
             name: "buttonColor"
             type: "QColor"
+            isCloned: true
             Parameter { name: "palette"; type: "QQuickPalette"; isPointer: true }
         }
         Method {
@@ -89,12 +114,14 @@ Module {
         Method {
             name: "buttonOutline"
             type: "QColor"
+            isCloned: true
             Parameter { name: "palette"; type: "QQuickPalette"; isPointer: true }
             Parameter { name: "highlighted"; type: "bool" }
         }
         Method {
             name: "buttonOutline"
             type: "QColor"
+            isCloned: true
             Parameter { name: "palette"; type: "QQuickPalette"; isPointer: true }
         }
         Method {
@@ -117,6 +144,7 @@ Module {
         Method {
             name: "mergedColors"
             type: "QColor"
+            isCloned: true
             Parameter { name: "colorA"; type: "QColor" }
             Parameter { name: "colorB"; type: "QColor" }
         }

@@ -61,10 +61,19 @@ public:
     QSurfaceFormat format() const;
     bool isValid() const;
     void makeCurrent();
+%If (Qt_6_5_0 -)
+    void makeCurrent(QOpenGLWidget::TargetBuffer targetBuffer);
+%End
     void doneCurrent();
     QOpenGLContext *context() const;
     GLuint defaultFramebufferObject() const;
+%If (Qt_6_5_0 -)
+    GLuint defaultFramebufferObject(QOpenGLWidget::TargetBuffer targetBuffer) const;
+%End
     QImage grabFramebuffer();
+%If (Qt_6_5_0 -)
+    QImage grabFramebuffer(QOpenGLWidget::TargetBuffer targetBuffer);
+%End
 
 signals:
     void aboutToCompose();
@@ -93,4 +102,16 @@ public:
     QOpenGLWidget::UpdateBehavior updateBehavior() const;
     GLenum textureFormat() const;
     void setTextureFormat(GLenum texFormat);
+%If (Qt_6_5_0 -)
+
+    enum TargetBuffer
+    {
+        LeftBuffer,
+        RightBuffer,
+    };
+
+%End
+%If (Qt_6_5_0 -)
+    QOpenGLWidget::TargetBuffer currentTargetBuffer() const;
+%End
 };

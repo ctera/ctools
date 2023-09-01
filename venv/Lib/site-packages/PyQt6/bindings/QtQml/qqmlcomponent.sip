@@ -38,6 +38,12 @@ public:
     QQmlComponent(QQmlEngine *, const QString &fileName, QQmlComponent::CompilationMode mode, QObject *parent /TransferThis/ = 0) /ReleaseGIL/;
     QQmlComponent(QQmlEngine *, const QUrl &url, QObject *parent /TransferThis/ = 0) /ReleaseGIL/;
     QQmlComponent(QQmlEngine *, const QUrl &url, QQmlComponent::CompilationMode mode, QObject *parent /TransferThis/ = 0) /ReleaseGIL/;
+%If (Qt_6_5_0 -)
+    QQmlComponent(QQmlEngine *engine, QAnyStringView uri, QAnyStringView typeName, QObject *parent /TransferThis/ = 0) /ReleaseGIL/;
+%End
+%If (Qt_6_5_0 -)
+    QQmlComponent(QQmlEngine *engine, QAnyStringView uri, QAnyStringView typeName, QQmlComponent::CompilationMode mode, QObject *parent /TransferThis/ = 0) /ReleaseGIL/;
+%End
     QQmlComponent(QObject *parent /TransferThis/ = 0);
     virtual ~QQmlComponent();
 
@@ -50,6 +56,9 @@ public:
     };
 
     QQmlComponent::Status status() const;
+%If (Qt_6_5_0 -)
+    bool isBound() const;
+%End
     bool isNull() const;
     bool isReady() const;
     bool isError() const;
@@ -68,6 +77,9 @@ public slots:
     void loadUrl(const QUrl &url) /ReleaseGIL/;
     void loadUrl(const QUrl &url, QQmlComponent::CompilationMode mode) /ReleaseGIL/;
     void setData(const QByteArray &, const QUrl &baseUrl);
+%If (Qt_6_5_0 -)
+    void loadFromModule(QAnyStringView uri, QAnyStringView typeName, QQmlComponent::CompilationMode mode = QQmlComponent::PreferSynchronous);
+%End
 
 signals:
     void statusChanged(QQmlComponent::Status);

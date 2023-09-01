@@ -30,6 +30,9 @@ public:
     QQmlApplicationEngine(QObject *parent /TransferThis/ = 0);
     QQmlApplicationEngine(const QUrl &url, QObject *parent /TransferThis/ = 0) /ReleaseGIL/;
     QQmlApplicationEngine(const QString &filePath, QObject *parent /TransferThis/ = 0) /ReleaseGIL/;
+%If (Qt_6_5_0 -)
+    QQmlApplicationEngine(QAnyStringView uri, QAnyStringView typeName, QObject *parent /TransferThis/ = 0);
+%End
     virtual ~QQmlApplicationEngine();
     QList<QObject *> rootObjects() const;
 
@@ -39,6 +42,9 @@ public slots:
     void loadData(const QByteArray &data, const QUrl &url = QUrl()) /ReleaseGIL/;
     void setExtraFileSelectors(const QStringList &extraFileSelectors);
     void setInitialProperties(const QVariantMap &initialProperties);
+%If (Qt_6_5_0 -)
+    void loadFromModule(QAnyStringView uri, QAnyStringView typeName);
+%End
 
 signals:
     void objectCreated(QObject *object, const QUrl &url);

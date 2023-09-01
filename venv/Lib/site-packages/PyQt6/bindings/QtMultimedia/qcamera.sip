@@ -45,7 +45,12 @@ class QCamera : QObject
         {sipName_QMediaDevices, &sipType_QMediaDevices, -1, 9},
         {sipName_QMediaPlayer, &sipType_QMediaPlayer, -1, 10},
         {sipName_QMediaRecorder, &sipType_QMediaRecorder, -1, 11},
-        {sipName_QSoundEffect, &sipType_QSoundEffect, -1, 12},
+    #if QT_VERSION >= 0x060500
+        {sipName_QScreenCapture, &sipType_QScreenCapture, -1, 12},
+    #else
+        {0, 0, -1, 12},
+    #endif
+        {sipName_QSoundEffect, &sipType_QSoundEffect, -1, 13},
         {sipName_QVideoSink, &sipType_QVideoSink, -1, -1},
     };
     

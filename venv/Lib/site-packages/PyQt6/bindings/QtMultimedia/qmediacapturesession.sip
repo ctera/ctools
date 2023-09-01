@@ -53,6 +53,19 @@ signals:
     void recorderChanged();
     void videoOutputChanged();
     void audioOutputChanged();
+
+public:
+%If (Qt_6_5_0 -)
+    QScreenCapture *screenCapture();
+%End
+%If (Qt_6_5_0 -)
+    void setScreenCapture(QScreenCapture *screenCapture);
+%End
+
+signals:
+%If (Qt_6_5_0 -)
+    void screenCaptureChanged();
+%End
 };
 
 %End

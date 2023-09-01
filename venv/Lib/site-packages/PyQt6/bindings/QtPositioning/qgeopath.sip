@@ -54,3 +54,9 @@ public:
 };
 
 %End
+%If (Qt_6_5_0 -)
+QDataStream &operator<<(QDataStream &stream, const QGeoPath &path) /ReleaseGIL/;
+%End
+%If (Qt_6_5_0 -)
+QDataStream &operator>>(QDataStream &stream, QGeoPath &path /Constrained/) /ReleaseGIL/;
+%End

@@ -12,6 +12,7 @@ T.ComboBox {
     id: control
 
     readonly property bool __nativeBackground: background instanceof NativeStyle.StyleItem
+    readonly property bool __notCustomizable: true
 
     implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
                             implicitContentWidth + leftPadding + rightPadding,
@@ -42,12 +43,16 @@ T.ComboBox {
         selectionColor: control.palette.highlight
         selectedTextColor: control.palette.highlightedText
         verticalAlignment: Text.AlignVCenter
+
+        readonly property bool __ignoreNotCustomizable: true
     }
 
     background: NativeStyle.ComboBox {
         control: control
         contentWidth: contentItem.implicitWidth
         contentHeight: contentItem.implicitHeight
+
+        readonly property bool __ignoreNotCustomizable: true
     }
 
     delegate: ItemDelegate {

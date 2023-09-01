@@ -70,7 +70,7 @@ Module {
             index: 7
             isReadonly: true
         }
-        Property { name: "transitionDuration"; type: "int"; index: 8 }
+        Property { name: "transitionDuration"; type: "int"; index: 8; isConstant: true }
         Signal { name: "controlChanged" }
         Signal { name: "contentPaddingChanged" }
         Signal { name: "layoutMarginsChanged" }

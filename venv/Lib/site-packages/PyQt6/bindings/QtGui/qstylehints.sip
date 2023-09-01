@@ -83,6 +83,17 @@ signals:
 public:
     int mouseDoubleClickDistance() const;
     int touchDoubleTapDistance() const;
+%If (Qt_6_5_0 -)
+    qreal keyboardAutoRepeatRateF() const;
+%End
+%If (Qt_6_5_0 -)
+    Qt::ColorScheme colorScheme() const;
+%End
+
+signals:
+%If (Qt_6_5_0 -)
+    void colorSchemeChanged(Qt::ColorScheme colorScheme);
+%End
 
 private:
     QStyleHints();

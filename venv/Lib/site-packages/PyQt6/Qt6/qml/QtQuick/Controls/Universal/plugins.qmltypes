@@ -7,8 +7,8 @@ import QtQuick.tooling 1.2
 
 Module {
     Component {
-        file: "qquickattachedobject_p.h"
-        name: "QQuickAttachedObject"
+        file: "qquickattachedpropertypropagator.h"
+        name: "QQuickAttachedPropertyPropagator"
         accessSemantics: "reference"
         prototype: "QObject"
     }
@@ -16,7 +16,7 @@ Module {
         file: "qquickuniversalstyle_p.h"
         name: "QQuickUniversalStyle"
         accessSemantics: "reference"
-        prototype: "QQuickAttachedObject"
+        prototype: "QQuickAttachedPropertyPropagator"
         exports: [
             "QtQuick.Controls.Universal/Universal 2.0",
             "QtQuick.Controls.Universal/Universal 6.0"
@@ -58,6 +58,7 @@ Module {
             type: "Theme"
             read: "theme"
             write: "setTheme"
+            reset: "resetTheme"
             notify: "themeChanged"
             index: 0
             isFinal: true
@@ -67,6 +68,7 @@ Module {
             type: "QVariant"
             read: "accent"
             write: "setAccent"
+            reset: "resetAccent"
             notify: "accentChanged"
             index: 1
             isFinal: true
@@ -76,6 +78,7 @@ Module {
             type: "QVariant"
             read: "foreground"
             write: "setForeground"
+            reset: "resetForeground"
             notify: "foregroundChanged"
             index: 2
             isFinal: true
@@ -85,6 +88,7 @@ Module {
             type: "QVariant"
             read: "background"
             write: "setBackground"
+            reset: "resetBackground"
             notify: "backgroundChanged"
             index: 3
             isFinal: true

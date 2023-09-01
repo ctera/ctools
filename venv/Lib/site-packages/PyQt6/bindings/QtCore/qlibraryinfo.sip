@@ -28,6 +28,9 @@ class QLibraryInfo
 
 public:
     static bool isDebugBuild();
+%If (Qt_6_5_0 -)
+    static bool isSharedBuild();
+%End
     static QString path(QLibraryInfo::LibraryPath p) /ReleaseGIL/;
     static QVersionNumber version();
 

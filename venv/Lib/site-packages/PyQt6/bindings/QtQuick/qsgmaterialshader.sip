@@ -112,6 +112,24 @@ public:
         };
 
 %End
+        QColor blendConstant;
+        bool blendEnable;
+        QSGMaterialShader::GraphicsPipelineState::ColorMask colorWrite;
+        QSGMaterialShader::GraphicsPipelineState::CullMode cullMode;
+%If (Qt_6_5_0 -)
+        QSGMaterialShader::GraphicsPipelineState::BlendFactor dstAlpha;
+%End
+        QSGMaterialShader::GraphicsPipelineState::BlendFactor dstColor;
+%If (Qt_6_4_0 -)
+        QSGMaterialShader::GraphicsPipelineState::PolygonMode polygonMode;
+%End
+%If (Qt_6_5_0 -)
+        bool separateBlendFactors;
+%End
+%If (Qt_6_5_0 -)
+        QSGMaterialShader::GraphicsPipelineState::BlendFactor srcAlpha;
+%End
+        QSGMaterialShader::GraphicsPipelineState::BlendFactor srcColor;
     };
 
     enum Flag /BaseType=Flag/

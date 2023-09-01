@@ -90,7 +90,29 @@ public:
     void setFilter(QDir::Filters filter);
     QDir::SortFlags sorting() const;
     void setSorting(QDir::SortFlags sort);
+%If (Qt_6_5_0 -)
+    qsizetype count() const /__len__/;
+%MethodCode
+        sipRes = sipCpp->count(Qt::Disambiguated);
+%End
+
+%End
+%If (- Qt_6_5_0)
     uint count() const /__len__/;
+%End
+%If (Qt_6_5_0 -)
+    QString operator[](qsizetype) const;
+%MethodCode
+        Py_ssize_t idx = sipConvertFromSequenceIndex(a0, sipCpp->count());
+        
+        if (idx < 0)
+            sipIsErr = 1;
+        else
+            sipRes = new QString(sipCpp->operator[]((qsizetype)idx));
+%End
+
+%End
+%If (- Qt_6_5_0)
     QString operator[](int) const;
 %MethodCode
         Py_ssize_t idx = sipConvertFromSequenceIndex(a0, sipCpp->count());
@@ -101,6 +123,7 @@ public:
             sipRes = new QString(sipCpp->operator[]((int)idx));
 %End
 
+%End
     QStringList operator[](SIP_PYSLICE) const;
 %MethodCode
         Py_ssize_t start, stop, step, slicelength;

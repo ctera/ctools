@@ -170,6 +170,11 @@ public:
 %If (Qt_6_4_0 -)
     QString subprotocol() const;
 %End
+
+signals:
+%If (Qt_6_5_0 -)
+    void errorOccurred(QAbstractSocket::SocketError error);
+%End
 };
 
 %End

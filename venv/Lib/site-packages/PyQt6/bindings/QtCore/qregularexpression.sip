@@ -96,8 +96,14 @@ public:
     };
 
     typedef QFlags<QRegularExpression::MatchOption> MatchOptions;
-    QRegularExpressionMatch match(QStringView subjectView, qsizetype offset = 0, QRegularExpression::MatchType matchType = QRegularExpression::NormalMatch, QRegularExpression::MatchOptions matchOptions = QRegularExpression::NoMatchOption) const;
-    QRegularExpressionMatchIterator globalMatch(QStringView subjectView, qsizetype offset = 0, QRegularExpression::MatchType matchType = QRegularExpression::NormalMatch, QRegularExpression::MatchOptions matchOptions = QRegularExpression::NoMatchOption) const;
+    QRegularExpressionMatch match(const QString &subject, qsizetype offset = 0, QRegularExpression::MatchType matchType = QRegularExpression::NormalMatch, QRegularExpression::MatchOptions matchOptions = QRegularExpression::NoMatchOption) const;
+%If (Qt_6_5_0 -)
+    QRegularExpressionMatch matchView(QStringView subjectView, qsizetype offset = 0, QRegularExpression::MatchType matchType = QRegularExpression::NormalMatch, QRegularExpression::MatchOptions matchOptions = QRegularExpression::NoMatchOption) const;
+%End
+    QRegularExpressionMatchIterator globalMatch(const QString &subject, qsizetype offset = 0, QRegularExpression::MatchType matchType = QRegularExpression::NormalMatch, QRegularExpression::MatchOptions matchOptions = QRegularExpression::NoMatchOption) const;
+%If (Qt_6_5_0 -)
+    QRegularExpressionMatchIterator globalMatchView(QStringView subjectView, qsizetype offset = 0, QRegularExpression::MatchType matchType = QRegularExpression::NormalMatch, QRegularExpression::MatchOptions matchOptions = QRegularExpression::NoMatchOption) const;
+%End
     static QString escape(const QString &str);
     QStringList namedCaptureGroups() const;
     bool operator==(const QRegularExpression &re) const;

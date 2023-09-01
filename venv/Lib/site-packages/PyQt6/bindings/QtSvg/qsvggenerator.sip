@@ -28,6 +28,9 @@ class QSvgGenerator : QPaintDevice
 
 public:
     QSvgGenerator();
+%If (Qt_6_5_0 -)
+    explicit QSvgGenerator(QSvgGenerator::SvgVersion version);
+%End
     virtual ~QSvgGenerator();
     QSize size() const;
     void setSize(const QSize &size);
@@ -49,4 +52,18 @@ public:
 protected:
     virtual QPaintEngine *paintEngine() const;
     virtual int metric(QPaintDevice::PaintDeviceMetric metric) const;
+
+public:
+%If (Qt_6_5_0 -)
+
+    enum class SvgVersion
+    {
+        SvgTiny12,
+        Svg11,
+    };
+
+%End
+%If (Qt_6_5_0 -)
+    QSvgGenerator::SvgVersion svgVersion() const;
+%End
 };

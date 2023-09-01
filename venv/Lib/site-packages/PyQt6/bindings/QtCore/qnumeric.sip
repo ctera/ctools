@@ -31,3 +31,18 @@ double qInf();
 double qSNaN();
 double qQNaN();
 quint64 qFloatDistance(double a, double b);
+%If (Qt_6_5_0 -)
+double qAbs(const double &t);
+%End
+%If (Qt_6_5_0 -)
+int qRound(double d);
+%End
+%If (Qt_6_5_0 -)
+qint64 qRound64(double d);
+%End
+%If (Qt_6_5_0 -)
+bool qFuzzyCompare(double p1, double p2);
+%End
+%If (Qt_6_5_0 -)
+bool qFuzzyIsNull(double d);
+%End

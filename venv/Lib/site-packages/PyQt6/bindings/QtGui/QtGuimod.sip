@@ -128,6 +128,7 @@ WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 %Include qtransform.sip
 %Include qundogroup.sip
 %Include qundostack.sip
+%Include qutimimeconverter.sip
 %Include qvalidator.sip
 %Include qvectornd.sip
 %Include qwindow.sip

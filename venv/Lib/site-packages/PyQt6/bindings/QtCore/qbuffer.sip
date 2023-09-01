@@ -34,7 +34,12 @@ public:
     const QByteArray &data() const;
     void setBuffer(QByteArray *a /Constrained/);
     void setData(const QByteArray &data);
+%If (- Qt_6_5_0)
     void setData(const char *adata /Array/, int alen /ArraySize/);
+%End
+%If (Qt_6_5_0 -)
+    void setData(const char *data /Array/, qsizetype len /ArraySize/);
+%End
     virtual bool open(QIODeviceBase::OpenMode openMode);
     virtual void close();
     virtual qint64 size() const;

@@ -56,4 +56,18 @@ public:
 %If (Qt_6_4_0 -)
     bool isClearButtonEnabled() const;
 %End
+%If (Qt_6_5_0 -)
+    qsizetype maximumSequenceLength() const;
+%End
+%If (Qt_6_5_0 -)
+    void setFinishingKeyCombinations(const QList<QKeyCombination> &finishingKeyCombinations);
+%End
+%If (Qt_6_5_0 -)
+    QList<QKeyCombination> finishingKeyCombinations() const;
+%End
+
+public slots:
+%If (Qt_6_5_0 -)
+    void setMaximumSequenceLength(qsizetype count);
+%End
 };

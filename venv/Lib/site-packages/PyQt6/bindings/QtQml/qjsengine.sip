@@ -186,6 +186,15 @@ public:
 %If (Qt_6_2_0 -)
     QJSValue newSymbol(const QString &name);
 %End
+%If (Qt_6_5_0 -)
+    QJSValue toScriptValue(const QVariant &value);
+%End
+%If (Qt_6_5_0 -)
+    QJSManagedValue toManagedValue(const QVariant &value);
+%End
+%If (Qt_6_5_0 -)
+    QJSPrimitiveValue toPrimitiveValue(const QVariant &value);
+%End
 };
 
 QJSEngine *qjsEngine(const QObject *);

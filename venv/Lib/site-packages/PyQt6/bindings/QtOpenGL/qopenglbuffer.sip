@@ -90,4 +90,7 @@ public:
 
     typedef QFlags<QOpenGLBuffer::RangeAccessFlag> RangeAccessFlags;
     void *mapRange(int offset, int count, QOpenGLBuffer::RangeAccessFlags access);
+%If (Qt_6_5_0 -)
+    void swap(QOpenGLBuffer &other);
+%End
 };

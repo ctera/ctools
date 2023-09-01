@@ -36,6 +36,7 @@ Module {
         Method {
             name: "enableRemoting"
             type: "bool"
+            isCloned: true
             Parameter { name: "object"; type: "QObject"; isPointer: true }
         }
         Method {
@@ -162,6 +163,7 @@ Module {
         Method {
             name: "watch"
             type: "QJSValue"
+            isCloned: true
             Parameter { name: "reply"; type: "QRemoteObjectPendingCall" }
         }
     }

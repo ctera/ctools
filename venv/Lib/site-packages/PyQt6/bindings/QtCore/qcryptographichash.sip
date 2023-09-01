@@ -76,6 +76,15 @@ public:
     static QByteArray hash(const QByteArray &data, QCryptographicHash::Algorithm method);
 %End
     static int hashLength(QCryptographicHash::Algorithm method);
+%If (Qt_6_5_0 -)
+    void swap(QCryptographicHash &other /Constrained/);
+%End
+%If (Qt_6_5_0 -)
+    QCryptographicHash::Algorithm algorithm() const;
+%End
+%If (Qt_6_5_0 -)
+    static bool supportsAlgorithm(QCryptographicHash::Algorithm method);
+%End
 
 private:
     QCryptographicHash(const QCryptographicHash &);

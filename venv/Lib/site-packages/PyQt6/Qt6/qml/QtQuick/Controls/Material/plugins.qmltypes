@@ -7,8 +7,8 @@ import QtQuick.tooling 1.2
 
 Module {
     Component {
-        file: "qquickattachedobject_p.h"
-        name: "QQuickAttachedObject"
+        file: "qquickattachedpropertypropagator.h"
+        name: "QQuickAttachedPropertyPropagator"
         accessSemantics: "reference"
         prototype: "QObject"
     }
@@ -16,15 +16,14 @@ Module {
         file: "qquickmaterialstyle_p.h"
         name: "QQuickMaterialStyle"
         accessSemantics: "reference"
-        prototype: "QQuickAttachedObject"
+        prototype: "QQuickAttachedPropertyPropagator"
         exports: [
             "QtQuick.Controls.Material/Material 2.0",
             "QtQuick.Controls.Material/Material 2.15",
-            "QtQuick.Controls.Material/Material 6.0",
-            "QtQuick.Controls.Material/Material 6.2"
+            "QtQuick.Controls.Material/Material 6.0"
         ]
         isCreatable: false
-        exportMetaObjectRevisions: [512, 527, 1536, 1538]
+        exportMetaObjectRevisions: [512, 527, 1536]
         attachedType: "QQuickMaterialStyle"
         Enum {
             name: "Theme"
@@ -77,11 +76,28 @@ Module {
                 "ShadeA700"
             ]
         }
+        Enum {
+            name: "RoundedScale"
+            values: [
+                "NotRounded",
+                "ExtraSmallScale",
+                "SmallScale",
+                "MediumScale",
+                "LargeScale",
+                "ExtraLargeScale",
+                "FullScale"
+            ]
+        }
+        Enum {
+            name: "ContainerStyle"
+            values: ["Filled", "Outlined"]
+        }
         Property {
             name: "theme"
             type: "Theme"
             read: "theme"
             write: "setTheme"
+            reset: "resetTheme"
             notify: "themeChanged"
             index: 0
             isFinal: true
@@ -91,6 +107,7 @@ Module {
             type: "QVariant"
             read: "primary"
             write: "setPrimary"
+            reset: "resetPrimary"
             notify: "primaryChanged"
             index: 1
             isFinal: true
@@ -100,6 +117,7 @@ Module {
             type: "QVariant"
             read: "accent"
             write: "setAccent"
+            reset: "resetAccent"
             notify: "accentChanged"
             index: 2
             isFinal: true
@@ -109,6 +127,7 @@ Module {
             type: "QVariant"
             read: "foreground"
             write: "setForeground"
+            reset: "resetForeground"
             notify: "foregroundChanged"
             index: 3
             isFinal: true
@@ -118,6 +137,7 @@ Module {
             type: "QVariant"
             read: "background"
             write: "setBackground"
+            reset: "resetBackground"
             notify: "backgroundChanged"
             index: 4
             isFinal: true
@@ -127,8 +147,29 @@ Module {
             type: "int"
             read: "elevation"
             write: "setElevation"
+            reset: "resetElevation"
             notify: "elevationChanged"
             index: 5
+            isFinal: true
+        }
+        Property {
+            name: "roundedScale"
+            type: "RoundedScale"
+            read: "roundedScale"
+            write: "setRoundedScale"
+            reset: "resetRoundedScale"
+            notify: "roundedScaleChanged"
+            index: 6
+            isFinal: true
+        }
+        Property {
+            name: "containerStyle"
+            type: "ContainerStyle"
+            read: "containerStyle"
+            write: "setContainerStyle"
+            reset: "resetContainerStyle"
+            notify: "containerStyleChanged"
+            index: 7
             isFinal: true
         }
         Property {
@@ -136,7 +177,7 @@ Module {
             type: "QColor"
             read: "primaryColor"
             notify: "primaryChanged"
-            index: 6
+            index: 8
             isReadonly: true
             isFinal: true
         }
@@ -145,7 +186,7 @@ Module {
             type: "QColor"
             read: "accentColor"
             notify: "accentChanged"
-            index: 7
+            index: 9
             isReadonly: true
             isFinal: true
         }
@@ -154,7 +195,7 @@ Module {
             type: "QColor"
             read: "backgroundColor"
             notify: "backgroundChanged"
-            index: 8
+            index: 10
             isReadonly: true
             isFinal: true
         }
@@ -163,7 +204,7 @@ Module {
             type: "QColor"
             read: "primaryTextColor"
             notify: "themeChanged"
-            index: 9
+            index: 11
             isReadonly: true
             isFinal: true
         }
@@ -172,7 +213,7 @@ Module {
             type: "QColor"
             read: "primaryHighlightedTextColor"
             notify: "primaryHighlightedTextColorChanged"
-            index: 10
+            index: 12
             isReadonly: true
             isFinal: true
         }
@@ -181,7 +222,7 @@ Module {
             type: "QColor"
             read: "secondaryTextColor"
             notify: "themeChanged"
-            index: 11
+            index: 13
             isReadonly: true
             isFinal: true
         }
@@ -190,7 +231,7 @@ Module {
             type: "QColor"
             read: "hintTextColor"
             notify: "themeChanged"
-            index: 12
+            index: 14
             isReadonly: true
             isFinal: true
         }
@@ -199,7 +240,7 @@ Module {
             type: "QColor"
             read: "textSelectionColor"
             notify: "themeOrAccentChanged"
-            index: 13
+            index: 15
             isReadonly: true
             isFinal: true
         }
@@ -207,16 +248,17 @@ Module {
             name: "dropShadowColor"
             type: "QColor"
             read: "dropShadowColor"
-            index: 14
+            index: 16
             isReadonly: true
             isFinal: true
+            isConstant: true
         }
         Property {
             name: "dividerColor"
             type: "QColor"
             read: "dividerColor"
             notify: "themeChanged"
-            index: 15
+            index: 17
             isReadonly: true
             isFinal: true
         }
@@ -225,7 +267,7 @@ Module {
             type: "QColor"
             read: "iconColor"
             notify: "themeChanged"
-            index: 16
+            index: 18
             isReadonly: true
             isFinal: true
         }
@@ -234,44 +276,7 @@ Module {
             type: "QColor"
             read: "iconDisabledColor"
             notify: "themeChanged"
-            index: 17
-            isReadonly: true
-            isFinal: true
-        }
-        Property {
-            name: "buttonColor"
-            type: "QColor"
-            read: "buttonColor"
-            notify: "buttonColorChanged"
-            index: 18
-            isReadonly: true
-            isFinal: true
-        }
-        Property {
-            name: "buttonDisabledColor"
-            type: "QColor"
-            read: "buttonDisabledColor"
-            notify: "buttonDisabledColorChanged"
             index: 19
-            isReadonly: true
-            isFinal: true
-        }
-        Property {
-            name: "highlightedButtonColor"
-            type: "QColor"
-            read: "highlightedButtonColor"
-            notify: "buttonColorChanged"
-            index: 20
-            isReadonly: true
-            isFinal: true
-        }
-        Property {
-            name: "highlightedCheckedButtonColor"
-            revision: 1538
-            type: "QColor"
-            read: "highlightedCheckedButtonColor"
-            notify: "buttonColorChanged"
-            index: 21
             isReadonly: true
             isFinal: true
         }
@@ -280,7 +285,7 @@ Module {
             type: "QColor"
             read: "frameColor"
             notify: "themeChanged"
-            index: 22
+            index: 20
             isReadonly: true
             isFinal: true
         }
@@ -289,7 +294,7 @@ Module {
             type: "QColor"
             read: "rippleColor"
             notify: "themeChanged"
-            index: 23
+            index: 21
             isReadonly: true
             isFinal: true
         }
@@ -298,7 +303,7 @@ Module {
             type: "QColor"
             read: "highlightedRippleColor"
             notify: "themeOrAccentChanged"
-            index: 24
+            index: 22
             isReadonly: true
             isFinal: true
         }
@@ -307,7 +312,7 @@ Module {
             type: "QColor"
             read: "switchUncheckedTrackColor"
             notify: "themeChanged"
-            index: 25
+            index: 23
             isReadonly: true
             isFinal: true
         }
@@ -316,7 +321,7 @@ Module {
             type: "QColor"
             read: "switchCheckedTrackColor"
             notify: "themeOrAccentChanged"
-            index: 26
+            index: 24
             isReadonly: true
             isFinal: true
         }
@@ -325,7 +330,43 @@ Module {
             type: "QColor"
             read: "switchUncheckedHandleColor"
             notify: "themeChanged"
+            index: 25
+            isReadonly: true
+            isFinal: true
+        }
+        Property {
+            name: "switchUncheckedHoveredHandleColor"
+            type: "QColor"
+            read: "switchUncheckedHoveredHandleColor"
+            notify: "themeChanged"
+            index: 26
+            isReadonly: true
+            isFinal: true
+        }
+        Property {
+            name: "switchDisabledUncheckedTrackColor"
+            type: "QColor"
+            read: "switchDisabledUncheckedTrackColor"
+            notify: "themeChanged"
             index: 27
+            isReadonly: true
+            isFinal: true
+        }
+        Property {
+            name: "switchDisabledCheckedTrackColor"
+            type: "QColor"
+            read: "switchDisabledCheckedTrackColor"
+            notify: "themeChanged"
+            index: 28
+            isReadonly: true
+            isFinal: true
+        }
+        Property {
+            name: "switchDisabledUncheckedTrackBorderColor"
+            type: "QColor"
+            read: "switchDisabledUncheckedTrackBorderColor"
+            notify: "themeChanged"
+            index: 29
             isReadonly: true
             isFinal: true
         }
@@ -334,25 +375,43 @@ Module {
             type: "QColor"
             read: "switchCheckedHandleColor"
             notify: "themeOrAccentChanged"
-            index: 28
-            isReadonly: true
-            isFinal: true
-        }
-        Property {
-            name: "switchDisabledTrackColor"
-            type: "QColor"
-            read: "switchDisabledTrackColor"
-            notify: "themeChanged"
-            index: 29
-            isReadonly: true
-            isFinal: true
-        }
-        Property {
-            name: "switchDisabledHandleColor"
-            type: "QColor"
-            read: "switchDisabledHandleColor"
-            notify: "themeChanged"
             index: 30
+            isReadonly: true
+            isFinal: true
+        }
+        Property {
+            name: "switchDisabledUncheckedHandleColor"
+            type: "QColor"
+            read: "switchDisabledUncheckedHandleColor"
+            notify: "themeChanged"
+            index: 31
+            isReadonly: true
+            isFinal: true
+        }
+        Property {
+            name: "switchDisabledCheckedHandleColor"
+            type: "QColor"
+            read: "switchDisabledCheckedHandleColor"
+            notify: "themeChanged"
+            index: 32
+            isReadonly: true
+            isFinal: true
+        }
+        Property {
+            name: "switchDisabledCheckedIconColor"
+            type: "QColor"
+            read: "switchDisabledCheckedIconColor"
+            notify: "themeChanged"
+            index: 33
+            isReadonly: true
+            isFinal: true
+        }
+        Property {
+            name: "switchDisabledUncheckedIconColor"
+            type: "QColor"
+            read: "switchDisabledUncheckedIconColor"
+            notify: "themeChanged"
+            index: 34
             isReadonly: true
             isFinal: true
         }
@@ -361,7 +420,7 @@ Module {
             type: "QColor"
             read: "scrollBarColor"
             notify: "themeChanged"
-            index: 31
+            index: 35
             isReadonly: true
             isFinal: true
         }
@@ -370,7 +429,7 @@ Module {
             type: "QColor"
             read: "scrollBarHoveredColor"
             notify: "themeChanged"
-            index: 32
+            index: 36
             isReadonly: true
             isFinal: true
         }
@@ -379,7 +438,7 @@ Module {
             type: "QColor"
             read: "scrollBarPressedColor"
             notify: "themeChanged"
-            index: 33
+            index: 37
             isReadonly: true
             isFinal: true
         }
@@ -388,7 +447,7 @@ Module {
             type: "QColor"
             read: "dialogColor"
             notify: "dialogColorChanged"
-            index: 34
+            index: 38
             isReadonly: true
             isFinal: true
         }
@@ -397,7 +456,7 @@ Module {
             type: "QColor"
             read: "backgroundDimColor"
             notify: "themeChanged"
-            index: 35
+            index: 39
             isReadonly: true
             isFinal: true
         }
@@ -406,7 +465,7 @@ Module {
             type: "QColor"
             read: "listHighlightColor"
             notify: "themeChanged"
-            index: 36
+            index: 40
             isReadonly: true
             isFinal: true
         }
@@ -415,7 +474,7 @@ Module {
             type: "QColor"
             read: "tooltipColor"
             notify: "tooltipColorChanged"
-            index: 37
+            index: 41
             isReadonly: true
             isFinal: true
         }
@@ -424,7 +483,7 @@ Module {
             type: "QColor"
             read: "toolBarColor"
             notify: "toolBarColorChanged"
-            index: 38
+            index: 42
             isReadonly: true
             isFinal: true
         }
@@ -433,7 +492,7 @@ Module {
             type: "QColor"
             read: "toolTextColor"
             notify: "toolTextColorChanged"
-            index: 39
+            index: 43
             isReadonly: true
             isFinal: true
         }
@@ -442,7 +501,7 @@ Module {
             type: "QColor"
             read: "spinBoxDisabledIconColor"
             notify: "themeChanged"
-            index: 40
+            index: 44
             isReadonly: true
             isFinal: true
         }
@@ -452,7 +511,16 @@ Module {
             type: "QColor"
             read: "sliderDisabledColor"
             notify: "themeChanged"
-            index: 41
+            index: 45
+            isReadonly: true
+            isFinal: true
+        }
+        Property {
+            name: "textFieldFilledContainerColor"
+            type: "QColor"
+            read: "textFieldFilledContainerColor"
+            notify: "themeChanged"
+            index: 46
             isReadonly: true
             isFinal: true
         }
@@ -460,73 +528,109 @@ Module {
             name: "touchTarget"
             type: "int"
             read: "touchTarget"
-            index: 42
+            index: 47
             isReadonly: true
             isFinal: true
+            isConstant: true
         }
         Property {
             name: "buttonHeight"
             type: "int"
             read: "buttonHeight"
-            index: 43
+            index: 48
             isReadonly: true
             isFinal: true
+            isConstant: true
         }
         Property {
             name: "delegateHeight"
             type: "int"
             read: "delegateHeight"
-            index: 44
+            index: 49
             isReadonly: true
             isFinal: true
+            isConstant: true
         }
         Property {
             name: "dialogButtonBoxHeight"
             type: "int"
             read: "dialogButtonBoxHeight"
-            index: 45
+            index: 50
             isReadonly: true
             isFinal: true
+            isConstant: true
         }
         Property {
             name: "frameVerticalPadding"
             type: "int"
             read: "frameVerticalPadding"
-            index: 46
+            index: 51
             isReadonly: true
             isFinal: true
+            isConstant: true
         }
         Property {
             name: "menuItemHeight"
             type: "int"
             read: "menuItemHeight"
-            index: 47
+            index: 52
             isReadonly: true
             isFinal: true
+            isConstant: true
         }
         Property {
             name: "menuItemVerticalPadding"
             type: "int"
             read: "menuItemVerticalPadding"
-            index: 48
+            index: 53
             isReadonly: true
             isFinal: true
+            isConstant: true
         }
         Property {
             name: "switchDelegateVerticalPadding"
             type: "int"
             read: "switchDelegateVerticalPadding"
-            index: 49
+            index: 54
             isReadonly: true
             isFinal: true
+            isConstant: true
+        }
+        Property {
+            name: "textFieldHeight"
+            type: "int"
+            read: "textFieldHeight"
+            index: 55
+            isReadonly: true
+            isFinal: true
+            isConstant: true
+        }
+        Property {
+            name: "textFieldHorizontalPadding"
+            type: "int"
+            read: "textFieldHorizontalPadding"
+            index: 56
+            isReadonly: true
+            isFinal: true
+            isConstant: true
+        }
+        Property {
+            name: "textFieldVerticalPadding"
+            type: "int"
+            read: "textFieldVerticalPadding"
+            index: 57
+            isReadonly: true
+            isFinal: true
+            isConstant: true
         }
         Property {
             name: "tooltipHeight"
             type: "int"
             read: "tooltipHeight"
-            index: 50
+            index: 58
             isReadonly: true
             isFinal: true
+            isConstant: true
         }
         Signal { name: "themeChanged" }
         Signal { name: "primaryChanged" }
@@ -536,12 +640,23 @@ Module {
         Signal { name: "elevationChanged" }
         Signal { name: "themeOrAccentChanged" }
         Signal { name: "primaryHighlightedTextColorChanged" }
-        Signal { name: "buttonColorChanged" }
-        Signal { name: "buttonDisabledColorChanged" }
         Signal { name: "dialogColorChanged" }
         Signal { name: "tooltipColorChanged" }
         Signal { name: "toolBarColorChanged" }
         Signal { name: "toolTextColorChanged" }
+        Signal { name: "roundedScaleChanged" }
+        Signal { name: "containerStyleChanged" }
+        Method {
+            name: "buttonColor"
+            type: "QColor"
+            Parameter { name: "theme"; type: "Theme" }
+            Parameter { name: "background"; type: "QVariant" }
+            Parameter { name: "accent"; type: "QVariant" }
+            Parameter { name: "enabled"; type: "bool" }
+            Parameter { name: "flat"; type: "bool" }
+            Parameter { name: "highlighted"; type: "bool" }
+            Parameter { name: "checked"; type: "bool" }
+        }
         Method {
             name: "color"
             type: "QColor"
@@ -551,6 +666,7 @@ Module {
         Method {
             name: "color"
             type: "QColor"
+            isCloned: true
             Parameter { name: "color"; type: "Color" }
         }
         Method {

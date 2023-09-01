@@ -16,7 +16,7 @@ from windows.DisableSSHWindow import disableSSHWindow
 from windows.UnsuspendSyncWindow import unsuspendSyncWindow
 from windows.ResetPasswordWindow import resetPasswordWindow
 from windows.CloudFoldersWindow import cloudFoldersWindow
-from windows.SMBAuditWindow import smbAuditWindow
+#from windows.SMBAuditWindow import smbAuditWindow
 
 from PySide2.QtCore import Qt
 
@@ -73,8 +73,8 @@ def main():
     cloud_folders = cloudFoldersWindow(widget)
     widget.addWidget(cloud_folders)
 
-    smb_audit = smbAuditWindow(widget)
-    widget.addWidget(smb_audit)
+    #smb_audit = smbAuditWindow(widget)
+    #widget.addWidget(smb_audit)
     ## STEP7- Add new windows above this line ##
 
     widget.setCurrentWidget(run_cmd)   # setting the page that you want to load when application starts up. you can also use setCurrentIndex(int)

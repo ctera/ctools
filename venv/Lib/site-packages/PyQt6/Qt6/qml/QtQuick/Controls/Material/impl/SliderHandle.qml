@@ -1,4 +1,4 @@
-// Copyright (C) 2017 The Qt Company Ltd.
+// Copyright (C) 2023 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
 
 import QtQuick
@@ -22,14 +22,9 @@ Item {
         width: parent.width
         height: parent.height
         radius: width / 2
-        scale: root.handlePressed ? 1.5 : 1
-        color: root.control.enabled ? root.control.Material.accentColor : root.control.Material.sliderDisabledColor
-
-        Behavior on scale {
-            NumberAnimation {
-                duration: 250
-            }
-        }
+        color: root.control
+            ? root.control.enabled ? root.control.Material.accentColor : root.control.Material.sliderDisabledColor
+            : "transparent"
     }
 
     Ripple {
@@ -38,6 +33,6 @@ Item {
         width: 22; height: 22
         pressed: root.handlePressed
         active: root.handlePressed || root.handleHasFocus || (enabled && root.handleHovered)
-        color: root.control.Material.highlightedRippleColor
+        color: root.control ? root.control.Material.highlightedRippleColor : "transparent"
     }
 }

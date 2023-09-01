@@ -109,12 +109,32 @@ public:
 %If (PyQt_RawFont)
     QList<QGlyphRun> glyphRuns(int from = -1, int length = -1) const;
 %End
+%If (Qt_6_5_0 -)
+    QList<QGlyphRun> glyphRuns(int from, int length, QTextLayout::GlyphRunRetrievalFlags flags) const;
+%End
     void setFormats(const QList<QTextLayout::FormatRange> &overrides);
     QList<QTextLayout::FormatRange> formats() const;
     void clearFormats();
 
 private:
     QTextLayout(const QTextLayout &);
+
+public:
+%If (Qt_6_5_0 -)
+
+    enum GlyphRunRetrievalFlag
+    {
+        RetrieveGlyphIndexes,
+        RetrieveGlyphPositions,
+        RetrieveStringIndexes,
+        RetrieveString,
+        RetrieveAll,
+    };
+
+%End
+%If (Qt_6_5_0 -)
+    typedef QFlags<QTextLayout::GlyphRunRetrievalFlag> GlyphRunRetrievalFlags;
+%End
 };
 
 class QTextLine
@@ -165,6 +185,9 @@ public:
     qreal horizontalAdvance() const;
 %If (PyQt_RawFont)
     QList<QGlyphRun> glyphRuns(int from = -1, int length = -1) const;
+%End
+%If (Qt_6_5_0 -)
+    QList<QGlyphRun> glyphRuns(int from, int length, QTextLayout::GlyphRunRetrievalFlags flags) const;
 %End
 };
 

@@ -40,7 +40,16 @@ public:
     virtual bool removeColumns(int column, int count, const QModelIndex &parent = QModelIndex());
     void setQuery(const QSqlQuery &query);
     void setQuery(const QString &query, const QSqlDatabase &db = QSqlDatabase());
+%If (Qt_6_5_0 -)
+    const QSqlQuery &query() const;
+%MethodCode
+        sipRes = const_cast<QSqlQuery *>(&sipCpp->query(Qt::Disambiguated));
+%End
+
+%End
+%If (- Qt_6_5_0)
     QSqlQuery query() const;
+%End
     virtual void clear();
     QSqlError lastError() const;
     virtual void fetchMore(const QModelIndex &parent = QModelIndex());

@@ -45,3 +45,9 @@ public:
 };
 
 %End
+%If (Qt_6_5_0 -)
+QDataStream &operator<<(QDataStream &stream, const QGeoCircle &circle) /ReleaseGIL/;
+%End
+%If (Qt_6_5_0 -)
+QDataStream &operator>>(QDataStream &stream, QGeoCircle &circle /Constrained/) /ReleaseGIL/;
+%End

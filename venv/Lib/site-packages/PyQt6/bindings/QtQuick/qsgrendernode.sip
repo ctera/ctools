@@ -76,4 +76,7 @@ public:
     const QSGClipNode *clipList() const;
     qreal inheritedOpacity() const;
     virtual void prepare();
+%If (Qt_6_5_0 -)
+    const QMatrix4x4 *projectionMatrix() const;
+%End
 };

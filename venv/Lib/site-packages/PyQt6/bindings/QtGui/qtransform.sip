@@ -58,7 +58,13 @@ public:
     QTransform &scale(qreal sx, qreal sy);
     QTransform &shear(qreal sh, qreal sv);
     QTransform &rotate(qreal angle, Qt::Axis axis = Qt::ZAxis);
+%If (Qt_6_5_0 -)
+    QTransform &rotate(qreal a, Qt::Axis axis, qreal distanceToPlane);
+%End
     QTransform &rotateRadians(qreal angle, Qt::Axis axis = Qt::ZAxis);
+%If (Qt_6_5_0 -)
+    QTransform &rotateRadians(qreal a, Qt::Axis axis, qreal distanceToPlane);
+%End
     static bool squareToQuad(const QPolygonF &square, QTransform &result);
     static bool quadToSquare(const QPolygonF &quad, QTransform &result);
     static bool quadToQuad(const QPolygonF &one, const QPolygonF &two, QTransform &result);

@@ -9,20 +9,18 @@ import QtQuick.Controls.Material.impl
 T.SpinBox {
     id: control
 
+    // Note: the width of the indicators are calculated into the padding
     implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
-                            contentItem.implicitWidth +
-                            up.implicitIndicatorWidth +
-                            down.implicitIndicatorWidth)
-    implicitHeight: Math.max(implicitContentHeight + topPadding + bottomPadding,
-                             implicitBackgroundHeight,
-                             up.implicitIndicatorHeight,
-                             down.implicitIndicatorHeight)
+                            contentItem.implicitWidth + leftPadding + rightPadding)
+    implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
+                             implicitContentHeight + topPadding + bottomPadding,
+                             up.implicitIndicatorHeight, down.implicitIndicatorHeight)
 
     spacing: 6
-    topPadding: 8
-    bottomPadding: 16
-    leftPadding: (control.mirrored ? (up.indicator ? up.indicator.width : 0) : (down.indicator ? down.indicator.width : 0))
-    rightPadding: (control.mirrored ? (down.indicator ? down.indicator.width : 0) : (up.indicator ? up.indicator.width : 0))
+    topPadding: Material.textFieldVerticalPadding
+    bottomPadding: Material.textFieldVerticalPadding
+    leftPadding: control.mirrored ? (up.indicator ? up.indicator.width : 0) : (down.indicator ? down.indicator.width : 0)
+    rightPadding: control.mirrored ? (down.indicator ? down.indicator.width : 0) : (up.indicator ? up.indicator.width : 0)
 
     validator: IntValidator {
         locale: control.locale.name
@@ -45,6 +43,7 @@ T.SpinBox {
         readOnly: !control.editable
         validator: control.validator
         inputMethodHints: control.inputMethodHints
+        clip: width < implicitWidth
     }
 
     up.indicator: Item {
@@ -108,16 +107,14 @@ T.SpinBox {
         }
     }
 
-    background: Item {
-        implicitWidth: 192
-        implicitHeight: control.Material.touchTarget
+    background: MaterialTextContainer {
+        implicitWidth: 140
+        implicitHeight: control.Material.textFieldHeight
 
-        Rectangle {
-            x: parent.width / 2 - width / 2
-            y: parent.y + parent.height - height - control.bottomPadding / 2
-            width: control.availableWidth
-            height: control.activeFocus ? 2 : 1
-            color: control.activeFocus ? control.Material.accentColor : control.Material.hintTextColor
-        }
+        outlineColor: (enabled && control.hovered) ? control.Material.primaryTextColor : control.Material.hintTextColor
+        focusedOutlineColor: control.Material.accentColor
+        controlHasActiveFocus: control.activeFocus
+        controlHasText: true
+        horizontalPadding: control.Material.textFieldHorizontalPadding
     }
 }

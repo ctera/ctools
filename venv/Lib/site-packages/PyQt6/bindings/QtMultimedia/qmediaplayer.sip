@@ -131,6 +131,16 @@ public:
 
 signals:
     void loopsChanged();
+
+public:
+%If (Qt_6_5_0 -)
+    bool isPlaying() const;
+%End
+
+signals:
+%If (Qt_6_5_0 -)
+    void playingChanged(bool playing);
+%End
 };
 
 %End

@@ -309,6 +309,7 @@ Module {
             isPointer: true
             read: "fillGradient"
             write: "setFillGradient"
+            reset: "resetFillGradient"
             index: 10
         }
         Property {

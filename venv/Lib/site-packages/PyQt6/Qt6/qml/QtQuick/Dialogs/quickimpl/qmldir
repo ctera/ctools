@@ -5,14 +5,15 @@ classname QtQuickDialogs2QuickImplPlugin
 typeinfo plugins.qmltypes
 depends QtQuick auto
 depends QtQuick.Templates auto
+depends QtQuick.Layouts auto
 prefer :/qt-project.org/imports/QtQuick/Dialogs/quickimpl/
 ColorDialog 6.0 qml/ColorDialog.qml
 ColorInputs 6.0 qml/ColorInputs.qml
 FileDialog 6.0 qml/FileDialog.qml
-FolderDialog 6.0 qml/FolderDialog.qml
 FileDialogDelegate 6.0 qml/FileDialogDelegate.qml
 FileDialogDelegateLabel 6.0 qml/FileDialogDelegateLabel.qml
 FolderBreadcrumbBar 6.0 qml/FolderBreadcrumbBar.qml
+FolderDialog 6.0 qml/FolderDialog.qml
 FolderDialogDelegate 6.0 qml/FolderDialogDelegate.qml
 FolderDialogDelegateLabel 6.0 qml/FolderDialogDelegateLabel.qml
 FontDialog 6.0 qml/FontDialog.qml
@@ -24,8 +25,8 @@ SaturationLightnessPicker 6.0 qml/SaturationLightnessPicker.qml
 ColorDialog 6.0 qml/+Fusion/ColorDialog.qml
 FileDialog 6.0 qml/+Fusion/FileDialog.qml
 FileDialogDelegate 6.0 qml/+Fusion/FileDialogDelegate.qml
-FolderDialog 6.0 qml/+Fusion/FolderDialog.qml
 FolderBreadcrumbBar 6.0 qml/+Fusion/FolderBreadcrumbBar.qml
+FolderDialog 6.0 qml/+Fusion/FolderDialog.qml
 FolderDialogDelegate 6.0 qml/+Fusion/FolderDialogDelegate.qml
 FontDialog 6.0 qml/+Fusion/FontDialog.qml
 MessageDialog 6.0 qml/+Fusion/MessageDialog.qml

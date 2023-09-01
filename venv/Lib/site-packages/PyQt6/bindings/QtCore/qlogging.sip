@@ -64,10 +64,38 @@ public:
         Py_END_ALLOW_THREADS
 %End
 
+    void debug(const QLoggingCategory &cat, const char *msg) const /ReleaseGIL/;
+%MethodCode
+        Py_BEGIN_ALLOW_THREADS
+        sipCpp->debug(*a0, "%s", a1);
+        Py_END_ALLOW_THREADS
+%End
+
+    void info(const char *msg) const /ReleaseGIL/;
+%MethodCode
+        Py_BEGIN_ALLOW_THREADS
+        sipCpp->info("%s", a0);
+        Py_END_ALLOW_THREADS
+%End
+
+    void info(const QLoggingCategory &cat, const char *msg) const /ReleaseGIL/;
+%MethodCode
+        Py_BEGIN_ALLOW_THREADS
+        sipCpp->info(*a0, "%s", a1);
+        Py_END_ALLOW_THREADS
+%End
+
     void warning(const char *msg) const /ReleaseGIL/;
 %MethodCode
         Py_BEGIN_ALLOW_THREADS
         sipCpp->warning("%s", a0);
+        Py_END_ALLOW_THREADS
+%End
+
+    void warning(const QLoggingCategory &cat, const char *msg) const /ReleaseGIL/;
+%MethodCode
+        Py_BEGIN_ALLOW_THREADS
+        sipCpp->warning(*a0, "%s", a1);
         Py_END_ALLOW_THREADS
 %End
 
@@ -78,6 +106,13 @@ public:
         Py_END_ALLOW_THREADS
 %End
 
+    void critical(const QLoggingCategory &cat, const char *msg) const /ReleaseGIL/;
+%MethodCode
+        Py_BEGIN_ALLOW_THREADS
+        sipCpp->critical(*a0, "%s", a1);
+        Py_END_ALLOW_THREADS
+%End
+
     void fatal(const char *msg) const /ReleaseGIL/;
 %MethodCode
         Py_BEGIN_ALLOW_THREADS
@@ -85,11 +120,14 @@ public:
         Py_END_ALLOW_THREADS
 %End
 
-    void info(const char *msg) const /ReleaseGIL/;
+%If (Qt_6_5_0 -)
+    void fatal(const QLoggingCategory &cat, const char *msg) const /ReleaseGIL/;
 %MethodCode
         Py_BEGIN_ALLOW_THREADS
-        sipCpp->info("%s", a0);
+        sipCpp->fatal(*a0, "%s", a1);
         Py_END_ALLOW_THREADS
+%End
+
 %End
 
 private:

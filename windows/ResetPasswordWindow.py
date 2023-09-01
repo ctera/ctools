@@ -20,6 +20,10 @@ from PySide2.QtWidgets import (
     QFrame,
 )
 
+from PySide2.QtGui import (
+    QPixmap
+)
+
 WINDOW_WIDTH = 600
 WINDOW_HEIGHT = 500
 OUTPUT_HEIGHT = 250
@@ -33,12 +37,20 @@ class resetPasswordWindow(QMainWindow):
         self.setWindowTitle("CTools 3.0")
         self.setFixedSize(WINDOW_WIDTH, WINDOW_HEIGHT)
         self.generalLayout = QVBoxLayout()
-        self.top = QLabel("<h2>Welcome to CTools!</h2>")
+        self.top = QHBoxLayout()
+        welcome = QLabel("<h2>Welcome to CTools!</h2>")
+        pic_label = QLabel(self)
+        pixmap = QPixmap("logo.png")
+        pic_label.setPixmap(pixmap)
+        #pic_label.setScaledContents(True)
+        self.top.addWidget(welcome)
+        self.top.addStretch()
+        self.top.addWidget(pic_label)
         self.mainContent = QHBoxLayout()
         centralWidget = QWidget(self)
         centralWidget.setLayout(self.generalLayout)
         self.setCentralWidget(centralWidget)
-        self.generalLayout.addWidget(self.top)
+        self.generalLayout.addLayout(self.top)
         self.generalLayout.addLayout(self.mainContent)
         self._createToolBar()
         self._createToolViewLayout()
@@ -59,7 +71,7 @@ class resetPasswordWindow(QMainWindow):
         toolView = QVBoxLayout()
 
         # Step3 - You will change the next two lines according to the KB
-        ResetPasswordLayout, self.input_widgets = gen_custom_tool_layout(["Device Name", "Tenant Name", "Username for local user", "New filer password"], ["Ignore cert warnings for login", "Verbose Logging"])
+        ResetPasswordLayout, self.input_widgets = gen_custom_tool_layout("Reset Password", ["Device Name", "Tenant Name", "Username for local user", "New filer password"], ["Ignore cert warnings for login", "Verbose Logging"])
         toolView.addLayout(ResetPasswordLayout)
 
         # Create action buttons

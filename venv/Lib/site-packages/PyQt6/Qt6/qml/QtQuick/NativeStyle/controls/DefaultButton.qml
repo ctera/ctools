@@ -11,6 +11,7 @@ T.Button {
     id: control
 
     readonly property bool __nativeBackground: background instanceof NativeStyle.StyleItem
+    readonly property bool __notCustomizable: true
 
     implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
                             implicitContentWidth + leftPadding + rightPadding)
@@ -26,6 +27,8 @@ T.Button {
         control: control
         contentWidth: contentItem.implicitWidth
         contentHeight: contentItem.implicitHeight
+
+        readonly property bool __ignoreNotCustomizable: true
     }
 
     icon.width: 24
@@ -41,5 +44,7 @@ T.Button {
         text: control.text
         font: control.font
         color: control.palette.buttonText
+
+        readonly property bool __ignoreNotCustomizable: true
     }
 }

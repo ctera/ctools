@@ -52,6 +52,7 @@ WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 %Include qhostaddress.sip
 %Include qhostinfo.sip
 %Include qhstspolicy.sip
+%Include qhttp1configuration.sip
 %Include qhttp2configuration.sip
 %Include qhttpmultipart.sip
 %Include qlocalserver.sip

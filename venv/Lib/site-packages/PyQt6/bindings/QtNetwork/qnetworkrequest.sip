@@ -74,6 +74,9 @@ public:
 %If (Qt_6_3_0 -)
         Http2CleartextAllowedAttribute,
 %End
+%If (Qt_6_5_0 -)
+        UseCredentialsAttribute,
+%End
         User,
         UserMax,
     };
@@ -139,7 +142,13 @@ public:
 
     QString peerVerifyName() const;
     void setPeerVerifyName(const QString &peerName);
+%If (Qt_6_5_0 -)
+    QHttp1Configuration http1Configuration() const;
+%End
     QHttp2Configuration http2Configuration() const;
+%If (Qt_6_5_0 -)
+    void setHttp1Configuration(const QHttp1Configuration &configuration);
+%End
     void setHttp2Configuration(const QHttp2Configuration &configuration);
 
     enum TransferTimeoutConstant

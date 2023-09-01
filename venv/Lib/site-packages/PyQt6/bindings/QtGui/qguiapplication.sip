@@ -213,6 +213,9 @@ public:
     static QScreen *screenAt(const QPoint &point);
     static void setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy policy);
     static Qt::HighDpiScaleFactorRoundingPolicy highDpiScaleFactorRoundingPolicy();
+%If (Qt_6_5_0 -)
+    void setBadgeNumber(qint64 number);
+%End
 
 protected:
     virtual bool event(QEvent *);

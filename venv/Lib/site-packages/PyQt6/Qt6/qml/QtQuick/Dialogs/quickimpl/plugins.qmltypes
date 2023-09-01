@@ -95,6 +95,7 @@ Module {
             type: "QString"
             read: "text"
             write: "setText"
+            reset: "resetText"
             notify: "textChanged"
             index: 0
             isFinal: true
@@ -104,6 +105,7 @@ Module {
             type: "bool"
             read: "isDown"
             write: "setDown"
+            reset: "resetDown"
             notify: "downChanged"
             index: 1
             isFinal: true
@@ -279,6 +281,7 @@ Module {
         Signal { name: "implicitIndicatorWidthChanged"; revision: 517 }
         Signal { name: "implicitIndicatorHeightChanged"; revision: 517 }
         Method { name: "toggle" }
+        Method { name: "accessiblePressAction" }
     }
     Component {
         file: "private/qquickabstractcolorpicker_p.h"
@@ -798,6 +801,7 @@ Module {
             type: "QFont"
             read: "font"
             write: "setFont"
+            reset: "resetFont"
             notify: "fontChanged"
             index: 0
             isFinal: true
@@ -825,6 +829,7 @@ Module {
             type: "double"
             read: "padding"
             write: "setPadding"
+            reset: "resetPadding"
             notify: "paddingChanged"
             index: 3
             isFinal: true
@@ -834,6 +839,7 @@ Module {
             type: "double"
             read: "topPadding"
             write: "setTopPadding"
+            reset: "resetTopPadding"
             notify: "topPaddingChanged"
             index: 4
             isFinal: true
@@ -843,6 +849,7 @@ Module {
             type: "double"
             read: "leftPadding"
             write: "setLeftPadding"
+            reset: "resetLeftPadding"
             notify: "leftPaddingChanged"
             index: 5
             isFinal: true
@@ -852,6 +859,7 @@ Module {
             type: "double"
             read: "rightPadding"
             write: "setRightPadding"
+            reset: "resetRightPadding"
             notify: "rightPaddingChanged"
             index: 6
             isFinal: true
@@ -861,6 +869,7 @@ Module {
             type: "double"
             read: "bottomPadding"
             write: "setBottomPadding"
+            reset: "resetBottomPadding"
             notify: "bottomPaddingChanged"
             index: 7
             isFinal: true
@@ -870,6 +879,7 @@ Module {
             type: "double"
             read: "spacing"
             write: "setSpacing"
+            reset: "resetSpacing"
             notify: "spacingChanged"
             index: 8
             isFinal: true
@@ -879,6 +889,7 @@ Module {
             type: "QLocale"
             read: "locale"
             write: "setLocale"
+            reset: "resetLocale"
             notify: "localeChanged"
             index: 9
             isFinal: true
@@ -933,6 +944,7 @@ Module {
             type: "bool"
             read: "isHoverEnabled"
             write: "setHoverEnabled"
+            reset: "resetHoverEnabled"
             notify: "hoverEnabledChanged"
             index: 15
             isFinal: true
@@ -971,6 +983,7 @@ Module {
             type: "double"
             read: "baselineOffset"
             write: "setBaselineOffset"
+            reset: "resetBaselineOffset"
             notify: "baselineOffsetChanged"
             index: 19
             isFinal: true
@@ -981,6 +994,7 @@ Module {
             type: "double"
             read: "horizontalPadding"
             write: "setHorizontalPadding"
+            reset: "resetHorizontalPadding"
             notify: "horizontalPaddingChanged"
             index: 20
             isFinal: true
@@ -991,6 +1005,7 @@ Module {
             type: "double"
             read: "verticalPadding"
             write: "setVerticalPadding"
+            reset: "resetVerticalPadding"
             notify: "verticalPaddingChanged"
             index: 21
             isFinal: true
@@ -1041,6 +1056,7 @@ Module {
             type: "double"
             read: "topInset"
             write: "setTopInset"
+            reset: "resetTopInset"
             notify: "topInsetChanged"
             index: 26
             isFinal: true
@@ -1051,6 +1067,7 @@ Module {
             type: "double"
             read: "leftInset"
             write: "setLeftInset"
+            reset: "resetLeftInset"
             notify: "leftInsetChanged"
             index: 27
             isFinal: true
@@ -1061,6 +1078,7 @@ Module {
             type: "double"
             read: "rightInset"
             write: "setRightInset"
+            reset: "resetRightInset"
             notify: "rightInsetChanged"
             index: 28
             isFinal: true
@@ -1071,6 +1089,7 @@ Module {
             type: "double"
             read: "bottomInset"
             write: "setBottomInset"
+            reset: "resetBottomInset"
             notify: "bottomInsetChanged"
             index: 29
             isFinal: true
@@ -1307,6 +1326,7 @@ Module {
             read: "selectedNameFilter"
             index: 3
             isReadonly: true
+            isConstant: true
         }
         Property {
             name: "fileName"
@@ -1742,12 +1762,60 @@ Module {
         file: "private/qtquickdialogs2quickimplforeign_p.h"
         name: "QQuickIcon"
         accessSemantics: "value"
-        Property { name: "name"; type: "QString"; read: "name"; write: "setName"; index: 0; isFinal: true }
-        Property { name: "source"; type: "QUrl"; read: "source"; write: "setSource"; index: 1; isFinal: true }
-        Property { name: "width"; type: "int"; read: "width"; write: "setWidth"; index: 2; isFinal: true }
-        Property { name: "height"; type: "int"; read: "height"; write: "setHeight"; index: 3; isFinal: true }
-        Property { name: "color"; type: "QColor"; read: "color"; write: "setColor"; index: 4; isFinal: true }
-        Property { name: "cache"; type: "bool"; read: "cache"; write: "setCache"; index: 5; isFinal: true }
+        Property {
+            name: "name"
+            type: "QString"
+            read: "name"
+            write: "setName"
+            reset: "resetName"
+            index: 0
+            isFinal: true
+        }
+        Property {
+            name: "source"
+            type: "QUrl"
+            read: "source"
+            write: "setSource"
+            reset: "resetSource"
+            index: 1
+            isFinal: true
+        }
+        Property {
+            name: "width"
+            type: "int"
+            read: "width"
+            write: "setWidth"
+            reset: "resetWidth"
+            index: 2
+            isFinal: true
+        }
+        Property {
+            name: "height"
+            type: "int"
+            read: "height"
+            write: "setHeight"
+            reset: "resetHeight"
+            index: 3
+            isFinal: true
+        }
+        Property {
+            name: "color"
+            type: "QColor"
+            read: "color"
+            write: "setColor"
+            reset: "resetColor"
+            index: 4
+            isFinal: true
+        }
+        Property {
+            name: "cache"
+            type: "bool"
+            read: "cache"
+            write: "setCache"
+            reset: "resetCache"
+            index: 5
+            isFinal: true
+        }
     }
     Component {
         file: "private/qquickmessagedialogimpl_p.h"
@@ -1881,6 +1949,7 @@ Module {
             type: "double"
             read: "z"
             write: "setZ"
+            reset: "resetZ"
             notify: "zChanged"
             index: 2
             isFinal: true
@@ -1890,6 +1959,7 @@ Module {
             type: "double"
             read: "width"
             write: "setWidth"
+            reset: "resetWidth"
             notify: "widthChanged"
             index: 3
             isFinal: true
@@ -1899,6 +1969,7 @@ Module {
             type: "double"
             read: "height"
             write: "setHeight"
+            reset: "resetHeight"
             notify: "heightChanged"
             index: 4
             isFinal: true
@@ -1962,6 +2033,7 @@ Module {
             type: "double"
             read: "margins"
             write: "setMargins"
+            reset: "resetMargins"
             notify: "marginsChanged"
             index: 11
             isFinal: true
@@ -1971,6 +2043,7 @@ Module {
             type: "double"
             read: "topMargin"
             write: "setTopMargin"
+            reset: "resetTopMargin"
             notify: "topMarginChanged"
             index: 12
             isFinal: true
@@ -1980,6 +2053,7 @@ Module {
             type: "double"
             read: "leftMargin"
             write: "setLeftMargin"
+            reset: "resetLeftMargin"
             notify: "leftMarginChanged"
             index: 13
             isFinal: true
@@ -1989,6 +2063,7 @@ Module {
             type: "double"
             read: "rightMargin"
             write: "setRightMargin"
+            reset: "resetRightMargin"
             notify: "rightMarginChanged"
             index: 14
             isFinal: true
@@ -1998,6 +2073,7 @@ Module {
             type: "double"
             read: "bottomMargin"
             write: "setBottomMargin"
+            reset: "resetBottomMargin"
             notify: "bottomMarginChanged"
             index: 15
             isFinal: true
@@ -2007,6 +2083,7 @@ Module {
             type: "double"
             read: "padding"
             write: "setPadding"
+            reset: "resetPadding"
             notify: "paddingChanged"
             index: 16
             isFinal: true
@@ -2016,6 +2093,7 @@ Module {
             type: "double"
             read: "topPadding"
             write: "setTopPadding"
+            reset: "resetTopPadding"
             notify: "topPaddingChanged"
             index: 17
             isFinal: true
@@ -2025,6 +2103,7 @@ Module {
             type: "double"
             read: "leftPadding"
             write: "setLeftPadding"
+            reset: "resetLeftPadding"
             notify: "leftPaddingChanged"
             index: 18
             isFinal: true
@@ -2034,6 +2113,7 @@ Module {
             type: "double"
             read: "rightPadding"
             write: "setRightPadding"
+            reset: "resetRightPadding"
             notify: "rightPaddingChanged"
             index: 19
             isFinal: true
@@ -2043,6 +2123,7 @@ Module {
             type: "double"
             read: "bottomPadding"
             write: "setBottomPadding"
+            reset: "resetBottomPadding"
             notify: "bottomPaddingChanged"
             index: 20
             isFinal: true
@@ -2052,6 +2133,7 @@ Module {
             type: "QLocale"
             read: "locale"
             write: "setLocale"
+            reset: "resetLocale"
             notify: "localeChanged"
             index: 21
             isFinal: true
@@ -2061,6 +2143,7 @@ Module {
             type: "QFont"
             read: "font"
             write: "setFont"
+            reset: "resetFont"
             notify: "fontChanged"
             index: 22
             isFinal: true
@@ -2071,6 +2154,7 @@ Module {
             isPointer: true
             read: "parentItem"
             write: "setParentItem"
+            reset: "resetParentItem"
             notify: "parentChanged"
             index: 23
             isFinal: true
@@ -2156,6 +2240,7 @@ Module {
             type: "bool"
             read: "dim"
             write: "setDim"
+            reset: "resetDim"
             notify: "dimChanged"
             index: 32
             isFinal: true
@@ -2192,6 +2277,7 @@ Module {
             type: "ClosePolicy"
             read: "closePolicy"
             write: "setClosePolicy"
+            reset: "resetClosePolicy"
             notify: "closePolicyChanged"
             index: 36
             isFinal: true
@@ -2230,6 +2316,7 @@ Module {
             type: "double"
             read: "spacing"
             write: "setSpacing"
+            reset: "resetSpacing"
             notify: "spacingChanged"
             index: 40
             isFinal: true
@@ -2271,6 +2358,7 @@ Module {
             isPointer: true
             read: "palette"
             write: "setPalette"
+            reset: "resetPalette"
             notify: "paletteChanged"
             index: 44
             privateClass: "QQuickPopupPrivate"
@@ -2280,6 +2368,7 @@ Module {
             type: "double"
             read: "horizontalPadding"
             write: "setHorizontalPadding"
+            reset: "resetHorizontalPadding"
             notify: "horizontalPaddingChanged"
             index: 45
             isFinal: true
@@ -2289,6 +2378,7 @@ Module {
             type: "double"
             read: "verticalPadding"
             write: "setVerticalPadding"
+            reset: "resetVerticalPadding"
             notify: "verticalPaddingChanged"
             index: 46
             isFinal: true
@@ -2303,6 +2393,7 @@ Module {
             privateClass: "QQuickPopupPrivate"
             isReadonly: true
             isFinal: true
+            isConstant: true
         }
         Property {
             name: "implicitContentWidth"
@@ -2350,6 +2441,7 @@ Module {
             type: "double"
             read: "topInset"
             write: "setTopInset"
+            reset: "resetTopInset"
             notify: "topInsetChanged"
             index: 52
             isFinal: true
@@ -2360,6 +2452,7 @@ Module {
             type: "double"
             read: "leftInset"
             write: "setLeftInset"
+            reset: "resetLeftInset"
             notify: "leftInsetChanged"
             index: 53
             isFinal: true
@@ -2370,6 +2463,7 @@ Module {
             type: "double"
             read: "rightInset"
             write: "setRightInset"
+            reset: "resetRightInset"
             notify: "rightInsetChanged"
             index: 54
             isFinal: true
@@ -2380,6 +2474,7 @@ Module {
             type: "double"
             read: "bottomInset"
             write: "setBottomInset"
+            reset: "resetBottomInset"
             notify: "bottomInsetChanged"
             index: 55
             isFinal: true
@@ -2452,7 +2547,7 @@ Module {
             name: "forceActiveFocus"
             Parameter { name: "reason"; type: "Qt::FocusReason" }
         }
-        Method { name: "forceActiveFocus" }
+        Method { name: "forceActiveFocus"; isCloned: true }
     }
     Component {
         file: "private/qquicksaturationlightnesspicker_p.h"

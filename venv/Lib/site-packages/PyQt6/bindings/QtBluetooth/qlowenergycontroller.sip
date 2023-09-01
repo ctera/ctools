@@ -43,6 +43,9 @@ public:
 %If (Qt_6_4_0 -)
         MissingPermissionsError,
 %End
+%If (Qt_6_5_0 -)
+        RssiReadError,
+%End
     };
 
     enum ControllerState
@@ -105,6 +108,14 @@ public:
     void requestConnectionUpdate(const QLowEnergyConnectionParameters &parameters);
     QLowEnergyController::Role role() const;
     QBluetoothUuid remoteDeviceUuid() const;
+%If (Qt_6_5_0 -)
+    void readRssi();
+%End
+
+signals:
+%If (Qt_6_5_0 -)
+    void rssiRead(qint16 rssi);
+%End
 
 private:
     QLowEnergyController(const QBluetoothDeviceInfo &remoteDevice, const QBluetoothAddress &localDevice, QObject *parent = 0);

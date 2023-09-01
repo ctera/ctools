@@ -26,31 +26,77 @@
 
 const int QT_VERSION;
 const char *QT_VERSION_STR;
+%If (- Qt_6_5_0)
+const char *qVersion();
+%End
+%If (- Qt_6_5_0)
 typedef signed char qint8 /PyInt/;
+%End
+%If (- Qt_6_5_0)
 typedef unsigned char quint8 /PyInt/;
+%End
+%If (- Qt_6_5_0)
 typedef short qint16;
+%End
+%If (- Qt_6_5_0)
 typedef unsigned short quint16;
+%End
+%If (- Qt_6_5_0)
 typedef int qint32;
+%End
+%If (- Qt_6_5_0)
 typedef unsigned int quint32;
+%End
+%If (- Qt_6_5_0)
 typedef long long qint64;
+%End
+%If (- Qt_6_5_0)
 typedef unsigned long long quint64;
+%End
+%If (- Qt_6_5_0)
 typedef qint64 qlonglong;
+%End
+%If (- Qt_6_5_0)
 typedef quint64 qulonglong;
+%End
+%If (- Qt_6_5_0)
 %If (PyQt_qreal_double)
 typedef double qreal;
 %End
+%End
+%If (- Qt_6_5_0)
 %If (!PyQt_qreal_double)
 typedef float qreal;
 %End
+%End
+%If (- Qt_6_5_0)
 typedef unsigned char uchar;
+%End
+%If (- Qt_6_5_0)
 typedef unsigned short ushort;
+%End
+%If (- Qt_6_5_0)
 typedef unsigned int uint;
+%End
+%If (- Qt_6_5_0)
 typedef unsigned long ulong;
+%End
+%If (- Qt_6_5_0)
 typedef long long qsizetype;
+%End
+%If (- Qt_6_5_0)
 double qAbs(const double &t);
+%End
+%If (- Qt_6_5_0)
 int qRound(qreal d);
+%End
+%If (- Qt_6_5_0)
 qint64 qRound64(qreal d);
-const char *qVersion();
+%End
+%If (- Qt_6_5_0)
+bool qFuzzyCompare(double p1, double p2);
+%End
+typedef void *QFunctionPointer;
 // Minimal support for the Qt resource system to help porting from PyQt5.
 %ModuleCode
 QT_BEGIN_NAMESPACE
@@ -61,8 +107,6 @@ QT_END_NAMESPACE
 
 bool qRegisterResourceData(int, const unsigned char *, const unsigned char *, const unsigned char *);
 bool qUnregisterResourceData(int, const unsigned char *, const unsigned char *, const unsigned char *);
-bool qFuzzyCompare(double p1, double p2);
-typedef void *QFunctionPointer;
 // Mapped type for qintptr.
 // Map qintptr onto sip.voidptr.  This means either an address (on Windows) or
 // an integer file descriptor (on everything else) can be used.
@@ -137,8 +181,18 @@ SIP_PYOBJECT pyqtPickleProtocol() /TypeHint="Optional[int]"/;
     
     Py_INCREF(sipRes);
 %End
+%If (- Qt_6_5_0)
 bool qEnvironmentVariableIsEmpty(const char *varName);
+%End
+%If (- Qt_6_5_0)
 bool qEnvironmentVariableIsSet(const char *varName);
+%End
+%If (- Qt_6_5_0)
 QString qEnvironmentVariable(const char *varName);
+%End
+%If (- Qt_6_5_0)
 QString qEnvironmentVariable(const char *varName, const QString &defaultValue);
+%End
+%If (- Qt_6_5_0)
 int qEnvironmentVariableIntValue(const char *varName, bool *ok = 0);
+%End

@@ -227,7 +227,7 @@ Module {
             isPointer: true
             Parameter { name: "item"; type: "QObject"; isPointer: true }
         }
-        Method { name: "touchEvent"; type: "QQuickTouchEventSequence"; isPointer: true }
+        Method { name: "touchEvent"; type: "QQuickTouchEventSequence"; isPointer: true; isCloned: true }
     }
     Component {
         file: "private/quicktestresult_p.h"
@@ -239,9 +239,10 @@ Module {
             "QtTest/TestResult 1.1",
             "QtTest/TestResult 1.13",
             "QtTest/TestResult 6.0",
-            "QtTest/TestResult 6.3"
+            "QtTest/TestResult 6.3",
+            "QtTest/TestResult 6.5"
         ]
-        exportMetaObjectRevisions: [256, 257, 269, 1536, 1539]
+        exportMetaObjectRevisions: [256, 257, 269, 1536, 1539, 1541]
         Enum {
             name: "RunMode"
             values: ["RepeatUntilValidMeasurement", "RunOnce"]
@@ -389,6 +390,7 @@ Module {
         Method {
             name: "waitForRendering"
             type: "bool"
+            isCloned: true
             Parameter { name: "item"; type: "QQuickItem"; isPointer: true }
         }
         Method { name: "startMeasurement" }
@@ -422,13 +424,13 @@ Module {
             name: "isPolishScheduled"
             revision: 269
             type: "bool"
-            Parameter { name: "item"; type: "QQuickItem"; isPointer: true }
+            Parameter { name: "itemOrWindow"; type: "QObject"; isPointer: true }
         }
         Method {
-            name: "waitForItemPolished"
-            revision: 269
+            name: "waitForPolish"
+            revision: 1541
             type: "bool"
-            Parameter { name: "item"; type: "QQuickItem"; isPointer: true }
+            Parameter { name: "itemOrWindow"; type: "QObject"; isPointer: true }
             Parameter { name: "timeout"; type: "int" }
         }
     }
@@ -473,13 +475,13 @@ Module {
             type: "QJSValue"
             Parameter { name: "frameIndex"; type: "int" }
         }
-        Method { name: "callerFile"; type: "QJSValue" }
+        Method { name: "callerFile"; type: "QJSValue"; isCloned: true }
         Method {
             name: "callerLine"
             type: "int"
             Parameter { name: "frameIndex"; type: "int" }
         }
-        Method { name: "callerLine"; type: "int" }
+        Method { name: "callerLine"; type: "int"; isCloned: true }
         Method {
             name: "populateClipboardText"
             Parameter { name: "lineCount"; type: "int" }

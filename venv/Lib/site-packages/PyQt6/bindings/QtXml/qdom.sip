@@ -216,12 +216,80 @@ public:
     QDomImplementation implementation() const;
     QDomElement documentElement() const;
     QDomNode::NodeType nodeType() const;
+%If (Qt_6_5_0 -)
+
+    enum class ParseOption
+    {
+        Default,
+        UseNamespaceProcessing,
+        PreserveSpacingOnlyNodes,
+    };
+
+%End
+%If (Qt_6_5_0 -)
+    typedef QFlags<QDomDocument::ParseOption> ParseOptions;
+%End
+%If (Qt_6_5_0 -)
+    SIP_PYOBJECT setContent(QXmlStreamReader *reader, QDomDocument::ParseOptions options = QDomDocument::ParseOption::Default) /ReleaseGIL,TypeHint="Tuple [bool, str, int, int]"/;
+%MethodCode
+        QDomDocument::ParseResult pr;
+        
+        Py_BEGIN_ALLOW_THREADS
+        pr = sipCpp->setContent(a0, *a1);
+        Py_END_ALLOW_THREADS
+        
+        return sipBuildResult(NULL, "(bNnn)",
+                (int)bool(pr),
+                new QString(pr.errorMessage), sipType_QString, NULL,
+                (long long)pr.errorLine,
+                (long long)pr.errorColumn);
+%End
+
+%End
+%If (Qt_6_5_0 -)
+    SIP_PYOBJECT setContent(QIODevice *device, QDomDocument::ParseOptions options = QDomDocument::ParseOption::Default) /ReleaseGIL,TypeHint="Tuple [bool, str, int, int]"/;
+%MethodCode
+        QDomDocument::ParseResult pr;
+        
+        Py_BEGIN_ALLOW_THREADS
+        pr = sipCpp->setContent(a0, *a1);
+        Py_END_ALLOW_THREADS
+        
+        return sipBuildResult(NULL, "(bNnn)",
+                (int)bool(pr),
+                new QString(pr.errorMessage), sipType_QString, NULL,
+                (long long)pr.errorLine,
+                (long long)pr.errorColumn);
+%End
+
+%End
+%If (Qt_6_5_0 -)
+    SIP_PYOBJECT setContent(QAnyStringView data, QDomDocument::ParseOptions options = QDomDocument::ParseOption::Default) /TypeHint="Tuple [bool, str, int, int]"/;
+%MethodCode
+        QDomDocument::ParseResult pr;
+        
+        pr = sipCpp->setContent(*a0, *a1);
+        
+        return sipBuildResult(NULL, "(bNnn)",
+                (int)bool(pr),
+                new QString(pr.errorMessage), sipType_QString, NULL,
+                (long long)pr.errorLine,
+                (long long)pr.errorColumn);
+%End
+
+%End
     bool setContent(const QByteArray &text, bool namespaceProcessing, QString *errorMsg /Out/ = 0, int *errorLine = 0, int *errorColumn = 0);
     bool setContent(const QString &text, bool namespaceProcessing, QString *errorMsg /Out/ = 0, int *errorLine = 0, int *errorColumn = 0);
     bool setContent(QIODevice *dev, bool namespaceProcessing, QString *errorMsg /Out/ = 0, int *errorLine = 0, int *errorColumn = 0) /ReleaseGIL/;
+%If (- Qt_6_5_0)
     bool setContent(const QByteArray &text, QString *errorMsg /Out/ = 0, int *errorLine = 0, int *errorColumn = 0);
+%End
+%If (- Qt_6_5_0)
     bool setContent(const QString &text, QString *errorMsg /Out/ = 0, int *errorLine = 0, int *errorColumn = 0);
+%End
+%If (- Qt_6_5_0)
     bool setContent(QIODevice *dev, QString *errorMsg /Out/ = 0, int *errorLine = 0, int *errorColumn = 0) /ReleaseGIL/;
+%End
     bool setContent(QXmlStreamReader *reader, bool namespaceProcessing, QString *errorMsg /Out/ = 0, int *errorLine = 0, int *errorColumn = 0);
     QString toString(int indent = 1) const;
     QByteArray toByteArray(int indent = 1) const;

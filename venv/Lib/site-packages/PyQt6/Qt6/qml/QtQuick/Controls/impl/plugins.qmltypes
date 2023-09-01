@@ -53,7 +53,47 @@ Module {
                 "InteractiveResizeAcrossScreens",
                 "ShowDirectoriesFirst",
                 "PreselectFirstFileInDirectory",
-                "ButtonPressKeys"
+                "ButtonPressKeys",
+                "SetFocusOnTouchRelease",
+                "FlickStartDistance",
+                "FlickMaximumVelocity",
+                "FlickDeceleration",
+                "MenuBarFocusOnAltPressRelease",
+                "MouseCursorTheme",
+                "MouseCursorSize"
+            ]
+        }
+        Enum {
+            name: "DialogType"
+            values: [
+                "FileDialog",
+                "ColorDialog",
+                "FontDialog",
+                "MessageDialog"
+            ]
+        }
+        Enum {
+            name: "Palette"
+            values: [
+                "SystemPalette",
+                "ToolTipPalette",
+                "ToolButtonPalette",
+                "ButtonPalette",
+                "CheckBoxPalette",
+                "RadioButtonPalette",
+                "HeaderPalette",
+                "ComboBoxPalette",
+                "ItemViewPalette",
+                "MessageBoxLabelPelette",
+                "MessageBoxLabelPalette",
+                "TabBarPalette",
+                "LabelPalette",
+                "GroupBoxPalette",
+                "MenuPalette",
+                "MenuBarPalette",
+                "TextEditPalette",
+                "TextLineEditPalette",
+                "NPalettes"
             ]
         }
         Enum {
@@ -87,6 +127,116 @@ Module {
                 "TabButtonFont",
                 "EditorFont",
                 "NFonts"
+            ]
+        }
+        Enum {
+            name: "StandardPixmap"
+            values: [
+                "TitleBarMenuButton",
+                "TitleBarMinButton",
+                "TitleBarMaxButton",
+                "TitleBarCloseButton",
+                "TitleBarNormalButton",
+                "TitleBarShadeButton",
+                "TitleBarUnshadeButton",
+                "TitleBarContextHelpButton",
+                "DockWidgetCloseButton",
+                "MessageBoxInformation",
+                "MessageBoxWarning",
+                "MessageBoxCritical",
+                "MessageBoxQuestion",
+                "DesktopIcon",
+                "TrashIcon",
+                "ComputerIcon",
+                "DriveFDIcon",
+                "DriveHDIcon",
+                "DriveCDIcon",
+                "DriveDVDIcon",
+                "DriveNetIcon",
+                "DirOpenIcon",
+                "DirClosedIcon",
+                "DirLinkIcon",
+                "DirLinkOpenIcon",
+                "FileIcon",
+                "FileLinkIcon",
+                "ToolBarHorizontalExtensionButton",
+                "ToolBarVerticalExtensionButton",
+                "FileDialogStart",
+                "FileDialogEnd",
+                "FileDialogToParent",
+                "FileDialogNewFolder",
+                "FileDialogDetailedView",
+                "FileDialogInfoView",
+                "FileDialogContentsView",
+                "FileDialogListView",
+                "FileDialogBack",
+                "DirIcon",
+                "DialogOkButton",
+                "DialogCancelButton",
+                "DialogHelpButton",
+                "DialogOpenButton",
+                "DialogSaveButton",
+                "DialogCloseButton",
+                "DialogApplyButton",
+                "DialogResetButton",
+                "DialogDiscardButton",
+                "DialogYesButton",
+                "DialogNoButton",
+                "ArrowUp",
+                "ArrowDown",
+                "ArrowLeft",
+                "ArrowRight",
+                "ArrowBack",
+                "ArrowForward",
+                "DirHomeIcon",
+                "CommandLink",
+                "VistaShield",
+                "BrowserReload",
+                "BrowserStop",
+                "MediaPlay",
+                "MediaStop",
+                "MediaPause",
+                "MediaSkipForward",
+                "MediaSkipBackward",
+                "MediaSeekForward",
+                "MediaSeekBackward",
+                "MediaVolume",
+                "MediaVolumeMuted",
+                "LineEditClearButton",
+                "DialogYesToAllButton",
+                "DialogNoToAllButton",
+                "DialogSaveAllButton",
+                "DialogAbortButton",
+                "DialogRetryButton",
+                "DialogIgnoreButton",
+                "RestoreDefaultsButton",
+                "TabCloseButton",
+                "NStandardPixmap",
+                "CustomBase"
+            ]
+        }
+        Enum {
+            name: "KeyboardSchemes"
+            values: [
+                "WindowsKeyboardScheme",
+                "MacKeyboardScheme",
+                "X11KeyboardScheme",
+                "KdeKeyboardScheme",
+                "GnomeKeyboardScheme",
+                "CdeKeyboardScheme"
+            ]
+        }
+        Enum {
+            name: "UiEffect"
+            values: [
+                "GeneralUiEffect",
+                "AnimateMenuUiEffect",
+                "FadeMenuUiEffect",
+                "AnimateComboUiEffect",
+                "AnimateTooltipUiEffect",
+                "FadeTooltipUiEffect",
+                "AnimateToolBoxUiEffect",
+                "HoverEffect"
             ]
         }
     }
@@ -241,6 +391,7 @@ Module {
             type: "QColor"
             read: "color"
             write: "setColor"
+            reset: "resetColor"
             notify: "colorChanged"
             index: 0
             isFinal: true
@@ -250,6 +401,7 @@ Module {
             type: "QColor"
             read: "defaultColor"
             write: "setDefaultColor"
+            reset: "resetDefaultColor"
             notify: "defaultColorChanged"
             index: 1
             isFinal: true
@@ -373,6 +525,7 @@ Module {
             type: "double"
             read: "topPadding"
             write: "setTopPadding"
+            reset: "resetTopPadding"
             index: 8
             isFinal: true
         }
@@ -381,6 +534,7 @@ Module {
             type: "double"
             read: "leftPadding"
             write: "setLeftPadding"
+            reset: "resetLeftPadding"
             index: 9
             isFinal: true
         }
@@ -389,6 +543,7 @@ Module {
             type: "double"
             read: "rightPadding"
             write: "setRightPadding"
+            reset: "resetRightPadding"
             index: 10
             isFinal: true
         }
@@ -397,6 +552,7 @@ Module {
             type: "double"
             read: "bottomPadding"
             write: "setBottomPadding"
+            reset: "resetBottomPadding"
             index: 11
             isFinal: true
         }
@@ -722,6 +878,7 @@ Module {
             type: "double"
             read: "padding"
             write: "setPadding"
+            reset: "resetPadding"
             notify: "paddingChanged"
             index: 0
             isFinal: true
@@ -731,6 +888,7 @@ Module {
             type: "double"
             read: "topPadding"
             write: "setTopPadding"
+            reset: "resetTopPadding"
             notify: "topPaddingChanged"
             index: 1
             isFinal: true
@@ -740,6 +898,7 @@ Module {
             type: "double"
             read: "leftPadding"
             write: "setLeftPadding"
+            reset: "resetLeftPadding"
             notify: "leftPaddingChanged"
             index: 2
             isFinal: true
@@ -749,6 +908,7 @@ Module {
             type: "double"
             read: "rightPadding"
             write: "setRightPadding"
+            reset: "resetRightPadding"
             notify: "rightPaddingChanged"
             index: 3
             isFinal: true
@@ -758,6 +918,7 @@ Module {
             type: "double"
             read: "bottomPadding"
             write: "setBottomPadding"
+            reset: "resetBottomPadding"
             notify: "bottomPaddingChanged"
             index: 4
             isFinal: true
@@ -973,6 +1134,7 @@ Module {
             type: "HAlignment"
             read: "hAlign"
             write: "setHAlign"
+            reset: "resetHAlign"
             notify: "horizontalAlignmentChanged"
             index: 6
         }
@@ -1021,6 +1183,7 @@ Module {
             type: "int"
             read: "maximumLineCount"
             write: "setMaximumLineCount"
+            reset: "resetMaximumLineCount"
             notify: "maximumLineCountChanged"
             index: 12
         }
@@ -1093,6 +1256,7 @@ Module {
             type: "QUrl"
             read: "baseUrl"
             write: "setBaseUrl"
+            reset: "resetBaseUrl"
             notify: "baseUrlChanged"
             index: 21
         }
@@ -1152,6 +1316,7 @@ Module {
             type: "double"
             read: "padding"
             write: "setPadding"
+            reset: "resetPadding"
             notify: "paddingChanged"
             index: 28
         }
@@ -1161,6 +1326,7 @@ Module {
             type: "double"
             read: "topPadding"
             write: "setTopPadding"
+            reset: "resetTopPadding"
             notify: "topPaddingChanged"
             index: 29
         }
@@ -1170,6 +1336,7 @@ Module {
             type: "double"
             read: "leftPadding"
             write: "setLeftPadding"
+            reset: "resetLeftPadding"
             notify: "leftPaddingChanged"
             index: 30
         }
@@ -1179,6 +1346,7 @@ Module {
             type: "double"
             read: "rightPadding"
             write: "setRightPadding"
+            reset: "resetRightPadding"
             notify: "rightPaddingChanged"
             index: 31
         }
@@ -1188,6 +1356,7 @@ Module {
             type: "double"
             read: "bottomPadding"
             write: "setBottomPadding"
+            reset: "resetBottomPadding"
             notify: "bottomPaddingChanged"
             index: 32
         }

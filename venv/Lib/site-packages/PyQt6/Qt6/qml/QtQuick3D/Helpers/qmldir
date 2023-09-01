@@ -14,4 +14,8 @@ WasdController 6.0 WasdController.qml
 WasdController 1.0 WasdController.qml
 OrbitCameraController 6.0 OrbitCameraController.qml
 OrbitCameraController 1.0 OrbitCameraController.qml
+LodManager 6.0 LodManager.qml
+LodManager 1.0 LodManager.qml
+ExtendedSceneEnvironment 6.0 ExtendedSceneEnvironment.qml
+ExtendedSceneEnvironment 1.0 ExtendedSceneEnvironment.qml
 

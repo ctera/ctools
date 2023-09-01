@@ -3,6 +3,6 @@ linktarget Qt6::qmlxmllistmodelplugin
 optional plugin qmlxmllistmodelplugin
 classname QtQmlXmlListModelPlugin
 typeinfo plugins.qmltypes
-depends QtQml
+depends QtQml auto
 prefer :/qt-project.org/imports/QtQml/XmlListModel/
 

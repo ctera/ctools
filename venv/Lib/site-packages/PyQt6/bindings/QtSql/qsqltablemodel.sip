@@ -82,7 +82,9 @@ protected:
     virtual QString orderByClause() const;
     virtual QString selectStatement() const;
     void setPrimaryKey(const QSqlIndex &key);
+%If (- Qt_6_5_0)
     void setQuery(const QSqlQuery &query);
+%End
     virtual QModelIndex indexInQuery(const QModelIndex &item) const;
     QSqlRecord primaryValues(int row) const;
 

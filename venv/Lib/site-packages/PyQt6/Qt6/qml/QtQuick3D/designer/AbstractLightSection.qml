@@ -68,14 +68,32 @@ Column {
 
                 ExpandingSpacer {}
             }
+
+            PropertyLabel {
+                text: qsTr("Bake Mode")
+                tooltip: qsTr("Controls if the light is active in baked lighting, such as when generating lightmaps.")
+            }
+
+            SecondColumnLayout {
+                ComboBox {
+                    scope: "Light"
+                    model: ["BakeModeDisabled", "BakeModeIndirect", "BakeModeAll"]
+                    backendValue: backendValues.bakeMode
+                    implicitWidth: StudioTheme.Values.singleControlColumnWidth
+                                   + StudioTheme.Values.actionIndicatorWidth
+                }
+
+                ExpandingSpacer {}
+            }
+
         }
     }
 
-    NodeSection {
+    ShadowSection {
         width: parent.width
     }
 
-    ShadowSection {
+    NodeSection {
         width: parent.width
     }
 }

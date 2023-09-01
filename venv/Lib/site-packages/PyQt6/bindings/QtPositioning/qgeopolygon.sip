@@ -57,3 +57,9 @@ public:
 };
 
 %End
+%If (Qt_6_5_0 -)
+QDataStream &operator<<(QDataStream &stream, const QGeoPolygon &polygon) /ReleaseGIL/;
+%End
+%If (Qt_6_5_0 -)
+QDataStream &operator>>(QDataStream &stream, QGeoPolygon &polygon /Constrained/) /ReleaseGIL/;
+%End

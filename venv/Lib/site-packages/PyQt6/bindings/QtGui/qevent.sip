@@ -578,6 +578,9 @@ class QShortcutEvent : QEvent /NoDefaultCtors/
 
 public:
     QShortcutEvent(const QKeySequence &key, int id, bool ambiguous = false);
+%If (Qt_6_5_0 -)
+    QShortcutEvent(const QKeySequence &key, const QShortcut *shortcut = 0, bool ambiguous = false);
+%End
     virtual ~QShortcutEvent();
     bool isAmbiguous() const;
     const QKeySequence &key() const;

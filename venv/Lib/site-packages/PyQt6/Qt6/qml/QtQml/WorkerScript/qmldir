@@ -4,5 +4,6 @@ optional plugin workerscriptplugin
 classname QtQmlWorkerScriptPlugin
 designersupported
 typeinfo plugins.qmltypes
+depends QtQml.Base auto
 prefer :/qt-project.org/imports/QtQml/WorkerScript/
 

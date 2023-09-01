@@ -664,7 +664,14 @@ Module {
             notify: "identifierChanged"
             index: 0
         }
-        Property { name: "type"; type: "QByteArray"; read: "type"; index: 1; isReadonly: true }
+        Property {
+            name: "type"
+            type: "QByteArray"
+            read: "type"
+            index: 1
+            isReadonly: true
+            isConstant: true
+        }
         Property {
             name: "connectedToBackend"
             type: "bool"

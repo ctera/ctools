@@ -11,6 +11,9 @@ Module {
         name: "QAbstractItemModel"
         accessSemantics: "reference"
         prototype: "QObject"
+        exports: ["QtQml.Models/AbstractItemModel 6.5"]
+        isCreatable: false
+        exportMetaObjectRevisions: [1541]
         Enum {
             name: "LayoutChangeHint"
             values: [
@@ -36,6 +39,7 @@ Module {
         }
         Signal {
             name: "dataChanged"
+            isCloned: true
             Parameter { name: "topLeft"; type: "QModelIndex" }
             Parameter { name: "bottomRight"; type: "QModelIndex" }
         }
@@ -52,9 +56,10 @@ Module {
         }
         Signal {
             name: "layoutChanged"
+            isCloned: true
             Parameter { name: "parents"; type: "QPersistentModelIndex"; isList: true }
         }
-        Signal { name: "layoutChanged" }
+        Signal { name: "layoutChanged"; isCloned: true }
         Signal {
             name: "layoutAboutToBeChanged"
             Parameter { name: "parents"; type: "QPersistentModelIndex"; isList: true }
@@ -62,9 +67,10 @@ Module {
         }
         Signal {
             name: "layoutAboutToBeChanged"
+            isCloned: true
             Parameter { name: "parents"; type: "QPersistentModelIndex"; isList: true }
         }
-        Signal { name: "layoutAboutToBeChanged" }
+        Signal { name: "layoutAboutToBeChanged"; isCloned: true }
         Signal {
             name: "rowsAboutToBeInserted"
             Parameter { name: "parent"; type: "QModelIndex" }
@@ -160,6 +166,7 @@ Module {
         Method {
             name: "hasIndex"
             type: "bool"
+            isCloned: true
             Parameter { name: "row"; type: "int" }
             Parameter { name: "column"; type: "int" }
         }
@@ -173,6 +180,7 @@ Module {
         Method {
             name: "index"
             type: "QModelIndex"
+            isCloned: true
             Parameter { name: "row"; type: "int" }
             Parameter { name: "column"; type: "int" }
         }
@@ -193,19 +201,19 @@ Module {
             type: "int"
             Parameter { name: "parent"; type: "QModelIndex" }
         }
-        Method { name: "rowCount"; type: "int" }
+        Method { name: "rowCount"; type: "int"; isCloned: true }
         Method {
             name: "columnCount"
             type: "int"
             Parameter { name: "parent"; type: "QModelIndex" }
         }
-        Method { name: "columnCount"; type: "int" }
+        Method { name: "columnCount"; type: "int"; isCloned: true }
         Method {
             name: "hasChildren"
             type: "bool"
             Parameter { name: "parent"; type: "QModelIndex" }
         }
-        Method { name: "hasChildren"; type: "bool" }
+        Method { name: "hasChildren"; type: "bool"; isCloned: true }
         Method {
             name: "data"
             type: "QVariant"
@@ -215,6 +223,7 @@ Module {
         Method {
             name: "data"
             type: "QVariant"
+            isCloned: true
             Parameter { name: "index"; type: "QModelIndex" }
         }
         Method {
@@ -227,6 +236,7 @@ Module {
         Method {
             name: "setData"
             type: "bool"
+            isCloned: true
             Parameter { name: "index"; type: "QModelIndex" }
             Parameter { name: "value"; type: "QVariant" }
         }
@@ -240,6 +250,7 @@ Module {
         Method {
             name: "headerData"
             type: "QVariant"
+            isCloned: true
             Parameter { name: "section"; type: "int" }
             Parameter { name: "orientation"; type: "Qt::Orientation" }
         }
@@ -255,6 +266,7 @@ Module {
             name: "insertRows"
             revision: 1540
             type: "bool"
+            isCloned: true
             Parameter { name: "row"; type: "int" }
             Parameter { name: "count"; type: "int" }
         }
@@ -270,6 +282,7 @@ Module {
             name: "insertColumns"
             revision: 1540
             type: "bool"
+            isCloned: true
             Parameter { name: "column"; type: "int" }
             Parameter { name: "count"; type: "int" }
         }
@@ -285,6 +298,7 @@ Module {
             name: "removeRows"
             revision: 1540
             type: "bool"
+            isCloned: true
             Parameter { name: "row"; type: "int" }
             Parameter { name: "count"; type: "int" }
         }
@@ -300,6 +314,7 @@ Module {
             name: "removeColumns"
             revision: 1540
             type: "bool"
+            isCloned: true
             Parameter { name: "column"; type: "int" }
             Parameter { name: "count"; type: "int" }
         }
@@ -334,6 +349,7 @@ Module {
             name: "insertRow"
             revision: 1540
             type: "bool"
+            isCloned: true
             Parameter { name: "row"; type: "int" }
         }
         Method {
@@ -347,6 +363,7 @@ Module {
             name: "insertColumn"
             revision: 1540
             type: "bool"
+            isCloned: true
             Parameter { name: "column"; type: "int" }
         }
         Method {
@@ -360,6 +377,7 @@ Module {
             name: "removeRow"
             revision: 1540
             type: "bool"
+            isCloned: true
             Parameter { name: "row"; type: "int" }
         }
         Method {
@@ -373,6 +391,7 @@ Module {
             name: "removeColumn"
             revision: 1540
             type: "bool"
+            isCloned: true
             Parameter { name: "column"; type: "int" }
         }
         Method {
@@ -416,6 +435,7 @@ Module {
         Method {
             name: "sort"
             revision: 1540
+            isCloned: true
             Parameter { name: "column"; type: "int" }
         }
         Method {
@@ -430,6 +450,7 @@ Module {
         Method {
             name: "match"
             type: "QModelIndexList"
+            isCloned: true
             Parameter { name: "start"; type: "QModelIndex" }
             Parameter { name: "role"; type: "int" }
             Parameter { name: "value"; type: "QVariant" }
@@ -438,16 +459,26 @@ Module {
         Method {
             name: "match"
             type: "QModelIndexList"
+            isCloned: true
             Parameter { name: "start"; type: "QModelIndex" }
             Parameter { name: "role"; type: "int" }
             Parameter { name: "value"; type: "QVariant" }
         }
     }
     Component {
-        file: "qabstractitemmodel.h"
+        file: "private/qqmlmodelsmodule_p.h"
         name: "QAbstractListModel"
         accessSemantics: "reference"
         prototype: "QAbstractItemModel"
+        exports: ["QtQml.Models/AbstractListModel 6.5"]
+        isCreatable: false
+        exportMetaObjectRevisions: [1541]
+    }
+    Component {
+        file: "private/qqmlmodelindexvaluetype_p.h"
+        name: "QItemSelection"
+        accessSemantics: "sequence"
+        valueType: "QItemSelectionRange"
     }
     Component {
         file: "private/qqmlmodelsmodule_p.h"
@@ -593,9 +624,10 @@ Module {
         }
         Method {
             name: "_q_layoutAboutToBeChanged"
+            isCloned: true
             Parameter { name: "parents"; type: "QPersistentModelIndex"; isList: true }
         }
-        Method { name: "_q_layoutAboutToBeChanged" }
+        Method { name: "_q_layoutAboutToBeChanged"; isCloned: true }
         Method {
             name: "_q_layoutChanged"
             Parameter { name: "parents"; type: "QPersistentModelIndex"; isList: true }
@@ -603,9 +635,10 @@ Module {
         }
         Method {
             name: "_q_layoutChanged"
+            isCloned: true
             Parameter { name: "parents"; type: "QPersistentModelIndex"; isList: true }
         }
-        Method { name: "_q_layoutChanged" }
+        Method { name: "_q_layoutChanged"; isCloned: true }
         Method { name: "_q_modelDestroyed" }
         Method {
             name: "isSelected"
@@ -621,6 +654,7 @@ Module {
         Method {
             name: "isRowSelected"
             type: "bool"
+            isCloned: true
             Parameter { name: "row"; type: "int" }
         }
         Method {
@@ -632,6 +666,7 @@ Module {
         Method {
             name: "isColumnSelected"
             type: "bool"
+            isCloned: true
             Parameter { name: "column"; type: "int" }
         }
         Method {
@@ -643,6 +678,7 @@ Module {
         Method {
             name: "rowIntersectsSelection"
             type: "bool"
+            isCloned: true
             Parameter { name: "row"; type: "int" }
         }
         Method {
@@ -654,6 +690,7 @@ Module {
         Method {
             name: "columnIntersectsSelection"
             type: "bool"
+            isCloned: true
             Parameter { name: "column"; type: "int" }
         }
         Method {
@@ -661,13 +698,25 @@ Module {
             type: "QModelIndexList"
             Parameter { name: "column"; type: "int" }
         }
-        Method { name: "selectedRows"; type: "QModelIndexList" }
+        Method { name: "selectedRows"; type: "QModelIndexList"; isCloned: true }
         Method {
             name: "selectedColumns"
             type: "QModelIndexList"
             Parameter { name: "row"; type: "int" }
         }
-        Method { name: "selectedColumns"; type: "QModelIndexList" }
+        Method { name: "selectedColumns"; type: "QModelIndexList"; isCloned: true }
+    }
+    Component {
+        file: "private/qqmlmodelindexvaluetype_p.h"
+        name: "QModelIndexList"
+        accessSemantics: "sequence"
+        valueType: "QModelIndex"
+    }
+    Component {
+        file: "private/qqmlmodelindexvaluetype_p.h"
+        name: "std::vector<QModelIndex>"
+        accessSemantics: "sequence"
+        valueType: "QModelIndex"
     }
     Component {
         file: "private/qqmlabstractdelegatecomponent_p.h"
@@ -711,6 +760,7 @@ Module {
             type: "QString"
             read: "filterGroup"
             write: "setFilterGroup"
+            reset: "resetFilterGroup"
             notify: "filterGroupChanged"
             index: 2
         }
@@ -721,6 +771,7 @@ Module {
             read: "items"
             index: 3
             isReadonly: true
+            isConstant: true
         }
         Property {
             name: "persistedItems"
@@ -729,6 +780,7 @@ Module {
             read: "persistedItems"
             index: 4
             isReadonly: true
+            isConstant: true
         }
         Property {
             name: "groups"
@@ -737,6 +789,7 @@ Module {
             read: "groups"
             index: 5
             isReadonly: true
+            isConstant: true
         }
         Property {
             name: "parts"
@@ -745,6 +798,7 @@ Module {
             read: "parts"
             index: 6
             isReadonly: true
+            isConstant: true
         }
         Property {
             name: "rootIndex"
@@ -857,6 +911,7 @@ Module {
             read: "model"
             index: 0
             isReadonly: true
+            isConstant: true
         }
         Property {
             name: "groups"
@@ -1228,6 +1283,7 @@ Module {
             read: "agent"
             index: 2
             isReadonly: true
+            isConstant: true
         }
         Signal { name: "countChanged" }
         Method { name: "clear" }
@@ -1317,8 +1373,24 @@ Module {
         file: "private/qqmlmodelindexvaluetype_p.h"
         name: "QQmlModelIndexValueType"
         accessSemantics: "value"
-        Property { name: "row"; type: "int"; read: "row"; index: 0; isReadonly: true; isFinal: true }
-        Property { name: "column"; type: "int"; read: "column"; index: 1; isReadonly: true; isFinal: true }
+        Property {
+            name: "row"
+            type: "int"
+            read: "row"
+            index: 0
+            isReadonly: true
+            isFinal: true
+            isConstant: true
+        }
+        Property {
+            name: "column"
+            type: "int"
+            read: "column"
+            index: 1
+            isReadonly: true
+            isFinal: true
+            isConstant: true
+        }
         Property {
             name: "parent"
             type: "QModelIndex"
@@ -1327,7 +1399,15 @@ Module {
             isReadonly: true
             isFinal: true
         }
-        Property { name: "valid"; type: "bool"; read: "isValid"; index: 3; isReadonly: true; isFinal: true }
+        Property {
+            name: "valid"
+            type: "bool"
+            read: "isValid"
+            index: 3
+            isReadonly: true
+            isFinal: true
+            isConstant: true
+        }
         Property {
             name: "model"
             type: "QAbstractItemModel"
@@ -1336,6 +1416,7 @@ Module {
             index: 4
             isReadonly: true
             isFinal: true
+            isConstant: true
         }
         Property {
             name: "internalId"
@@ -1344,6 +1425,7 @@ Module {
             index: 5
             isReadonly: true
             isFinal: true
+            isConstant: true
         }
         Method { name: "toString"; type: "QString" }
     }
@@ -1400,6 +1482,7 @@ Module {
         Method {
             name: "move"
             revision: 515
+            isCloned: true
             Parameter { name: "from"; type: "int" }
             Parameter { name: "to"; type: "int" }
         }
@@ -1412,6 +1495,7 @@ Module {
         Method {
             name: "remove"
             revision: 515
+            isCloned: true
             Parameter { name: "index"; type: "int" }
         }
     }

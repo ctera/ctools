@@ -189,6 +189,7 @@ Module {
             type: "QColorDialogOptions::ColorDialogOptions"
             read: "options"
             write: "setOptions"
+            reset: "resetOptions"
             notify: "optionsChanged"
             index: 1
         }
@@ -268,6 +269,7 @@ Module {
             type: "QFileDialogOptions::FileDialogOptions"
             read: "options"
             write: "setOptions"
+            reset: "resetOptions"
             notify: "optionsChanged"
             index: 6
             isFinal: true
@@ -277,6 +279,7 @@ Module {
             type: "QStringList"
             read: "nameFilters"
             write: "setNameFilters"
+            reset: "resetNameFilters"
             notify: "nameFiltersChanged"
             index: 7
             isFinal: true
@@ -288,12 +291,14 @@ Module {
             read: "selectedNameFilter"
             index: 8
             isReadonly: true
+            isConstant: true
         }
         Property {
             name: "defaultSuffix"
             type: "QString"
             read: "defaultSuffix"
             write: "setDefaultSuffix"
+            reset: "resetDefaultSuffix"
             notify: "defaultSuffixChanged"
             index: 9
             isFinal: true
@@ -303,6 +308,7 @@ Module {
             type: "QString"
             read: "acceptLabel"
             write: "setAcceptLabel"
+            reset: "resetAcceptLabel"
             notify: "acceptLabelChanged"
             index: 10
             isFinal: true
@@ -312,6 +318,7 @@ Module {
             type: "QString"
             read: "rejectLabel"
             write: "setRejectLabel"
+            reset: "resetRejectLabel"
             notify: "rejectLabelChanged"
             index: 11
             isFinal: true
@@ -417,6 +424,7 @@ Module {
             type: "QFileDialogOptions::FileDialogOptions"
             read: "options"
             write: "setOptions"
+            reset: "resetOptions"
             notify: "optionsChanged"
             index: 2
             isFinal: true
@@ -426,6 +434,7 @@ Module {
             type: "QString"
             read: "acceptLabel"
             write: "setAcceptLabel"
+            reset: "resetAcceptLabel"
             notify: "acceptLabelChanged"
             index: 3
             isFinal: true
@@ -435,6 +444,7 @@ Module {
             type: "QString"
             read: "rejectLabel"
             write: "setRejectLabel"
+            reset: "resetRejectLabel"
             notify: "rejectLabelChanged"
             index: 4
             isFinal: true
@@ -475,6 +485,7 @@ Module {
             type: "QFontDialogOptions::FontDialogOptions"
             read: "options"
             write: "setOptions"
+            reset: "resetOptions"
             notify: "optionsChanged"
             index: 2
         }
@@ -488,6 +499,8 @@ Module {
         accessSemantics: "reference"
         defaultProperty: "data"
         prototype: "QQuickAbstractDialog"
+        extension: "QPlatformDialogHelper"
+        extensionIsNamespace: true
         exports: ["QtQuick.Dialogs/MessageDialog 6.3"]
         exportMetaObjectRevisions: [1539]
         Property {

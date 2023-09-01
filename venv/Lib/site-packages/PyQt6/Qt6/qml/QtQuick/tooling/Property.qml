@@ -10,10 +10,12 @@ Member {
     property bool isRequired: false
     property bool isList: false
     property bool isFinal: false
+    property bool isConstant: false
     property int revision: 0
     property string bindable
     property string read
     property string write
+    property string reset
     property string notify
     property string privateClass
     property int index: -1

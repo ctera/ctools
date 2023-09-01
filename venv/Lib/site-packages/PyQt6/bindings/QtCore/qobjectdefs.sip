@@ -139,6 +139,9 @@ static void qtcore_invokeMethod_exception()
         }
 %End
 
+%If (Qt_6_5_0 -)
+    QObject *newInstance(QGenericArgument value0, QGenericArgument value1 = QGenericArgument(), QGenericArgument value2 = QGenericArgument(), QGenericArgument value3 = QGenericArgument(), QGenericArgument value4 = QGenericArgument(), QGenericArgument value5 = QGenericArgument(), QGenericArgument value6 = QGenericArgument(), QGenericArgument value7 = QGenericArgument(), QGenericArgument value8 = QGenericArgument(), QGenericArgument value9 = QGenericArgument()) const;
+%End
     int constructorCount() const;
     int indexOfConstructor(const char *constructor) const;
     QMetaMethod constructor(int index) const;

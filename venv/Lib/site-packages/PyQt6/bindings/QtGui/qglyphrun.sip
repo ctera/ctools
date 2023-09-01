@@ -67,6 +67,18 @@ public:
     QRectF boundingRect() const;
     bool isEmpty() const;
     void swap(QGlyphRun &other /Constrained/);
+%If (Qt_6_5_0 -)
+    QList<qsizetype> stringIndexes() const;
+%End
+%If (Qt_6_5_0 -)
+    void setStringIndexes(const QList<qsizetype> &stringIndexes);
+%End
+%If (Qt_6_5_0 -)
+    void setSourceString(const QString &sourceString);
+%End
+%If (Qt_6_5_0 -)
+    QString sourceString() const;
+%End
 };
 
 %End
