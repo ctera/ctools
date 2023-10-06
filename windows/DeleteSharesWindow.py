@@ -44,7 +44,7 @@ class deleteSharesWindow(QMainWindow):
         self.setFixedSize(WINDOW_WIDTH, WINDOW_HEIGHT)
         self.generalLayout = QVBoxLayout()
         self.top = QHBoxLayout()
-        welcome = QLabel("<h2>Welcome to CTools!</h2>")
+        welcome = QLabel("<h2>Welcome to CTools!</h2><h5>One tool for all</h5>")
         pic_label = QLabel(self)
         pixmap = QPixmap("logo.png")
         pic_label.setPixmap(pixmap)
@@ -150,7 +150,9 @@ class deleteSharesWindow(QMainWindow):
                     for share in shares_to_delete:
                         logging.info(f"Share {share.name}")
 
-                    confirm = QMessageBox.question(self, 'Confirm', f"Are you sure you want to delete share: '{share.name}'", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+                    formatted_string = "\n".join([f"Filer: {filer.name} - Share: {share.name}" for share in shares_to_delete])
+
+                    confirm = QMessageBox.question(self, 'Confirm', f"Are you sure you want to delete share:\n{formatted_string }", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
                     if confirm == QMessageBox.Yes:
                         with open('deleted_shares.csv', 'a', newline='') as f:
                             writer = csv.writer(f)

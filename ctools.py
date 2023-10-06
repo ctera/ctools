@@ -51,9 +51,9 @@ def main():
 
     suspend_sync = suspendSyncWindow(widget) 
     widget.addWidget(suspend_sync)
-
-    enable_telnet = enableTelnetWindow(widget)
-    widget.addWidget(enable_telnet)
+    
+    unsuspend_sync = unsuspendSyncWindow(widget)
+    widget.addWidget(unsuspend_sync)
 
     enable_ssh = enableSSHWindow(widget)
     widget.addWidget(enable_ssh)
@@ -61,8 +61,8 @@ def main():
     disable_ssh = disableSSHWindow(widget)
     widget.addWidget(disable_ssh)
 
-    unsuspend_sync = unsuspendSyncWindow(widget)
-    widget.addWidget(unsuspend_sync)
+    enable_telnet = enableTelnetWindow(widget)
+    widget.addWidget(enable_telnet)
 
     reset_password = resetPasswordWindow(widget)
     widget.addWidget(reset_password)
@@ -73,8 +73,6 @@ def main():
     delete_shares = deleteSharesWindow(widget) 
     widget.addWidget(delete_shares)
 
-    #smb_audit = smbAuditWindow(widget)
-    #widget.addWidget(smb_audit)
     ## STEP7- Add new windows above this line ##
 
     widget.setCurrentWidget(run_cmd)   # setting the page that you want to load when application starts up. you can also use setCurrentIndex(int)

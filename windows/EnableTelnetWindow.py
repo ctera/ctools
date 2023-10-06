@@ -32,7 +32,7 @@ class enableTelnetWindow(QMainWindow):
         self.setFixedSize(WINDOW_WIDTH, WINDOW_HEIGHT)
         self.generalLayout = QVBoxLayout()
         self.top = QHBoxLayout()
-        welcome = QLabel("<h2>Welcome to CTools!</h2>")
+        welcome = QLabel("<h2>Welcome to CTools!</h2><h5>One tool for all</h5>")
         pic_label = QLabel(self)
         pixmap = QPixmap("logo.png")
         pic_label.setPixmap(pixmap)
@@ -49,7 +49,7 @@ class enableTelnetWindow(QMainWindow):
         self._createToolBar()
         self._createToolViewLayout()
     def _createToolBar(self):
-        tools = create_tool_bar(self.widget, 3)
+        tools = create_tool_bar(self.widget, 6)
         # Add line separator between Tool List and Tool View
         line = QFrame()
         line.setFrameShape(QFrame.VLine)

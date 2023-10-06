@@ -39,7 +39,7 @@ class runCmdWindow(QMainWindow):
         #self.top = QLabel("<h2>Welcome to CTools!</h2>")
 
         self.top = QHBoxLayout()
-        welcome = QLabel("<h2>Welcome to CTools!</h2>")
+        welcome = QLabel("<h2>Welcome to CTools!</h2><h5>One tool for all</h5>")
         pic_label = QLabel(self)
         pixmap = QPixmap("logo.png")
         pic_label.setPixmap(pixmap)
