@@ -1,0 +1,22 @@
+2023-09-14 13:03:39,852 [INFO] hello
+2023-09-14 13:03:39,853 [INFO] Logging into 192.168.80.201
+2023-09-14 13:03:39,894 [INFO] User logged in. {'host': '192.168.80.201', 'user': 'admin'}
+2023-09-14 13:03:39,940 [INFO] Getting Filers connected to portal
+2023-09-14 13:03:42,208 [INFO] delet
+2023-09-14 13:03:42,220 [INFO] Share name: 'cloud'
+2023-09-14 13:03:42,221 [INFO] Share name: 'vol1-notmethough'
+2023-09-14 13:03:42,221 [INFO] Share name: 'vol1-deleteme-gw2'
+2023-09-14 13:03:42,221 [INFO] The following shares from filer GW-2 will be deleted:
+2023-09-14 13:03:42,222 [INFO] Share vol1-deleteme-gw2
+2023-09-14 13:03:44,373 [INFO] Request to delete share was not approved.
+2023-09-14 13:03:44,384 [INFO] Share name: 'cloud'
+2023-09-14 13:03:44,384 [INFO] Share name: 'vol1-thistoo'
+2023-09-14 13:03:44,385 [INFO] Share name: 'vol1-deleteme'
+2023-09-14 13:03:44,385 [INFO] Share name: 'vol1-delete'
+2023-09-14 13:03:44,385 [INFO] The following shares from filer LabGW will be deleted:
+2023-09-14 13:03:44,386 [INFO] Share vol1-deleteme
+2023-09-14 13:03:44,386 [INFO] Share vol1-delete
+2023-09-14 13:03:52,082 [INFO] Share deleted. {'name': 'vol1-deleteme'}
+2023-09-14 13:03:52,083 [INFO] Share vol1-deleteme deleted
+2023-09-14 13:03:52,243 [INFO] Share deleted. {'name': 'vol1-delete'}
+2023-09-14 13:03:52,244 [INFO] Share vol1-delete deleted
