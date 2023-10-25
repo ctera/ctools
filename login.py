@@ -30,18 +30,21 @@ def handle_exceptions(address: str, error):
 
     :param str address: Portal IP, hostname, or FQDN
     """
-    if error.message == 'Untrusted security certificate':
-        logging.info("Not proceeding with login.")
-        logging.warning('Invalid or expired certificate found at %s', address)
-        logging.info("Verify certificate or use ignore_cert flag to proceed.")
-        sys.exit("Exiting ctools.")
-    elif error.reason == "Forbidden":
-        logging.debug(error)
-        logging.info("Access denied")
-    else:
-        logging.info("There was a problem logging in.")
-        logging.debug(error)
-        sys.exit("Exiting ctools.")
+    #logging.info("MADE IT HERE **************************************************")
+    logging.error("There was a problem trying to login. Ensure that credentials are correct. Also be sure that there is either a valid certificate or the ignore_cert flag is checked")
+    """if hasattr(error, 'message'):
+        if error.message == 'Untrusted security certificate':
+            logging.info("Not proceeding with login.")
+            logging.info('Invalid or expired certificate found at %s', address)
+            logging.info("Verify certificate or use ignore_cert flag to proceed.")
+            sys.exit("Exiting ctools.")
+        elif error.reason == "Forbidden":
+            logging.info(error)
+            logging.info("Access denied")
+        else:
+            logging.info("There was a problem logging in.")
+            logging.info(error)
+            sys.exit("Exiting ctools.")"""
 
 
 def global_admin_login(address: str, username: str, password: str, ignore_cert=False):

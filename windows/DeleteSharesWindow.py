@@ -124,52 +124,54 @@ class deleteSharesWindow(QMainWindow):
 
         global_admin = global_admin_login(portal_address, portal_username, portal_password, ignore_cert)
 
-        filers = get_filers(global_admin)
+        try:
+            filers = get_filers(global_admin)
 
-        self.inputText = None
-        self.stop = False
-        self._getTextInput()
-        if not self.stop:
-            logging.info(self.inputText)
-            # Create/open the CSV file and add headers if it's new
-            with open('deleted_shares.csv', 'a+', newline='') as f:
-                f.seek(0)  # Go to the start of the file to check if it's empty
-                writer = csv.writer(f)
-                if f.read() == '':  # If file is empty, write headers
-                    writer.writerow(['FilerName', 'ShareName', 'Status'])
-            for filer in filers:
-                shares_to_delete = []
-                shares = filer.get('/config/fileservices/share')
-                for share in shares:
-                    logging.info(f"Share name: '{share.name}'")  # Add this line
-                    if isinstance(share.name, str) and self.inputText in share.name:
-                        shares_to_delete.append(share)
+            self.inputText = None
+            self.stop = False
+            self._getTextInput()
+            if not self.stop:
+                logging.info(self.inputText)
+                # Create/open the CSV file and add headers if it's new
+                with open('deleted_shares.csv', 'a+', newline='') as f:
+                    f.seek(0)  # Go to the start of the file to check if it's empty
+                    writer = csv.writer(f)
+                    if f.read() == '':  # If file is empty, write headers
+                        writer.writerow(['FilerName', 'ShareName', 'Status'])
+                for filer in filers:
+                    shares_to_delete = []
+                    shares = filer.get('/config/fileservices/share')
+                    for share in shares:
+                        logging.info(f"Share name: '{share.name}'")  # Add this line
+                        if isinstance(share.name, str) and self.inputText in share.name:
+                            shares_to_delete.append(share)
 
-                if shares_to_delete:
-                    logging.info(f"The following shares from filer {filer.name} will be deleted:")
-                    for share in shares_to_delete:
-                        logging.info(f"Share {share.name}")
+                    if shares_to_delete:
+                        logging.info(f"The following shares from filer {filer.name} will be deleted:")
+                        for share in shares_to_delete:
+                            logging.info(f"Share {share.name}")
 
-                    formatted_string = "\n".join([f"Filer: {filer.name} - Share: {share.name}" for share in shares_to_delete])
+                        formatted_string = "\n".join([f"Filer: {filer.name} - Share: {share.name}" for share in shares_to_delete])
 
-                    confirm = QMessageBox.question(self, 'Confirm', f"Are you sure you want to delete share:\n{formatted_string }", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-                    if confirm == QMessageBox.Yes:
-                        with open('deleted_shares.csv', 'a', newline='') as f:
-                            writer = csv.writer(f)
-                            for share in shares_to_delete:
-                                try:
-                                    filer.shares.delete(share.name)
-                                    logging.info(f'Share {share.name} deleted')
-                                    writer.writerow([filer.name, share.name, 'Deleted'])
-                                except CTERAException as error:
-                                    logging.info(f"Failed to delete Share: {share.name} from Filer: {filer.name}")
-                                    writer.writerow([filer.name, share.name, 'NotDeleted'])
-                    else:
-                        logging.info("Request to delete share was not approved.")
+                        confirm = QMessageBox.question(self, 'Confirm', f"Are you sure you want to delete share:\n{formatted_string }", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+                        if confirm == QMessageBox.Yes:
+                            with open('deleted_shares.csv', 'a', newline='') as f:
+                                writer = csv.writer(f)
+                                for share in shares_to_delete:
+                                    try:
+                                        filer.shares.delete(share.name)
+                                        logging.info(f'Share {share.name} deleted')
+                                        writer.writerow([filer.name, share.name, 'Deleted'])
+                                    except CTERAException as error:
+                                        logging.info(f"Failed to delete Share: {share.name} from Filer: {filer.name}")
+                                        writer.writerow([filer.name, share.name, 'NotDeleted'])
+                        else:
+                            logging.info("Request to delete share was not approved.")
 
-        
+            
 
-
+        except Exception as e:
+            logging.error(e)
         self._updateOutput()
 
     def _updateOutput(self):
