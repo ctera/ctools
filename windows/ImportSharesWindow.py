@@ -58,7 +58,7 @@ class importSharesWindow(QMainWindow):
     def _createToolViewLayout(self):
         toolView = QVBoxLayout()
         # Step3 - You will change the next two lines according to the KB
-        BoilerLayout, self.input_widgets = gen_custom_tool_layout("Import Shares", ["Address Source", "Username Source", "Password Source", "Address Destination", "Username Destination", "Password Destination"], ["Ignore cert warnings for login", "Verbose Logging"], False)
+        BoilerLayout, self.input_widgets = gen_custom_tool_layout("Import Shares", ["Source Device Name", "Destination Device Name"], ["Ignore cert warnings for login", "Verbose Logging"])
         toolView.addLayout(BoilerLayout)
         # Create action buttons
         actionButtonLayout = QHBoxLayout()
@@ -76,22 +76,22 @@ class importSharesWindow(QMainWindow):
         self.mainContent.addLayout(toolView)
     # STEP4 - Grab the arguments for you tool
     def tool(self):
-        address_source = self.input_widgets[0].text()
-        login_source = self.input_widgets[1].text()
-        password_source = self.input_widgets[2].text()
-        address_destination = self.input_widgets[3].text()
-        login_destination = self.input_widgets[4].text()
-        password_destination = self.input_widgets[5].text()
-        ignore_cert = self.input_widgets[6].isChecked()
-        verbose = self.input_widgets[7].isChecked()
+        portal_address = self.input_widgets[0].text()
+        portal_username = self.input_widgets[1].text()
+        portal_password = self.input_widgets[2].text()
+        device_name_source = self.input_widgets[3].text()
+        device_name_dest = self.input_widgets[4].text()
+        ignore_cert = self.input_widgets[5].isChecked()
+        verbose = self.input_widgets[6].isChecked()
         if verbose:
             set_logging(logging.DEBUG, 'debug-log.txt')
         else:
-            set_logging()
-        
+            set_logging()     
+
+        global_admin = global_admin_login(portal_address, portal_username, portal_password, ignore_cert)   
         ## Step6b - Run the tool here
         # Ex: run_status(global_admin, filename, all_tenants_flag)
-        import_shares(address_source, login_source, password_source, address_destination, login_destination, password_destination)
+        import_shares(global_admin, device_name_source, device_name_dest)
         self._updateOutput()
     def _updateOutput(self):
         file = open("output.tmp", 'r')
