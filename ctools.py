@@ -16,6 +16,7 @@ from windows.DisableSSHWindow import disableSSHWindow
 from windows.UnsuspendSyncWindow import unsuspendSyncWindow
 from windows.ResetPasswordWindow import resetPasswordWindow
 from windows.CloudFoldersWindow import cloudFoldersWindow
+from windows.ImportSharesWindow import importSharesWindow
 #from windows.SMBAuditWindow import smbAuditWindow
 
 from PySide2.QtCore import Qt
@@ -72,6 +73,9 @@ def main():
 
     delete_shares = deleteSharesWindow(widget) 
     widget.addWidget(delete_shares)
+
+    import_shares = importSharesWindow(widget)
+    widget.addWidget(import_shares)
 
     ## STEP7- Add new windows above this line ##
 
