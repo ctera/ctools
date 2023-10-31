@@ -21,7 +21,7 @@ def import_shares(self, device_name_source, device_name_dest):
             if share.name == 'public' or share.name == 'cloud' or share.name == 'backups':
                 logging.info(str(get_share) + ' skipped')
             else:
-                    filer_destination.shares.add(get_share[0],get_share[1],acl= [everyone],access=get_share[2],csc='disabled',dir_permissions=777,comment=get_share[3])
+                    filer_destination.shares.add(get_share[0],get_share[1],acl= [everyone],access=get_share[2],dir_permissions=777,comment=get_share[3])
      
     except CTERAException as error:
         logging.error(error)

@@ -1,5 +1,4 @@
-2023-10-25 13:32:04,018 [INFO] Logging into 192.168.80.201
-2023-10-25 13:32:04,047 [ERROR] There was a problem trying to login. Ensure that credentials are correct. Also be sure that there is either a valid certificate or the ignore_cert flag is checked
-2023-10-25 13:32:04,047 [INFO] Starting suspend sync task.
-2023-10-25 13:32:04,047 [WARNING] 'NoneType' object has no attribute 'devices'
-2023-10-25 13:32:04,048 [INFO] Error suspending sync
+2023-10-31 17:08:49,024 [INFO] Logging into 192.168.80.201
+2023-10-31 17:08:49,075 [INFO] User logged in. {'host': '192.168.80.201', 'user': 'admin'}
+2023-10-31 17:08:49,490 [INFO] ['cloud', 'cloud', 'winAclMode', 'Auto-generated'] skipped
+2023-10-31 17:08:49,614 [INFO] Share created. {'name': 'vol1-thistoo'}
