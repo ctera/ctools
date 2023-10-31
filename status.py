@@ -215,5 +215,8 @@ def run_status(self, filename, all_tenants):
     else:
         logging.debug('File does not exist. Creating it.')
         write_header(filename)
-    write_status(self, filename, all_tenants)
+    try:
+        write_status(self, filename, all_tenants)
+    except Exception as e:
+        logging.warning("An error occurred: " + str(e))
     logging.info('Finished status task.')

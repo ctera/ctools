@@ -49,13 +49,16 @@ def run_cmd(self, command: str, all_tenants=False, device_name=None):
     :param str,optional device_name: Name of device on current tenant
     """
     logging.info('Starting run_cmd task.')
-    tenant = self.users.session().user.tenant
-    if device_name:
-        filer = get_filer(self, device_name, tenant)
-        single_filer_run(filer, command)
-    elif all_tenants is True:
-        multi_filer_run(self, command, all_tenants=True)
-        logging.info('Finished run_cmd task on all Filers.')
-    else:
-        multi_filer_run(self, command, all_tenants=False)
-        logging.info("Finished run_cmd task on all Filers in Tenant: %s", tenant)
+    try:
+        tenant = self.users.session().user.tenant
+        if device_name:
+            filer = get_filer(self, device_name, tenant)
+            single_filer_run(filer, command)
+        elif all_tenants is True:
+            multi_filer_run(self, command, all_tenants=True)
+            logging.info('Finished run_cmd task on all Filers.')
+        else:
+            multi_filer_run(self, command, all_tenants=False)
+            logging.info("Finished run_cmd task on all Filers in Tenant: %s", tenant)
+    except Exception as e:
+        logging.warning("An error occurred: " + str(e))
