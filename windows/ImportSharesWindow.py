@@ -58,7 +58,7 @@ class importSharesWindow(QMainWindow):
     def _createToolViewLayout(self):
         toolView = QVBoxLayout()
         # Step3 - You will change the next two lines according to the KB
-        BoilerLayout, self.input_widgets = gen_custom_tool_layout("Import Shares", ["Source Device Name", "Destination Device Name"], ["Ignore cert warnings for login", "Verbose Logging"])
+        BoilerLayout, self.input_widgets = gen_custom_tool_layout("Copy Shares", ["Source Device Name", "Destination Device Name"], ["Ignore cert warnings for login", "Verbose Logging"])
         toolView.addLayout(BoilerLayout)
         # Create action buttons
         actionButtonLayout = QHBoxLayout()

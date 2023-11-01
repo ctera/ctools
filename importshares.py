@@ -42,5 +42,5 @@ def import_shares_old(address_source, login_source, password_source, address_des
             else:
                     filer_destination.shares.add(get_share[0],get_share[1],acl= [everyone],access=get_share[2],csc='disabled',dir_permissions=777,comment=get_share[3])
      
-    except CTERAException as error:
+    except Exception as error:
         logging.error(error)
