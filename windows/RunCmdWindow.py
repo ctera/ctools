@@ -1,5 +1,6 @@
-import logging
+import logging, sys
 
+from EmittingStream import EmittingStream
 from log_setter import set_logging
 from run_cmd import run_cmd
 
@@ -7,6 +8,7 @@ from ui_help import gen_tool_layout, gen_custom_tool_layout, create_tool_bar
 from login import global_admin_login
 
 from PySide2.QtCore import Qt
+from PySide2 import QtGui
 
 from PySide2.QtWidgets import (
     QMainWindow,
@@ -36,8 +38,6 @@ class runCmdWindow(QMainWindow):
         self.setFixedSize(WINDOW_WIDTH, WINDOW_HEIGHT)
         self.setWindowTitle("CTools 3.0")
         self.generalLayout = QVBoxLayout()
-        #self.top = QLabel("<h2>Welcome to CTools!</h2>")
-
         self.top = QHBoxLayout()
         welcome = QLabel("<h2>Welcome to CTools!</h2><h5>One tool for all</h5>")
         pic_label = QLabel(self)
@@ -57,6 +57,15 @@ class runCmdWindow(QMainWindow):
         self._createToolBar()
         self._createToolViewLayout()
 
+        sys.stdout = EmittingStream()
+        sys.stdout.textWritten.connect(self.write2Console)
+
+    def write2Console(self, text):
+        cursor = self.output.textCursor()
+        cursor.movePosition(QtGui.QTextCursor.End)
+        cursor.insertText(text)
+        self.output.setTextCursor(cursor)
+        self.output.ensureCursorVisible()
     def _createToolBar(self):
         tools = create_tool_bar(self.widget, 0)
 
@@ -118,7 +127,7 @@ class runCmdWindow(QMainWindow):
             run_cmd(global_admin, command, all_tenants_flag)
         else:
             run_cmd(global_admin, command, all_tenants_flag, device_name)
-        self._updateOutput()
+        #self._updateOutput()
 
     def _updateOutput(self):
         file = open("output.tmp", 'r')
