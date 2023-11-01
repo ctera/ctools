@@ -108,17 +108,19 @@ class runCmdWindow(QMainWindow):
         verbose = self.input_widgets[7].isChecked()
 
         if verbose:
-            set_logging(logging.DEBUG, 'debug-log.txt')
+            # Use the set_logging function from log_setter.py
+            set_logging(logging.DEBUG, 'debug-log.txt', self.output)
         else:
-            set_logging()
+            # Use the set_logging function with output_widget parameter
+            set_logging(output_widget=self.output)
 
         global_admin = global_admin_login(portal_address, portal_username, portal_password, ignore_cert)
-        
+
         if not device_name:
             run_cmd(global_admin, command, all_tenants_flag)
         else:
             run_cmd(global_admin, command, all_tenants_flag, device_name)
-        self._updateOutput()
+        #self._updateOutput()
 
     def _updateOutput(self):
         file = open("output.tmp", 'r')
