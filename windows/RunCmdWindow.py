@@ -66,6 +66,7 @@ class runCmdWindow(QMainWindow):
         cursor.insertText(text)
         self.output.setTextCursor(cursor)
         self.output.ensureCursorVisible()
+        
     def _createToolBar(self):
         tools = create_tool_bar(self.widget, 0)
 
