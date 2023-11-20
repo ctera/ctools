@@ -1,7 +1,11 @@
-2023-11-17 16:18:11,746 [INFO] Logging into 192.168.80.201
-2023-11-17 16:18:11,793 [INFO] User logged in. {'host': '192.168.80.201', 'user': 'admin'}
-2023-11-17 16:18:12,269 [INFO] ['cloud', 'cloud', 'winAclMode', 'Auto-generated'] skipped
-2023-11-17 16:18:12,409 [INFO] Share created. {'name': 'vol1-notmethough'}
-2023-11-17 16:18:12,614 [INFO] Share created. {'name': 'vol1-delete'}
-2023-11-17 16:18:12,810 [INFO] Share created. {'name': 'vol1-deleteme'}
-2023-11-17 16:18:13,015 [INFO] Share created. {'name': 'vol1-thistoo'}
+2023-11-20 17:15:46,189 [INFO] Logging into 192.168.80.201
+2023-11-20 17:15:46,231 [INFO] User logged in. {'host': '192.168.80.201', 'user': 'admin'}
+2023-11-20 17:15:46,284 [INFO] Starting run_cmd task.
+2023-11-20 17:15:46,289 [INFO] Getting all Filers since tenant is Administration
+2023-11-20 17:15:46,386 [INFO] Running command on: GW-2
+2023-11-20 17:15:46,387 [INFO] Executing CLI command. {'cli_command': 'dbg l'}
+2023-11-20 17:15:46,394 [WARNING] Something went wrong running the command on GW-2
+2023-11-20 17:15:46,395 [INFO] Running command on: LabGW
+2023-11-20 17:15:46,395 [INFO] Executing CLI command. {'cli_command': 'dbg l'}
+2023-11-20 17:15:46,415 [WARNING] Something went wrong running the command on LabGW
+2023-11-20 17:15:46,416 [INFO] Finished run_cmd task on all Filers.

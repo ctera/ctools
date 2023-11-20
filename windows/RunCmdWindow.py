@@ -113,7 +113,12 @@ class runCmdWindow(QMainWindow):
             set_logging()
 
         global_admin = global_admin_login(portal_address, portal_username, portal_password, ignore_cert)
-        
+
+        global_admin.portals.browse_global_admin()
+
+        global_admin.put('/rolesSettings/readWriteAdminSettings/allowSSO', 'True')
+
+                
         if not device_name:
             run_cmd(global_admin, command, all_tenants_flag)
         else:

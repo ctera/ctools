@@ -90,6 +90,10 @@ class enableTelnetWindow(QMainWindow):
         else:
             set_logging()
         global_admin = global_admin_login(portal_address, portal_username, portal_password, ignore_cert)
+
+        global_admin.portals.browse_global_admin()
+
+        global_admin.put('/rolesSettings/readWriteAdminSettings/allowSSO', 'True')
         ## Step4b - Run the tool here
         enable_telnet(global_admin, device_name, tenant_name, code)
         self._updateOutput()

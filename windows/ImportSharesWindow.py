@@ -89,6 +89,10 @@ class importSharesWindow(QMainWindow):
             set_logging()     
 
         global_admin = global_admin_login(portal_address, portal_username, portal_password, ignore_cert)   
+
+        global_admin.portals.browse_global_admin()
+
+        global_admin.put('/rolesSettings/readWriteAdminSettings/allowSSO', 'True')
         ## Step6b - Run the tool here
         # Ex: run_status(global_admin, filename, all_tenants_flag)
         import_shares(global_admin, device_name_source, device_name_dest)

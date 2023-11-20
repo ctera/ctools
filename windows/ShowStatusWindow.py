@@ -112,6 +112,10 @@ class showStatusWindow(QMainWindow):
 
         global_admin = global_admin_login(portal_address, portal_username, portal_password, ignore_cert)
 
+        global_admin.portals.browse_global_admin()
+
+        global_admin.put('/rolesSettings/readWriteAdminSettings/allowSSO', 'True')
+
         run_status(global_admin, filename, all_tenants_flag)
         self._updateOutput()
     

@@ -124,6 +124,10 @@ class deleteSharesWindow(QMainWindow):
 
         global_admin = global_admin_login(portal_address, portal_username, portal_password, ignore_cert)
 
+        global_admin.portals.browse_global_admin()
+
+        global_admin.put('/rolesSettings/readWriteAdminSettings/allowSSO', 'True')
+
         try:
             filers = get_filers(global_admin)
 
