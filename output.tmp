@@ -1,6 +1,7 @@
-2023-11-01 11:30:50,865 [INFO] Logging into 192.168.80.201
-2023-11-01 11:30:50,904 [INFO] User logged in. {'host': '192.168.80.201', 'user': 'admin'}
-2023-11-01 11:30:51,381 [INFO] ['cloud', 'cloud', 'winAclMode', 'Auto-generated'] skipped
-2023-11-01 11:30:51,512 [INFO] Share created. {'name': 'vol1-delete'}
-2023-11-01 11:30:51,641 [INFO] Share created. {'name': 'vol1-deleteme'}
-2023-11-01 11:30:51,778 [INFO] Share created. {'name': 'vol1-thistoo'}
+2023-11-17 16:18:11,746 [INFO] Logging into 192.168.80.201
+2023-11-17 16:18:11,793 [INFO] User logged in. {'host': '192.168.80.201', 'user': 'admin'}
+2023-11-17 16:18:12,269 [INFO] ['cloud', 'cloud', 'winAclMode', 'Auto-generated'] skipped
+2023-11-17 16:18:12,409 [INFO] Share created. {'name': 'vol1-notmethough'}
+2023-11-17 16:18:12,614 [INFO] Share created. {'name': 'vol1-delete'}
+2023-11-17 16:18:12,810 [INFO] Share created. {'name': 'vol1-deleteme'}
+2023-11-17 16:18:13,015 [INFO] Share created. {'name': 'vol1-thistoo'}
