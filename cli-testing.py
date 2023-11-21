@@ -18,7 +18,7 @@ allowSSO = bool(global_admin.get('/rolesSettings/readWriteAdminSettings/allowSSO
 print("Current sso setting: " + str(allowSSO))
 
 if not allowSSO:
-    global_admin.put('/rolesSettings/readWriteAdminSettings/allowSSO', 'True')
+    global_admin.put('/rolesSettings/readWriteAdminSettings/allowSSO', 'true')
 else:
     print("This was already true")
 
@@ -34,7 +34,7 @@ result = global_admin.get('/rolesSettings/readWriteAdminSettings/allowSSO')
 
 print(result)
 
-test_set = global_admin.put('/rolesSettings/readWriteAdminSettings/allowSSO', 'True')
+test_set = global_admin.put('/rolesSettings/readWriteAdminSettings/allowSSO', 'true')
 
 print(test_set)
 

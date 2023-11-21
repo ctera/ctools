@@ -13,14 +13,14 @@ def check_allow_device_sso(self):
     Check if 'Allow Single Sign On to Devices' is enabled for
     read-write admins of the current tenant. If not, log a warning.
 
-    :param self: GlobalAdmin instance
-    """
-    device_sso = self.get('rolesSettings/readWriteAdminSettings/allowSSO')
-    if device_sso is True:
-        logging.debug('Single Sign On to Devices is allowed.')
-    else:
-        logging.warning("Allow Single Sign On to Devices is not enabled.")
-        logging.warning("Some tasks may fail or output may be incomplete.")
+#    :param self: GlobalAdmin instance
+#    """
+#    device_sso = self.get('rolesSettings/readWriteAdminSettings/allowSSO')
+#    if device_sso is True:
+#        logging.debug('Single Sign On to Devices is allowed.')
+#    else:
+#        logging.warning("Allow Single Sign On to Devices is not enabled.")
+#        logging.warning("Some tasks may fail or output may be incomplete.")
 
 
 def handle_exceptions(address: str, error):
