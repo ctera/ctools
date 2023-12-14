@@ -63,6 +63,10 @@ def write_status(self, p_filename, all_tenants):
             MetaLogs = filer.cli.run_command('dbg level')
         except AttributeError:
             MetaLogs = 'Not Applicable'
+        try:
+            ad_mapping = filer.cli.run_command('show /config/fileservices/cifs/idMapping/map')
+        except AttributeError:
+            ad_mapping = 'Not Applicable'
         License = filer.licenses.get()
         # License = info.config.device.activeLicenseType
         SN = info.status.device.SerialNumber
@@ -150,6 +154,7 @@ def write_status(self, p_filename, all_tenants):
                     DNS1,
                     DNS2,
                     get_ad_status(),
+                    ad_mapping,
                     Alerts,
                     time,
                     uptime,
@@ -194,6 +199,7 @@ def write_header(p_filename):
                                      'DNS Server1',
                                      'DNS Server2',
                                      'AD Domain Status',
+                                     'AD Mapping',
                                      'Alerts',
                                      'TimeServer',
                                      'uptime',

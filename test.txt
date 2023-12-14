@@ -1,0 +1,77 @@
+﻿Tenant,Filer Name,CloudSync Status,selfScanIntervalInHours,uploadingFiles,scanningFiles,selfVerificationscanningFiles,MetaLogsSetting,AuditLogsStatus,DeviceLocation,AuditLogsPath,MetaLogMaxSize,MetaLogMaxFiles,CurrentFirmware,License,EvictionPercentage,CurrentVolumeStorage,SN,MAC,IP Config,DNS Server1,DNS Server2,AD Domain Status,Alerts,TimeServer,uptime,Current Performance,Max CPU,Max Memory
+portal,GW-2,NoFolder,168,0,0,0,x000000004,"""disabled""",,"""""",100,70,7.3.2376.24,EV16,75,Total: 20464 Used: 218 Free: 20246,VMware-56 4d 22 39 d0 73 46 cb-a6 13 eb 1b 11 50 f9 75,00:0c:29:50:f9:75,192.168.80.203,192.168.80.211,192.168.80.254,Workgroup,"[
+   
+]","{
+     ""_classname"": ""AlertSettings"",
+     ""SMTPServer"": null,
+     ""auth"": null,
+     ""emails"": [],
+     ""from"": ""alert-no-reply@ctera.com"",
+     ""logCodes"": [],
+     ""minSeverity"": ""critical"",
+     ""port"": 25,
+     ""specificAlerts"": {
+          ""_classname"": ""SpecificAlerts"",
+          ""NotifyOnNasRestarted"": null,
+          ""VolumeCriticallyFullPercent"": null,
+          ""VolumeNearlyFullPercent"": null,
+          ""BackupFailAlert"": true,
+          ""BackupFailDays"": 3,
+          ""CloudConnectFailAlert"": true,
+          ""CloudConnectFailHours"": 6,
+          ""CloudSyncFailAlert"": true,
+          ""CloudSyncFailHours"": 5,
+          ""NotifyBackupSuccess"": false,
+          ""NotifyDeviceStarted"": false,
+          ""NotifyFirmwareUpgrade"": true,
+          ""NotifyRedundantPSUFailure"": false,
+          ""NotifySyncSuccess"": false,
+          ""SyncFailAlert"": true,
+          ""SyncFailDays"": 3,
+          ""VolumeFullAlert"": true,
+          ""VolumeFullPercent"": 90,
+          ""VolumeQuotaFullAlert"": true,
+          ""VolumeQuotaFullPercent"": 95
+     },
+     ""useAuth"": false,
+     ""useCustomServer"": false,
+     ""useTLS"": true
+}","Mode: enabled Zone: (GMT-05:00) Eastern Time (US , Canada) Servers: ['0.pool.ntp.org', '1.pool.ntp.org', '2.pool.ntp.org']",P0Y0M0DT0H6M9S,CPU: 1% Mem: 10%,1%,10%
+portal,LabGW,Off,168,0,0,0,x000000004,"""disabled""",,"""""",100,70,7.3.2376.24,EV16,75,Total: 20464 Used: 3376 Free: 17088,VMware-56 4d 17 3d 2d 91 81 fe-56 bb 38 14 55 51 9c 85,00:0c:29:51:9c:85,192.168.80.202,192.168.80.211,192.168.80.254,Workgroup,"[
+   
+]","{
+     ""_classname"": ""AlertSettings"",
+     ""SMTPServer"": null,
+     ""auth"": null,
+     ""emails"": [],
+     ""from"": ""alert-no-reply@ctera.com"",
+     ""logCodes"": [],
+     ""minSeverity"": ""critical"",
+     ""port"": 25,
+     ""specificAlerts"": {
+          ""_classname"": ""SpecificAlerts"",
+          ""NotifyOnNasRestarted"": null,
+          ""VolumeCriticallyFullPercent"": null,
+          ""VolumeNearlyFullPercent"": null,
+          ""BackupFailAlert"": true,
+          ""BackupFailDays"": 3,
+          ""CloudConnectFailAlert"": true,
+          ""CloudConnectFailHours"": 6,
+          ""CloudSyncFailAlert"": true,
+          ""CloudSyncFailHours"": 5,
+          ""NotifyBackupSuccess"": false,
+          ""NotifyDeviceStarted"": false,
+          ""NotifyFirmwareUpgrade"": true,
+          ""NotifyRedundantPSUFailure"": false,
+          ""NotifySyncSuccess"": false,
+          ""SyncFailAlert"": true,
+          ""SyncFailDays"": 3,
+          ""VolumeFullAlert"": true,
+          ""VolumeFullPercent"": 90,
+          ""VolumeQuotaFullAlert"": true,
+          ""VolumeQuotaFullPercent"": 95
+     },
+     ""useAuth"": false,
+     ""useCustomServer"": false,
+     ""useTLS"": true
+}","Mode: enabled Zone: (GMT-05:00) Eastern Time (US , Canada) Servers: ['0.pool.ntp.org', '1.pool.ntp.org', '2.pool.ntp.org']",P0Y0M0DT0H6M20S,CPU: 0% Mem: 10%,0%,10%
