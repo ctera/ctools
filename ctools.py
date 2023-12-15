@@ -29,7 +29,7 @@ from PySide2.QtWidgets import (
 from PySide2.QtGui import QIcon
 
 def main():
-    """PyCalc's main function."""
+    """CTools's main function."""
 
     QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
 
@@ -39,7 +39,7 @@ def main():
     
     widget = QStackedWidget()
 
-    widget.setWindowTitle("CTools v3.0b")
+    widget.setWindowTitle("CTools v3.0c")
 
     widget.setWindowIcon(QIcon('icon.jpeg'))
     
@@ -79,7 +79,7 @@ def main():
 
     ## STEP7- Add new windows above this line ##
 
-    widget.setCurrentWidget(run_cmd)   # setting the page that you want to load when application starts up. you can also use setCurrentIndex(int)
+    widget.setCurrentWidget(run_cmd)
 
     widget.show()
 
