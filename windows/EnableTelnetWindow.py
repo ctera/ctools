@@ -21,7 +21,7 @@ from PySide2.QtGui import (
 )
 
 WINDOW_WIDTH = 600
-WINDOW_HEIGHT = 500
+WINDOW_HEIGHT = 600
 OUTPUT_HEIGHT = 250
 class enableTelnetWindow(QMainWindow):
     """PyCalc's main window (GUI or view)."""

@@ -1,32 +1,9 @@
-2023-12-14 13:55:10,418 [INFO] Logging into portal.ctera.me
-2023-12-14 13:55:10,448 [INFO] User logged in. {'host': 'portal.ctera.me', 'user': 'admin'}
-2023-12-14 13:55:10,565 [INFO] Logging into portal.ctera.me
-2023-12-14 13:55:10,599 [INFO] User logged in. {'host': 'portal.ctera.me', 'user': 'admin'}
-2023-12-14 13:55:10,617 [INFO] Starting status task
-2023-12-14 13:55:10,618 [INFO] Getting Filers connected to portal
-2023-12-14 13:55:10,886 [INFO] Executing CLI command. {'cli_command': 'show /config/logging/files/mode'}
-2023-12-14 13:55:10,892 [INFO] CLI command executed. {'cli_command': 'show /config/logging/files/mode'}
-2023-12-14 13:55:10,892 [INFO] Executing CLI command. {'cli_command': 'show /config/device/location'}
-2023-12-14 13:55:10,898 [INFO] CLI command executed. {'cli_command': 'show /config/device/location'}
-2023-12-14 13:55:10,898 [INFO] Executing CLI command. {'cli_command': 'show /config/logging/files/path'}
-2023-12-14 13:55:10,905 [INFO] CLI command executed. {'cli_command': 'show /config/logging/files/path'}
-2023-12-14 13:55:10,906 [INFO] Executing CLI command. {'cli_command': 'dbg level'}
-2023-12-14 13:55:10,913 [INFO] CLI command executed. {'cli_command': 'dbg level'}
-2023-12-14 13:55:10,914 [INFO] Executing CLI command. {'cli_command': 'dbg level'}
-2023-12-14 13:55:10,919 [INFO] CLI command executed. {'cli_command': 'dbg level'}
-2023-12-14 13:55:10,919 [INFO] Executing CLI command. {'cli_command': 'show /config/fileservices/cifs/idMapping/map'}
-2023-12-14 13:55:10,927 [INFO] CLI command executed. {'cli_command': 'show /config/fileservices/cifs/idMapping/map'}
-2023-12-14 13:55:11,178 [INFO] Executing CLI command. {'cli_command': 'show /config/logging/files/mode'}
-2023-12-14 13:55:11,184 [INFO] CLI command executed. {'cli_command': 'show /config/logging/files/mode'}
-2023-12-14 13:55:11,184 [INFO] Executing CLI command. {'cli_command': 'show /config/device/location'}
-2023-12-14 13:55:11,191 [INFO] CLI command executed. {'cli_command': 'show /config/device/location'}
-2023-12-14 13:55:11,192 [INFO] Executing CLI command. {'cli_command': 'show /config/logging/files/path'}
-2023-12-14 13:55:11,198 [INFO] CLI command executed. {'cli_command': 'show /config/logging/files/path'}
-2023-12-14 13:55:11,198 [INFO] Executing CLI command. {'cli_command': 'dbg level'}
-2023-12-14 13:55:11,206 [INFO] CLI command executed. {'cli_command': 'dbg level'}
-2023-12-14 13:55:11,207 [INFO] Executing CLI command. {'cli_command': 'dbg level'}
-2023-12-14 13:55:11,213 [INFO] CLI command executed. {'cli_command': 'dbg level'}
-2023-12-14 13:55:11,213 [INFO] Executing CLI command. {'cli_command': 'show /config/fileservices/cifs/idMapping/map'}
-2023-12-14 13:55:11,218 [INFO] CLI command executed. {'cli_command': 'show /config/fileservices/cifs/idMapping/map'}
-2023-12-14 13:55:11,236 [INFO] User logged out. {'host': 'portal.ctera.me', 'user': 'admin'}
-2023-12-14 13:55:11,237 [INFO] Finished status task.
+2024-01-26 12:05:23,861 [INFO] Logging into 192.168.22.165
+2024-01-26 12:05:24,053 [INFO] User logged in. {'host': '192.168.22.165', 'user': 'admin'}
+2024-01-26 12:05:24,460 [INFO] Logging into 192.168.22.165
+2024-01-26 12:05:24,666 [INFO] User logged in. {'host': '192.168.22.165', 'user': 'admin'}
+2024-01-26 12:05:24,762 [INFO] Getting Filers connected to portal
+2024-01-26 12:05:24,872 [INFO] Adding group members. {'group': 'Administrators'}
+2024-01-26 12:05:25,032 [INFO] Group members added. {'group': 'Administrators'}
+2024-01-26 12:05:25,032 [INFO] User "better-logging" added to Administrators group on LabGW
+2024-01-26 12:05:25,033 [INFO] User added to Administrators group on LabGW

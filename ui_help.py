@@ -28,6 +28,7 @@ def create_tool_bar(widget, currentWindow):
     cloud_folders = QPushButton("CloudFS")
     delete_shares = QPushButton("Delete Shares")
     import_shares = QPushButton("Copy Shares")
+    add_members = QPushButton("Add Members")
 
     #STEP8 - Create the push button above so you can navigate to the tool
 
@@ -35,7 +36,7 @@ def create_tool_bar(widget, currentWindow):
     exit = QPushButton("Exit")
 
     # STEP9 - Add the button you just created to the list below. MAKE SURE YOU PUT IT BEFORE EXIT
-    tool_list = [run_cmd, show_status, suspend_sync, unsuspend_sync, enable_ssh, disable_ssh, enable_telnet, reset_password, cloud_folders, delete_shares, import_shares]
+    tool_list = [run_cmd, show_status, suspend_sync, unsuspend_sync, enable_ssh, disable_ssh, enable_telnet, reset_password, cloud_folders, delete_shares, import_shares, add_members, exit]
 
     tool_list[currentWindow].setStyleSheet("color: darkblue; background-color: lightblue; ")   
 

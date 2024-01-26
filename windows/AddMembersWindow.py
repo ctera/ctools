@@ -1,16 +1,10 @@
 import logging
-
 from log_setter import set_logging
+from add_members import add_user_to_admin
 ## STEP6a - import the tool function from the file you imported into the CTOOLS3 project folder
-from cloud_folders import create_folders
-
 from ui_help import gen_tool_layout, gen_custom_tool_layout, create_tool_bar
 from login import global_admin_login
-
 from PySide2.QtCore import Qt
-
-from pathlib import Path
-
 from PySide2.QtWidgets import (
     QMainWindow,
     QWidget,
@@ -22,21 +16,17 @@ from PySide2.QtWidgets import (
     QFrame,
     QGridLayout,
     QLineEdit,
-    QFileDialog,
+    QComboBox,
     QCheckBox
 )
-
 from PySide2.QtGui import (
     QPixmap
 )
-
 WINDOW_WIDTH = 600
 WINDOW_HEIGHT = 600
 OUTPUT_HEIGHT = 250
-
-class cloudFoldersWindow(QMainWindow):
+class addMembersWindow(QMainWindow):
     """PyCalc's main window (GUI or view)."""
-
     def __init__(self, widget):
         super().__init__()
         self.widget = widget
@@ -60,27 +50,21 @@ class cloudFoldersWindow(QMainWindow):
         self.generalLayout.addLayout(self.mainContent)
         self._createToolBar()
         self._createToolViewLayout()
-
     def _createToolBar(self):
-        tools = create_tool_bar(self.widget, 8)
-
+        tools = create_tool_bar(self.widget, 11)
         # Add line separator between Tool List and Tool View
         line = QFrame()
         line.setFrameShape(QFrame.VLine)
         line.setFrameShadow(QFrame.Sunken)
         line.setLineWidth(1)
-
         self.mainContent.addLayout(tools)
         self.mainContent.addWidget(line)
-
     def _createToolViewLayout(self):
         toolView = QVBoxLayout()
-
         # Step3 - You will change the next two lines according to the KB
-        #CloudFoldersLayout, self.input_widgets = gen_custom_tool_layout(["CSV File"], ["Ignore cert warnings for login", "Verbose Logging"])
-        
-        CloudFoldersLayout = QGridLayout()
-        tool_header = QLabel("<h2><b>CloudFS</b></h2>")
+        AddMembersLayout = QGridLayout()
+
+        tool_header = QLabel("<h2><b>Add Users/Groups to Edge Filer Administrator Group</b></h2>")
         requiredArgs = QLabel ("<h4><b>Required Arguments</b></h4>")
         
         address = QLabel("Portal Address, hostname, or FQDN")
@@ -92,78 +76,83 @@ class cloudFoldersWindow(QMainWindow):
         password = QLabel("Password")
         self.password_field = QLineEdit()
 
-        csv_file = QLabel("CSV File")
-        self.csv_file_field = QHBoxLayout()
-        self.filename_edit = QLineEdit()
+        self.password_field.setEchoMode(QLineEdit.Password)
 
-        file_browse = QPushButton("Browse")
-        file_browse.clicked.connect(self.open_file_dialog)
+        add = QLabel("Add:")
+        self.add_type = QComboBox()
+        self.add_type.addItem("Domain User")
+        self.add_type.addItem("Domain Group")
 
-        self.csv_file_field.addWidget(self.filename_edit)
-        self.csv_file_field.addWidget(file_browse)
+        self.user_group = None
+        self.user_group_field = QLineEdit()
 
-        verbose = QLabel("Add verbose logging")
-        self.verbose_box = QCheckBox("Verbose")
-        ignore_cert = QLabel("Ignore cert warnings")
-        self.ignore_cert_box = QCheckBox("ignore_cert")
+        self.user_group = QLabel("User:")
 
-        CloudFoldersLayout.addWidget(tool_header, 0, 0, 1, 2)
-        CloudFoldersLayout.addWidget(requiredArgs, 1, 0, 1, 2)
-        CloudFoldersLayout.addWidget(address, 2, 0)
-        CloudFoldersLayout.addWidget(username, 2, 1)
-        CloudFoldersLayout.addWidget(self.address_field, 3, 0)
-        CloudFoldersLayout.addWidget(self.username_field, 3, 1)
-        CloudFoldersLayout.addWidget(password, 4, 0)
-        CloudFoldersLayout.addWidget(csv_file, 4, 1)
-        CloudFoldersLayout.addWidget(self.password_field, 5, 0)
-        CloudFoldersLayout.addLayout(self.csv_file_field, 5, 1)
-        CloudFoldersLayout.addWidget(verbose, 6, 0)
-        CloudFoldersLayout.addWidget(ignore_cert, 6, 1)
-        CloudFoldersLayout.addWidget(self.verbose_box, 7, 0)
-        CloudFoldersLayout.addWidget(self.ignore_cert_box, 7, 1)
+        self.device_name = QLabel("Device Name:")
+        self.device_name_field = QLineEdit()
+
+        self.all_devices_box = QCheckBox("Perform on all devices (Overrides Device Name)")
+        
+        self.verbose_box = QCheckBox("Verbose Logging")
+        self.ignore_cert_box = QCheckBox("Ignore cert warnings for login")
+
+        AddMembersLayout.addWidget(tool_header, 0, 0, 1, 2)
+        AddMembersLayout.addWidget(requiredArgs, 1, 0, 1, 2)
+        AddMembersLayout.addWidget(address, 2, 0)
+        AddMembersLayout.addWidget(username, 2, 1)
+        AddMembersLayout.addWidget(self.address_field, 3, 0)
+        AddMembersLayout.addWidget(self.username_field, 3, 1)
+        AddMembersLayout.addWidget(password, 4, 0, 1, 2)
+        AddMembersLayout.addWidget(add, 6, 0, 1, 2)
+        AddMembersLayout.addWidget(self.password_field, 5, 0, 1, 2)
+        AddMembersLayout.addWidget(self.add_type, 7, 0, 1, 2)
+        AddMembersLayout.addWidget(self.user_group, 8, 0)
+        AddMembersLayout.addWidget(self.user_group_field, 9, 0)
+        AddMembersLayout.addWidget(self.device_name, 8, 1)
+        AddMembersLayout.addWidget(self.all_devices_box, 10, 0)
+        AddMembersLayout.addWidget(self.device_name_field, 9, 1)
+        AddMembersLayout.addWidget(self.verbose_box, 10, 1)
+        AddMembersLayout.addWidget(self.ignore_cert_box, 11, 0)
+
+        self.add_type.currentTextChanged.connect(self.updateLabel)
 
 
-        toolView.addLayout(CloudFoldersLayout)
-
+        toolView.addLayout(AddMembersLayout)
         # Create action buttons
         actionButtonLayout = QHBoxLayout()
         self.cancel = QPushButton("Cancel")
         self.start = QPushButton("Start")
-
         actionButtonLayout.addWidget(self.cancel)
         actionButtonLayout.addWidget(self.start)
-
         toolView.addLayout(actionButtonLayout)
-
         # STEP5 - Add button listeners
         self.start.clicked.connect(self.tool)
-        
         # Create Output box
         self.output = QTextEdit()
         self.output.setReadOnly(True)
         toolView.addWidget(self.output)
-
         self.mainContent.addLayout(toolView)
-    
-    def open_file_dialog(self):
-        filename, _ = QFileDialog.getOpenFileName(
-            self,
-            "Select a file",
-        )
-
-        if filename:
-            path = Path(filename)
-            self.filename_edit.setText(str(path))
-
     # STEP4 - Grab the arguments for you tool
+    def updateLabel(self, text):
+        # Update the text of the QLabel based on the current text of the QComboBox
+        if text == "Domain User":
+            self.user_group.setText("User:")
+        else:
+            self.user_group.setText("Group:")
     def tool(self):
+        user = None
+        group = None
         portal_address = self.address_field.text()
         portal_username = self.username_field.text()
         portal_password = self.password_field.text()
-        csv_file = self.filename_edit.text()
+        device_name = self.device_name_field.text()
+        if self.add_type.currentText() == "Domain User":
+            user = self.user_group_field.text()
+        else:
+            group = self.user_group_field.text()
+        all_devices = self.all_devices_box.isChecked()
         ignore_cert = self.ignore_cert_box.isChecked()
         verbose = self.verbose_box.isChecked()
-
         if verbose:
             set_logging(logging.DEBUG, 'debug-log.txt')
         else:
@@ -174,21 +163,13 @@ class cloudFoldersWindow(QMainWindow):
         global_admin.portals.browse_global_admin()
 
         global_admin.put('/rolesSettings/readWriteAdminSettings/allowSSO', 'true')
-
         global_admin = global_admin_login(portal_address, portal_username, portal_password, ignore_cert)
-        
-        ## Step6 - Run the tool here
-        # Ex: run_status(global_admin, filename, all_tenants_flag)
-        create_folders(global_admin, csv_file)
-
-
+        ## Step6b - Run the tool here
+        add_user_to_admin(global_admin, user, group, device_name=device_name, all_devices=all_devices)
         self._updateOutput()
-
     def _updateOutput(self):
         file = open("output.tmp", 'r')
-
         with file:
             text = file.read()
             self.output.setText(text)
-        
         self.output.verticalScrollBar().setValue(self.output.verticalScrollBar().maximum())

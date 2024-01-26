@@ -17,6 +17,7 @@ from windows.UnsuspendSyncWindow import unsuspendSyncWindow
 from windows.ResetPasswordWindow import resetPasswordWindow
 from windows.CloudFoldersWindow import cloudFoldersWindow
 from windows.ImportSharesWindow import importSharesWindow
+from windows.AddMembersWindow import addMembersWindow
 #from windows.SMBAuditWindow import smbAuditWindow
 
 from PySide2.QtCore import Qt
@@ -76,6 +77,9 @@ def main():
 
     import_shares = importSharesWindow(widget)
     widget.addWidget(import_shares)
+    
+    add_members = addMembersWindow(widget)
+    widget.addWidget(add_members)
 
     ## STEP7- Add new windows above this line ##
 
