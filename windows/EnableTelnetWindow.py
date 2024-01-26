@@ -20,7 +20,7 @@ from PySide2.QtGui import (
     QPixmap
 )
 
-WINDOW_WIDTH = 600
+WINDOW_WIDTH = 700
 WINDOW_HEIGHT = 600
 OUTPUT_HEIGHT = 250
 class enableTelnetWindow(QMainWindow):

@@ -22,7 +22,7 @@ from PySide2.QtWidgets import (
 from PySide2.QtGui import (
     QPixmap
 )
-WINDOW_WIDTH = 600
+WINDOW_WIDTH = 700
 WINDOW_HEIGHT = 600
 OUTPUT_HEIGHT = 250
 class addMembersWindow(QMainWindow):
@@ -64,7 +64,7 @@ class addMembersWindow(QMainWindow):
         # Step3 - You will change the next two lines according to the KB
         AddMembersLayout = QGridLayout()
 
-        tool_header = QLabel("<h2><b>Add Users/Groups to Edge Filer Administrator Group</b></h2>")
+        tool_header = QLabel("<h2><b>Add or Remove Users/Groups to Edge Filer Admin Group</b></h2>")
         requiredArgs = QLabel ("<h4><b>Required Arguments</b></h4>")
         
         address = QLabel("Portal Address, hostname, or FQDN")
@@ -78,12 +78,16 @@ class addMembersWindow(QMainWindow):
 
         self.password_field.setEchoMode(QLineEdit.Password)
 
-        add = QLabel("Add:")
+        add_or_remove = QLabel("Add or Remove:")
+        self.add_or_remove_field = QComboBox()
+        self.add_or_remove_field.addItem("Add")
+        self.add_or_remove_field.addItem("Remove")
+
+        self.add = QLabel("Add:")
         self.add_type = QComboBox()
         self.add_type.addItem("Domain User")
         self.add_type.addItem("Domain Group")
 
-        self.user_group = None
         self.user_group_field = QLineEdit()
 
         self.user_group = QLabel("User:")
@@ -103,9 +107,11 @@ class addMembersWindow(QMainWindow):
         AddMembersLayout.addWidget(self.address_field, 3, 0)
         AddMembersLayout.addWidget(self.username_field, 3, 1)
         AddMembersLayout.addWidget(password, 4, 0, 1, 2)
-        AddMembersLayout.addWidget(add, 6, 0, 1, 2)
+        AddMembersLayout.addWidget(add_or_remove, 6, 0)
+        AddMembersLayout.addWidget(self.add, 6, 1)
         AddMembersLayout.addWidget(self.password_field, 5, 0, 1, 2)
-        AddMembersLayout.addWidget(self.add_type, 7, 0, 1, 2)
+        AddMembersLayout.addWidget(self.add_or_remove_field, 7, 0)
+        AddMembersLayout.addWidget(self.add_type, 7, 1)
         AddMembersLayout.addWidget(self.user_group, 8, 0)
         AddMembersLayout.addWidget(self.user_group_field, 9, 0)
         AddMembersLayout.addWidget(self.device_name, 8, 1)
@@ -115,6 +121,7 @@ class addMembersWindow(QMainWindow):
         AddMembersLayout.addWidget(self.ignore_cert_box, 11, 0)
 
         self.add_type.currentTextChanged.connect(self.updateLabel)
+        self.add_or_remove_field.currentTextChanged.connect(self.updateAddRemove)
 
 
         toolView.addLayout(AddMembersLayout)
@@ -139,9 +146,17 @@ class addMembersWindow(QMainWindow):
             self.user_group.setText("User:")
         else:
             self.user_group.setText("Group:")
+
+    def updateAddRemove(self, text):
+        # Update the text of the QLabel based on the current text of the QComboBox
+        if text == "Add":
+            self.add.setText("Add:")
+        else:
+            self.add.setText("Remove:")
     def tool(self):
         user = None
         group = None
+        add_or_remove = self.add_or_remove_field.currentText()
         portal_address = self.address_field.text()
         portal_username = self.username_field.text()
         portal_password = self.password_field.text()
@@ -165,7 +180,7 @@ class addMembersWindow(QMainWindow):
         global_admin.put('/rolesSettings/readWriteAdminSettings/allowSSO', 'true')
         global_admin = global_admin_login(portal_address, portal_username, portal_password, ignore_cert)
         ## Step6b - Run the tool here
-        add_user_to_admin(global_admin, user, group, device_name=device_name, all_devices=all_devices)
+        add_user_to_admin(global_admin, add_or_remove, user, group, device_name=device_name, all_devices=all_devices)
         self._updateOutput()
     def _updateOutput(self):
         file = open("output.tmp", 'r')

@@ -28,7 +28,7 @@ def create_tool_bar(widget, currentWindow):
     cloud_folders = QPushButton("CloudFS")
     delete_shares = QPushButton("Delete Shares")
     import_shares = QPushButton("Copy Shares")
-    add_members = QPushButton("Add Members")
+    add_members = QPushButton("Add/Remove Members")
 
     #STEP8 - Create the push button above so you can navigate to the tool
 

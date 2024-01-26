@@ -1,9 +1,7 @@
-2024-01-26 12:05:23,861 [INFO] Logging into 192.168.22.165
-2024-01-26 12:05:24,053 [INFO] User logged in. {'host': '192.168.22.165', 'user': 'admin'}
-2024-01-26 12:05:24,460 [INFO] Logging into 192.168.22.165
-2024-01-26 12:05:24,666 [INFO] User logged in. {'host': '192.168.22.165', 'user': 'admin'}
-2024-01-26 12:05:24,762 [INFO] Getting Filers connected to portal
-2024-01-26 12:05:24,872 [INFO] Adding group members. {'group': 'Administrators'}
-2024-01-26 12:05:25,032 [INFO] Group members added. {'group': 'Administrators'}
-2024-01-26 12:05:25,032 [INFO] User "better-logging" added to Administrators group on LabGW
-2024-01-26 12:05:25,033 [INFO] User added to Administrators group on LabGW
+2024-01-26 13:24:31,621 [INFO] Logging into 192.168.22.165
+2024-01-26 13:24:31,804 [INFO] User logged in. {'host': '192.168.22.165', 'user': 'admin'}
+2024-01-26 13:24:32,168 [INFO] Logging into 192.168.22.165
+2024-01-26 13:24:32,353 [INFO] User logged in. {'host': '192.168.22.165', 'user': 'admin'}
+2024-01-26 13:24:32,719 [INFO] Adding group members. {'group': 'Administrators'}
+2024-01-26 13:24:32,892 [INFO] Group members added. {'group': 'Administrators'}
+2024-01-26 13:24:32,893 [INFO] User "CTERA\ADUser1" added to Administrators group on LabGW
