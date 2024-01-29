@@ -2,7 +2,7 @@ import logging
 
 from log_setter import set_logging
 ## STEP6a - import the tool function from the file you imported into the CTOOLS3 project folder
-from reset_password import reset_filer_password
+from share_audit import share_audit
 
 from ui_help import gen_tool_layout, gen_custom_tool_layout, create_tool_bar
 from login import global_admin_login
@@ -24,11 +24,11 @@ from PySide2.QtGui import (
     QPixmap
 )
 
-WINDOW_WIDTH = 700
-WINDOW_HEIGHT = 600
+WINDOW_WIDTH = 600
+WINDOW_HEIGHT = 500
 OUTPUT_HEIGHT = 250
 
-class resetPasswordWindow(QMainWindow):
+class shareAuditWindow(QMainWindow):
     """PyCalc's main window (GUI or view)."""
 
     def __init__(self, widget):
@@ -56,7 +56,7 @@ class resetPasswordWindow(QMainWindow):
         self._createToolViewLayout()
 
     def _createToolBar(self):
-        tools = create_tool_bar(self.widget, 7)
+        tools = create_tool_bar(self.widget, 11)
 
         # Add line separator between Tool List and Tool View
         line = QFrame()
@@ -71,8 +71,9 @@ class resetPasswordWindow(QMainWindow):
         toolView = QVBoxLayout()
 
         # Step3 - You will change the next two lines according to the KB
-        ResetPasswordLayout, self.input_widgets = gen_custom_tool_layout("Reset Password", ["Device Name", "Tenant Name", "Username for local user", "New filer password"], ["Run on all Devices (No device or tenant name needed)", "Ignore cert warnings for login", "Verbose Logging"])
-        toolView.addLayout(ResetPasswordLayout)
+        ShareAuditLayout, self.input_widgets = gen_custom_tool_layout("Share Audit", ["Device Name"],["Ignore cert warnings for login", "Verbose Logging"])
+        toolView.addLayout(ShareAuditLayout)
+
 
         # Create action buttons
         actionButtonLayout = QHBoxLayout()
@@ -100,12 +101,8 @@ class resetPasswordWindow(QMainWindow):
         portal_username = self.input_widgets[1].text()
         portal_password = self.input_widgets[2].text()
         device_name = self.input_widgets[3].text()
-        tenant_name = self.input_widgets[4].text()
-        username = self.input_widgets[5].text()
-        filer_password = self.input_widgets[6].text()
-        all_filers_flag = self.input_widgets[7].isChecked()
-        ignore_cert = self.input_widgets[8].isChecked()
-        verbose = self.input_widgets[9].isChecked()
+        ignore_cert = self.input_widgets[4].isChecked()
+        verbose = self.input_widgets[5].isChecked()
 
         if verbose:
             set_logging(logging.DEBUG, 'debug-log.txt')
@@ -113,16 +110,9 @@ class resetPasswordWindow(QMainWindow):
             set_logging()
 
         global_admin = global_admin_login(portal_address, portal_username, portal_password, ignore_cert)
-
-        global_admin.portals.browse_global_admin()
-
-        global_admin.put('/rolesSettings/readWriteAdminSettings/allowSSO', 'true')
-
-        global_admin = global_admin_login(portal_address, portal_username, portal_password, ignore_cert)
         
-        ## Step6 - Run the tool here
-        # Ex: run_status(global_admin, filename, all_tenants_flag)
-        reset_filer_password(global_admin, device_name, tenant_name, username, filer_password, all_filers_flag)
+        ## Step6b - Run the tool here
+        share_audit(global_admin, device_name)
 
 
         self._updateOutput()

@@ -11,7 +11,7 @@ def add_user_to_admin(self, add_or_remove, user, group, all_devices=False, devic
 
         if add_or_remove == "Add":
             if all_devices:
-                filers = get_filers(self, False)
+                filers = get_filers(self, True)
 
                 if filers is None:
                     logging.error("No devices found")
@@ -58,7 +58,7 @@ def add_user_to_admin(self, add_or_remove, user, group, all_devices=False, devic
                 return None
         elif add_or_remove == "Remove":
             if all_devices:
-                filers = get_filers(self, False)
+                filers = get_filers(self, True)
 
                 if filers is None:
                     logging.error("No devices found")
@@ -78,7 +78,7 @@ def add_user_to_admin(self, add_or_remove, user, group, all_devices=False, devic
                         logging.error("No user or group specified")
                         return None
 
-                    logging.info("User added to Administrators group on %s", filer.name)
+                    logging.info("User removed to Administrators group on %s", filer.name)
 
             elif not all_devices and device_name is not None:
                 filer = get_filer(self, device_name, tenant)
