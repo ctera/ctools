@@ -92,10 +92,17 @@ class addMembersWindow(QMainWindow):
 
         self.user_group = QLabel("User:")
 
+        self.perform = QLabel("Perform on:")
+        self.perform_field = QComboBox()
+        self.perform_field.addItem("One Device")
+        self.perform_field.addItem("All Devices on One Tenant")
+        self.perform_field.addItem("All Devices on All Tenants")
+
+        self.tenant_name = QLabel("Tenant Name:")
+        self.tenant_name_field = QLineEdit()
+
         self.device_name = QLabel("Device Name:")
         self.device_name_field = QLineEdit()
-
-        self.all_devices_box = QCheckBox("Perform on all devices (Overrides Device Name)")
         
         self.verbose_box = QCheckBox("Verbose Logging")
         self.ignore_cert_box = QCheckBox("Ignore cert warnings for login")
@@ -112,16 +119,20 @@ class addMembersWindow(QMainWindow):
         AddMembersLayout.addWidget(self.password_field, 5, 0, 1, 2)
         AddMembersLayout.addWidget(self.add_or_remove_field, 7, 0)
         AddMembersLayout.addWidget(self.add_type, 7, 1)
-        AddMembersLayout.addWidget(self.user_group, 8, 0)
-        AddMembersLayout.addWidget(self.user_group_field, 9, 0)
-        AddMembersLayout.addWidget(self.device_name, 8, 1)
-        AddMembersLayout.addWidget(self.all_devices_box, 10, 0)
-        AddMembersLayout.addWidget(self.device_name_field, 9, 1)
-        AddMembersLayout.addWidget(self.verbose_box, 10, 1)
-        AddMembersLayout.addWidget(self.ignore_cert_box, 11, 0)
+        AddMembersLayout.addWidget(self.perform, 8, 0, 1, 2)
+        AddMembersLayout.addWidget(self.perform_field, 9, 0, 1, 2)
+        AddMembersLayout.addWidget(self.user_group, 12, 0)
+        AddMembersLayout.addWidget(self.user_group_field, 13, 0)
+        AddMembersLayout.addWidget(self.tenant_name, 10, 0)
+        AddMembersLayout.addWidget(self.tenant_name_field, 11, 0)
+        AddMembersLayout.addWidget(self.device_name, 10, 1)
+        AddMembersLayout.addWidget(self.device_name_field, 11, 1)
+        AddMembersLayout.addWidget(self.verbose_box, 14, 0)
+        AddMembersLayout.addWidget(self.ignore_cert_box, 14, 1)
 
         self.add_type.currentTextChanged.connect(self.updateLabel)
         self.add_or_remove_field.currentTextChanged.connect(self.updateAddRemove)
+        self.perform_field.currentIndexChanged.connect(self.handle_selection_change)
 
 
         toolView.addLayout(AddMembersLayout)
@@ -153,6 +164,24 @@ class addMembersWindow(QMainWindow):
             self.add.setText("Add:")
         else:
             self.add.setText("Remove:")
+
+    def handle_selection_change(self, index):
+        # Hide all widgets by default
+        self.tenant_name.setVisible(False)
+        self.tenant_name_field.setVisible(False)
+        self.device_name.setVisible(False)
+        self.device_name_field.setVisible(False)
+
+        # Show the appropriate widgets based on the selection
+        if index == 0:  # "One Device"
+            self.device_name.setVisible(True)
+            self.device_name_field.setVisible(True)
+            self.tenant_name.setVisible(True)
+            self.tenant_name_field.setVisible(True)
+        elif index == 1:  # "All Devices on One Tenant"
+            self.tenant_name.setVisible(True)
+            self.tenant_name_field.setVisible(True)
+
     def tool(self):
         user = None
         group = None
@@ -160,12 +189,23 @@ class addMembersWindow(QMainWindow):
         portal_address = self.address_field.text()
         portal_username = self.username_field.text()
         portal_password = self.password_field.text()
-        device_name = self.device_name_field.text()
+        if self.tenant_name.isVisible():
+            tenant_name = self.tenant_name_field.text()
+        else:
+            tenant_name = None
+        if self.device_name.isVisible():
+            device_name = self.device_name_field.text()
+        else:
+            device_name = None
         if self.add_type.currentText() == "Domain User":
             user = self.user_group_field.text()
         else:
             group = self.user_group_field.text()
-        all_devices = self.all_devices_box.isChecked()
+        
+        if self.perform_field.currentText() == "All Devices on All Tenants":
+            all_devices = True
+        else:
+            all_devices = False
         ignore_cert = self.ignore_cert_box.isChecked()
         verbose = self.verbose_box.isChecked()
         if verbose:
@@ -180,7 +220,7 @@ class addMembersWindow(QMainWindow):
         global_admin.put('/rolesSettings/readWriteAdminSettings/allowSSO', 'true')
         global_admin = global_admin_login(portal_address, portal_username, portal_password, ignore_cert)
         ## Step6b - Run the tool here
-        add_user_to_admin(global_admin, add_or_remove, user, group, device_name=device_name, all_devices=all_devices)
+        add_user_to_admin(global_admin, add_or_remove, user, group, tenant_name=tenant_name, device_name=device_name, all_devices=all_devices)
         self._updateOutput()
     def _updateOutput(self):
         file = open("output.tmp", 'r')

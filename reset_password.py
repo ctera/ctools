@@ -10,7 +10,11 @@ def reset_filer_password(self, device_name, tenant_name, user_name, filer_passwo
     logging.info("Starting reset_password task.")
     try:
         if not all_filers_flag:
-            filer = get_filer(device_name, tenant_name)
+            """filer = self.devices.device(device_name, tenant_name)
+            filer.users.modify(user_name, filer_password)
+            logging.info("Success. Password set for %s", user_name)
+            logging.info("Finished reset_password task.")"""
+            filer = get_filer(self, device_name, tenant_name)
             filer.users.modify(user_name, filer_password)
             logging.info("Success. Password set for %s", user_name)
             logging.info("Finished reset_password task.")

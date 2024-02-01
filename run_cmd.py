@@ -39,7 +39,7 @@ def multi_filer_run(self, command: str, all_tenants=False):
             logging.warning("Something went wrong running the command on %s", filer.name)
 
 
-def run_cmd(self, command: str, all_tenants=False, device_name=None):
+def run_cmd(self, command: str, tenant_name=None, all_tenants=False, device_name=None):
     """Run a "hidden CLI command" on connected Filers.
     i.e. execute a RESTful API request to connected Filers, and
     print the response. On CLI, quote the command string.
@@ -50,9 +50,9 @@ def run_cmd(self, command: str, all_tenants=False, device_name=None):
     """
     logging.info('Starting run_cmd task.')
     try:
-        tenant = self.users.session().user.tenant
+        #tenant = self.users.session().user.tenant
         if device_name:
-            filer = get_filer(self, device_name, tenant)
+            filer = get_filer(self, device_name, tenant_name)
             single_filer_run(filer, command)
         elif all_tenants is True:
             multi_filer_run(self, command, all_tenants=True)

@@ -13,7 +13,7 @@ def get_filer(self, device=None, tenant=None):
         return None
 
 
-def get_filers(self, all_tenants=False):
+def get_filers(self, all_tenants=False, tenant=None):
     """Return all connected Filers from Admin Portal or Tenant"""
     connected_filers = []
     if all_tenants is True:
@@ -26,9 +26,16 @@ def get_filers(self, all_tenants=False):
                     'deviceConnectionStatus.connected',
                     'deviceReportedStatus.config.hostname'])
             connected_filers.extend([filer for filer in all_filers if filer.deviceConnectionStatus.connected])
-    else:
-        tenant = self.users.session().user.tenant
+    elif tenant is not None:
         logging.info("Getting Filers connected to %s", tenant)
+        self.portals.browse(tenant)
+        tenant_filers = self.devices.filers(include=[
+                    'deviceConnectionStatus.connected',
+                    'deviceReportedStatus.config.hostname'])
+        connected_filers.extend([filer for filer in tenant_filers if filer.deviceConnectionStatus.connected])
+    else:
+        current_tenant = self.users.session().user.tenant
+        logging.info("Getting Filers connected to %s", current_tenant)
         tenant_filers = self.devices.filers(include=[
                     'deviceConnectionStatus.connected',
                     'deviceReportedStatus.config.hostname'])

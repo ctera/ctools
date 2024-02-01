@@ -70,7 +70,7 @@ class runCmdWindow(QMainWindow):
     def _createToolViewLayout(self):
         toolView = QVBoxLayout()
 
-        RunCMDLayout, self.input_widgets = gen_custom_tool_layout("Run CMD", ["Command", "Device Name (Overrides the \"All Tenants\" checkbox)"], ["Run on all Tenants (No device name needed)", "Ignore Cert Warnings for Login", "Verbose Logging"])
+        RunCMDLayout, self.input_widgets = gen_custom_tool_layout("Run CMD", ["Command", "Tenant Name", "Device Name (Overrides the \"All Tenants\" checkbox)"], ["Run on all Tenants (No device name needed)", "Ignore Cert Warnings for Login", "Verbose Logging"])
 
         toolView.addLayout(RunCMDLayout)
 
@@ -100,10 +100,11 @@ class runCmdWindow(QMainWindow):
         portal_username = self.input_widgets[1].text()
         portal_password = self.input_widgets[2].text()
         command = self.input_widgets[3].text()
-        device_name = self.input_widgets[4].text()
-        all_tenants_flag = self.input_widgets[5].isChecked()
-        ignore_cert = self.input_widgets[6].isChecked()
-        verbose = self.input_widgets[7].isChecked()
+        tenant_name = self.input_widgets[4].text()
+        device_name = self.input_widgets[5].text()
+        all_tenants_flag = self.input_widgets[6].isChecked()
+        ignore_cert = self.input_widgets[7].isChecked()
+        verbose = self.input_widgets[8].isChecked()
 
         if verbose:
             set_logging(logging.DEBUG, 'debug-log.txt')
@@ -119,9 +120,9 @@ class runCmdWindow(QMainWindow):
 
                 
         if not device_name:
-            run_cmd(global_admin, command, all_tenants_flag)
+            run_cmd(global_admin, command, all_tenants=True)
         else:
-            run_cmd(global_admin, command, all_tenants_flag, device_name)
+            run_cmd(global_admin, command, tenant_name, all_tenants_flag, device_name)
         self._updateOutput()
 
     def _updateOutput(self):
