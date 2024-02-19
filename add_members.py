@@ -6,6 +6,8 @@ from filer import get_filer, get_filers
 
 def add_user_to_admin(self, add_or_remove, user, group, tenant_name=None, all_devices=False, device_name=None):
     try:
+        error_string = ""
+
         config.http['SSL'] = 'Trust'
 
         logging.info("Tenant name: " + str(tenant_name) + " Device name: " + str(device_name) + " All devices: " + str(all_devices) + " User: " + str(user) + " Group: " + str(group) + " Add or remove: " + str(add_or_remove))
@@ -21,13 +23,19 @@ def add_user_to_admin(self, add_or_remove, user, group, tenant_name=None, all_de
                 for filer in filers:
                     if user is not None:
                         domain_user = gateway_types.UserGroupEntry(gateway_enum.PrincipalType.DU, user)
-                        print("Domain user: ", domain_user)
-                        filer.groups.add_members('Administrators', [domain_user])
-                        logging.info("User \"" + str(domain_user) + "\" added to Administrators group on " + str(filer.name))
+                        logging.info("Domain user: " +str(domain_user))
+                        try:
+                            filer.groups.add_members('Administrators', [domain_user])
+                            logging.info("User \"" + str(domain_user) + "\" added to Administrators group on " + str(filer.name))
+                        except Exception as e:
+                            error_string += str(e) + "\n"
                     elif group is not None:
                         domain_group = gateway_types.UserGroupEntry(gateway_enum.PrincipalType.DG, group)
-                        filer.groups.add_members('Administrators', [domain_group])
-                        logging.info("Group \"" + str(domain_group) + "\" added to Administrators group on " + str(filer.name))
+                        try:
+                            filer.groups.add_members('Administrators', [domain_group])
+                            logging.info("Group \"" + str(domain_group) + "\" added to Administrators group on " + str(filer.name))
+                        except Exception as e:
+                            error_string += str(e) + "\n"
                     else:
                         logging.error("No user or group specified")
                         return None
@@ -41,13 +49,19 @@ def add_user_to_admin(self, add_or_remove, user, group, tenant_name=None, all_de
                 
                 if user is not None:
                     domain_user = gateway_types.UserGroupEntry(gateway_enum.PrincipalType.DU, user)
-                    print("Domain user: ", domain_user)
-                    filer.groups.add_members('Administrators', [domain_user])
-                    logging.info("User \"" + str(domain_user) + "\" added to Administrators group on " + str(filer.name))
+                    logging.info("Domain user: " + str(domain_user))
+                    try:
+                        filer.groups.add_members('Administrators', [domain_user])
+                        logging.info("User \"" + str(domain_user) + "\" added to Administrators group on " + str(filer.name))
+                    except Exception as e:
+                        error_string += str(e) + "\n"
                 elif group is not None:
                     domain_group = gateway_types.UserGroupEntry(gateway_enum.PrincipalType.DG, group)
-                    filer.groups.add_members('Administrators', [domain_group])
-                    logging.info("Group \"" + str(domain_group) + "\" added to Administrators group on " + str(filer.name))
+                    try:
+                        filer.groups.add_members('Administrators', [domain_group])
+                        logging.info("Group \"" + str(domain_group) + "\" added to Administrators group on " + str(filer.name))
+                    except Exception as e:
+                        error_string += str(e) + "\n"                  
                 else:
                     logging.error("No user or group specified")
                     return None
@@ -62,17 +76,22 @@ def add_user_to_admin(self, add_or_remove, user, group, tenant_name=None, all_de
                 for filer in filers:
                     if user is not None:
                         domain_user = gateway_types.UserGroupEntry(gateway_enum.PrincipalType.DU, user)
-                        print("Domain user: ", domain_user)
-                        filer.groups.add_members('Administrators', [domain_user])
-                        logging.info("User \"" + str(domain_user) + "\" added to Administrators group on " + str(filer.name))
+                        logging.info("Domain user: " + str(domain_user))
+                        try:
+                            filer.groups.add_members('Administrators', [domain_user])
+                            logging.info("User \"" + str(domain_user) + "\" added to Administrators group on " + str(filer.name))
+                        except Exception as e:
+                            error_string += str(e) + "\n"                       
                     elif group is not None:
                         domain_group = gateway_types.UserGroupEntry(gateway_enum.PrincipalType.DG, group)
-                        filer.groups.add_members('Administrators', [domain_group])
-                        logging.info("Group \"" + str(domain_group) + "\" added to Administrators group on " + str(filer.name))
+                        try:
+                            filer.groups.add_members('Administrators', [domain_group])
+                            logging.info("Group \"" + str(domain_group) + "\" added to Administrators group on " + str(filer.name))
+                        except Exception as e:
+                            error_string += str(e)                        
                     else:
                         logging.error("No user or group specified")
                         return None
-
             else:
                 logging.error("No device name or tenant name and Perform on all devices is not checked")
                 return None
@@ -88,13 +107,19 @@ def add_user_to_admin(self, add_or_remove, user, group, tenant_name=None, all_de
                 for filer in filers:
                     if user is not None:
                         domain_user = gateway_types.UserGroupEntry(gateway_enum.PrincipalType.DU, user)
-                        print("Domain user: ", domain_user)
-                        filer.groups.remove_members('Administrators', [domain_user])
-                        logging.info("User \"" + str(domain_user) + "\" removed from Administrators group on " + str(filer.name))
+                        logging.info("Domain user: " + str(domain_user))
+                        try:
+                            filer.groups.remove_members('Administrators', [domain_user])
+                            logging.info("User \"" + str(domain_user) + "\" removed from Administrators group on " + str(filer.name))
+                        except Exception as e:
+                            error_string += str(e) + "\n"                        
                     elif group is not None:
                         domain_group = gateway_types.UserGroupEntry(gateway_enum.PrincipalType.DG, group)
-                        filer.groups.remove_members('Administrators', [domain_group])
-                        logging.info("Group \"" + str(domain_group) + "\" removed from Administrators group on " + str(filer.name))
+                        try:
+                            filer.groups.remove_members('Administrators', [domain_group])
+                            logging.info("Group \"" + str(domain_group) + "\" removed from Administrators group on " + str(filer.name))
+                        except Exception as e:
+                            error_string += str(e) + "\n"                        
                     else:
                         logging.error("No user or group specified")
                         return None
@@ -110,13 +135,19 @@ def add_user_to_admin(self, add_or_remove, user, group, tenant_name=None, all_de
                 
                 if user is not None:
                     domain_user = gateway_types.UserGroupEntry(gateway_enum.PrincipalType.DU, user)
-                    print("Domain user: ", domain_user)
-                    filer.groups.remove_members('Administrators', [domain_user])
-                    logging.info("User \"" + str(domain_user) + "\" removed from Administrators group on " + str(filer.name))
+                    logging.info("Domain user: " +str(domain_user))
+                    try:
+                        filer.groups.remove_members('Administrators', [domain_user])
+                        logging.info("User \"" + str(domain_user) + "\" removed from Administrators group on " + str(filer.name))
+                    except Exception as e:
+                        error_string += str(e) + "\n"                    
                 elif group is not None:
                     domain_group = gateway_types.UserGroupEntry(gateway_enum.PrincipalType.DG, group)
-                    filer.groups.remove_members('Administrators', [domain_group])
-                    logging.info("Group \"" + str(domain_group) + "\" removed from Administrators group on " + str(filer.name))
+                    try:
+                        filer.groups.remove_members('Administrators', [domain_group])
+                        logging.info("Group \"" + str(domain_group) + "\" removed from Administrators group on " + str(filer.name))
+                    except Exception as e:
+                        error_string += str(e) + "\n"                    
                 else:
                     logging.error("No user or group specified")
                     return None
@@ -130,13 +161,19 @@ def add_user_to_admin(self, add_or_remove, user, group, tenant_name=None, all_de
                 for filer in filers:
                     if user is not None:
                         domain_user = gateway_types.UserGroupEntry(gateway_enum.PrincipalType.DU, user)
-                        print("Domain user: ", domain_user)
-                        filer.groups.remove_members('Administrators', [domain_user])
-                        logging.info("User \"" + str(domain_user) + "\" removed from Administrators group on " + str(filer.name))
+                        logging.info("Domain user: " + str(domain_user))
+                        try:
+                            filer.groups.remove_members('Administrators', [domain_user])
+                            logging.info("User \"" + str(domain_user) + "\" removed from Administrators group on " + str(filer.name))
+                        except Exception as e:
+                            error_string += str(e) + "\n"                        
                     elif group is not None:
                         domain_group = gateway_types.UserGroupEntry(gateway_enum.PrincipalType.DG, group)
-                        filer.groups.remove_members('Administrators', [domain_group])
-                        logging.info("Group \"" + str(domain_group) + "\" removed from Administrators group on " + str(filer.name))
+                        try:
+                            filer.groups.remove_members('Administrators', [domain_group])
+                            logging.info("Group \"" + str(domain_group) + "\" removed from Administrators group on " + str(filer.name))
+                        except Exception as e:
+                            error_string += str(e) + "\n"
                     else:
                         logging.error("No user or group specified")
                         return None
@@ -147,6 +184,10 @@ def add_user_to_admin(self, add_or_remove, user, group, tenant_name=None, all_de
         else:
             logging.error("No add or remove specified")
             return None
+        
+        if error_string != "":
+            logging.error("Error(s) occurred during this operation. Please check these devices to make sure that the groups were added or removed correctly.")
+            logging.error("Here are the errors: \n" + str(error_string))
         
     except CTERAException as error:
          logging.error(error)
