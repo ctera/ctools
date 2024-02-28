@@ -24,7 +24,7 @@ A toolbox of tasks to check and manage CTERA Edge Filers via GUI.
 - [CTERA SDK for Python](https://github.com/ctera/ctera-python-sdk)
 - [Python](https://www.python.org/downloads/)
 - [git](https://git-scm.com/)
-- [PySide2](://github.com/raccoonmonk/pyside2)
+- [PySide6](https://pypi.org/project/PySide6/)
 
 ## Setup
 

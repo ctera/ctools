@@ -4,8 +4,8 @@ from add_members import add_user_to_admin
 ## STEP6a - import the tool function from the file you imported into the CTOOLS3 project folder
 from ui_help import gen_tool_layout, gen_custom_tool_layout, create_tool_bar
 from login import global_admin_login
-from PySide2.QtCore import Qt
-from PySide2.QtWidgets import (
+from PySide6.QtCore import Qt
+from PySide6.QtWidgets import (
     QMainWindow,
     QWidget,
     QPushButton,
@@ -19,7 +19,7 @@ from PySide2.QtWidgets import (
     QComboBox,
     QCheckBox
 )
-from PySide2.QtGui import (
+from PySide6.QtGui import (
     QPixmap
 )
 WINDOW_WIDTH = 700

@@ -20,19 +20,20 @@ from windows.ImportSharesWindow import importSharesWindow
 from windows.AddMembersWindow import addMembersWindow
 #from windows.SMBAuditWindow import smbAuditWindow
 
-from PySide2.QtCore import Qt
+from PySide6 import QtCore
 
-from PySide2.QtWidgets import (
+from PySide6.QtWidgets import (
     QApplication,
     QStackedWidget,
 )
 
-from PySide2.QtGui import QIcon
+from PySide6.QtGui import QIcon
 
 def main():
     """CTools's main function."""
 
-    QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
+    #This is default behavior for high DPI scaling in PySide6
+    #QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
 
     os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
     ctoolsApp = QApplication(sys.argv)
@@ -87,7 +88,7 @@ def main():
 
     widget.show()
 
-    ctoolsApp.exec_()
+    ctoolsApp.exec()
 
     
 
