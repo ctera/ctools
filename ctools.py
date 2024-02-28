@@ -32,9 +32,6 @@ from PySide6.QtGui import QIcon
 def main():
     """CTools's main function."""
 
-    #This is default behavior for high DPI scaling in PySide6
-    #QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
-
     os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
     ctoolsApp = QApplication(sys.argv)
     
