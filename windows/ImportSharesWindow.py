@@ -58,7 +58,7 @@ class importSharesWindow(QMainWindow):
     def _createToolViewLayout(self):
         toolView = QVBoxLayout()
         # Step3 - You will change the next two lines according to the KB
-        BoilerLayout, self.input_widgets = gen_custom_tool_layout("Copy Shares", ["Source Device Name", "Destination Device Name"], ["Ignore cert warnings for login", "Verbose Logging"])
+        BoilerLayout, self.input_widgets = gen_custom_tool_layout("Copy Shares", ["Source Device Name", "Destination Device Name"], ["Verbose Logging"])
         toolView.addLayout(BoilerLayout)
         # Create action buttons
         actionButtonLayout = QHBoxLayout()
@@ -81,20 +81,19 @@ class importSharesWindow(QMainWindow):
         portal_password = self.input_widgets[2].text()
         device_name_source = self.input_widgets[3].text()
         device_name_dest = self.input_widgets[4].text()
-        ignore_cert = self.input_widgets[5].isChecked()
-        verbose = self.input_widgets[6].isChecked()
+        verbose = self.input_widgets[5].isChecked()
         if verbose:
             set_logging(logging.DEBUG, 'debug-log.txt')
         else:
             set_logging()     
 
-        global_admin = global_admin_login(portal_address, portal_username, portal_password, ignore_cert)   
+        global_admin = global_admin_login(portal_address, portal_username, portal_password, True)   
 
         global_admin.portals.browse_global_admin()
 
         global_admin.put('/rolesSettings/readWriteAdminSettings/allowSSO', 'true')
 
-        global_admin = global_admin_login(portal_address, portal_username, portal_password, ignore_cert)
+        global_admin = global_admin_login(portal_address, portal_username, portal_password, True)
         ## Step6b - Run the tool here
         # Ex: run_status(global_admin, filename, all_tenants_flag)
         import_shares(global_admin, device_name_source, device_name_dest)

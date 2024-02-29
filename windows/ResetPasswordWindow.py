@@ -71,7 +71,7 @@ class resetPasswordWindow(QMainWindow):
         toolView = QVBoxLayout()
 
         # Step3 - You will change the next two lines according to the KB
-        ResetPasswordLayout, self.input_widgets = gen_custom_tool_layout("Reset Password", ["Device Name", "Tenant Name", "Username for local user", "New filer password"], ["Run on all Devices (No device or tenant name needed)", "Ignore cert warnings for login", "Verbose Logging"])
+        ResetPasswordLayout, self.input_widgets = gen_custom_tool_layout("Reset Password", ["Device Name", "Tenant Name", "Username for local user", "New filer password"], ["Run on all Devices (No device or tenant name needed)","Verbose Logging"])
         toolView.addLayout(ResetPasswordLayout)
 
         # Create action buttons
@@ -104,21 +104,20 @@ class resetPasswordWindow(QMainWindow):
         username = self.input_widgets[5].text()
         filer_password = self.input_widgets[6].text()
         all_filers_flag = self.input_widgets[7].isChecked()
-        ignore_cert = self.input_widgets[8].isChecked()
-        verbose = self.input_widgets[9].isChecked()
+        verbose = self.input_widgets[8].isChecked()
 
         if verbose:
             set_logging(logging.DEBUG, 'debug-log.txt')
         else:
             set_logging()
 
-        global_admin = global_admin_login(portal_address, portal_username, portal_password, ignore_cert)
+        global_admin = global_admin_login(portal_address, portal_username, portal_password, True)
 
         global_admin.portals.browse_global_admin()
 
         global_admin.put('/rolesSettings/readWriteAdminSettings/allowSSO', 'true')
 
-        global_admin = global_admin_login(portal_address, portal_username, portal_password, ignore_cert)
+        global_admin = global_admin_login(portal_address, portal_username, portal_password, True)
         
         ## Step6 - Run the tool here
         # Ex: run_status(global_admin, filename, all_tenants_flag)

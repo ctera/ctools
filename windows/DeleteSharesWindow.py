@@ -77,7 +77,7 @@ class deleteSharesWindow(QMainWindow):
         toolView = QVBoxLayout()
 
         # Step3 - You will change the next two lines according to the KB
-        DeleteSharesLayout, self.input_widgets = gen_custom_tool_layout("Delete Shares", [], ["Ignore Cert Warnings for Login"])
+        DeleteSharesLayout, self.input_widgets = gen_custom_tool_layout("Delete Shares", [], [])
         toolView.addLayout(DeleteSharesLayout)
 
         # Create action buttons
@@ -120,15 +120,14 @@ class deleteSharesWindow(QMainWindow):
         portal_address = self.input_widgets[0].text()
         portal_username = self.input_widgets[1].text()
         portal_password = self.input_widgets[2].text()
-        ignore_cert = self.input_widgets[3].isChecked()
 
-        global_admin = global_admin_login(portal_address, portal_username, portal_password, ignore_cert)
+        global_admin = global_admin_login(portal_address, portal_username, portal_password, True)
 
         global_admin.portals.browse_global_admin()
 
         global_admin.put('/rolesSettings/readWriteAdminSettings/allowSSO', 'true')
 
-        global_admin = global_admin_login(portal_address, portal_username, portal_password, ignore_cert)
+        global_admin = global_admin_login(portal_address, portal_username, portal_password, True)
 
         try:
             filers = get_filers(global_admin)

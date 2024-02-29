@@ -60,7 +60,7 @@ class enableTelnetWindow(QMainWindow):
     def _createToolViewLayout(self):
         toolView = QVBoxLayout()
         # Step3 - You will change the next two lines according to the KB
-        EnableTelnetLayout, self.input_widgets = gen_custom_tool_layout("Enable Telnet", ["Device Name", "Tenant Name", "Required Code for Telnet"], ["Ignore Cert Warnings for Login", "Verbose Logging"])
+        EnableTelnetLayout, self.input_widgets = gen_custom_tool_layout("Enable Telnet", ["Device Name", "Tenant Name", "Required Code for Telnet"], ["Verbose Logging"])
         toolView.addLayout(EnableTelnetLayout)
         # Create action buttons
         actionButtonLayout = QHBoxLayout()
@@ -83,18 +83,17 @@ class enableTelnetWindow(QMainWindow):
         device_name = self.input_widgets[3].text()
         tenant_name = self.input_widgets[4].text()
         code = self.input_widgets[5].text()
-        ignore_cert = self.input_widgets[6].isChecked()
-        verbose = self.input_widgets[7].isChecked()
+        verbose = self.input_widgets[6].isChecked()
         if verbose:
             set_logging(logging.DEBUG, 'debug-log.txt')
         else:
             set_logging()
-        global_admin = global_admin_login(portal_address, portal_username, portal_password, ignore_cert)
+        global_admin = global_admin_login(portal_address, portal_username, portal_password, True)
 
         global_admin.portals.browse_global_admin()
 
         global_admin.put('/rolesSettings/readWriteAdminSettings/allowSSO', 'true')
-        global_admin = global_admin_login(portal_address, portal_username, portal_password, ignore_cert)
+        global_admin = global_admin_login(portal_address, portal_username, portal_password, True)
         ## Step4b - Run the tool here
         enable_telnet(global_admin, device_name, tenant_name, code)
         self._updateOutput()

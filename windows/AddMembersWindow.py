@@ -105,7 +105,6 @@ class addMembersWindow(QMainWindow):
         self.device_name_field = QLineEdit()
         
         self.verbose_box = QCheckBox("Verbose Logging")
-        self.ignore_cert_box = QCheckBox("Ignore cert warnings for login")
 
         AddMembersLayout.addWidget(tool_header, 0, 0, 1, 2)
         AddMembersLayout.addWidget(requiredArgs, 1, 0, 1, 2)
@@ -128,7 +127,6 @@ class addMembersWindow(QMainWindow):
         AddMembersLayout.addWidget(self.device_name, 10, 1)
         AddMembersLayout.addWidget(self.device_name_field, 11, 1)
         AddMembersLayout.addWidget(self.verbose_box, 14, 0)
-        AddMembersLayout.addWidget(self.ignore_cert_box, 14, 1)
 
         self.add_type.currentTextChanged.connect(self.updateLabel)
         self.add_or_remove_field.currentTextChanged.connect(self.updateAddRemove)
@@ -206,19 +204,18 @@ class addMembersWindow(QMainWindow):
             all_devices = True
         else:
             all_devices = False
-        ignore_cert = self.ignore_cert_box.isChecked()
         verbose = self.verbose_box.isChecked()
         if verbose:
             set_logging(logging.DEBUG, 'debug-log.txt')
         else:
             set_logging()
 
-        global_admin = global_admin_login(portal_address, portal_username, portal_password, ignore_cert)
+        global_admin = global_admin_login(portal_address, portal_username, portal_password, True)
 
         global_admin.portals.browse_global_admin()
 
         global_admin.put('/rolesSettings/readWriteAdminSettings/allowSSO', 'true')
-        global_admin = global_admin_login(portal_address, portal_username, portal_password, ignore_cert)
+        global_admin = global_admin_login(portal_address, portal_username, portal_password, True)
         ## Step6b - Run the tool here
         add_user_to_admin(global_admin, add_or_remove, user, group, tenant_name=tenant_name, device_name=device_name, all_devices=all_devices)
         self._updateOutput()

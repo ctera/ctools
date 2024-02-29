@@ -71,7 +71,7 @@ class showStatusWindow(QMainWindow):
     def _createToolViewLayout(self):
         toolView = QVBoxLayout()
 
-        show_status_layout, self.input_widgets = gen_custom_tool_layout("Show Status", ["File Name"], ["Run on all Tenants (No device name needed)", "Ignore Cert Warnings for Login", "Verbose Logging"])
+        show_status_layout, self.input_widgets = gen_custom_tool_layout("Show Status", ["File Name"], ["Run on all Tenants (No device name needed)","Verbose Logging"])
 
         toolView.addLayout(show_status_layout)
 
@@ -102,20 +102,19 @@ class showStatusWindow(QMainWindow):
         portal_password = self.input_widgets[2].text()
         filename = self.input_widgets[3].text()
         all_tenants_flag = self.input_widgets[4].isChecked()
-        ignore_cert = self.input_widgets[5].isChecked()
-        verbose = self.input_widgets[6].isChecked()
+        verbose = self.input_widgets[5].isChecked()
 
         if verbose:
             set_logging(logging.DEBUG, 'debug-log.txt')
         else:
             set_logging()
 
-        global_admin = global_admin_login(portal_address, portal_username, portal_password, ignore_cert)
+        global_admin = global_admin_login(portal_address, portal_username, portal_password, True)
 
         global_admin.portals.browse_global_admin()
 
         global_admin.put('/rolesSettings/readWriteAdminSettings/allowSSO', 'true')
-        global_admin = global_admin_login(portal_address, portal_username, portal_password, ignore_cert)
+        global_admin = global_admin_login(portal_address, portal_username, portal_password, True)
 
         run_status(global_admin, filename, all_tenants_flag)
         self._updateOutput()

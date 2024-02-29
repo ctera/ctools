@@ -104,8 +104,6 @@ class cloudFoldersWindow(QMainWindow):
 
         verbose = QLabel("Add verbose logging")
         self.verbose_box = QCheckBox("Verbose")
-        ignore_cert = QLabel("Ignore cert warnings")
-        self.ignore_cert_box = QCheckBox("ignore_cert")
 
         CloudFoldersLayout.addWidget(tool_header, 0, 0, 1, 2)
         CloudFoldersLayout.addWidget(requiredArgs, 1, 0, 1, 2)
@@ -118,9 +116,7 @@ class cloudFoldersWindow(QMainWindow):
         CloudFoldersLayout.addWidget(self.password_field, 5, 0)
         CloudFoldersLayout.addLayout(self.csv_file_field, 5, 1)
         CloudFoldersLayout.addWidget(verbose, 6, 0)
-        CloudFoldersLayout.addWidget(ignore_cert, 6, 1)
         CloudFoldersLayout.addWidget(self.verbose_box, 7, 0)
-        CloudFoldersLayout.addWidget(self.ignore_cert_box, 7, 1)
 
 
         toolView.addLayout(CloudFoldersLayout)
@@ -161,7 +157,6 @@ class cloudFoldersWindow(QMainWindow):
         portal_username = self.username_field.text()
         portal_password = self.password_field.text()
         csv_file = self.filename_edit.text()
-        ignore_cert = self.ignore_cert_box.isChecked()
         verbose = self.verbose_box.isChecked()
 
         if verbose:
@@ -169,13 +164,13 @@ class cloudFoldersWindow(QMainWindow):
         else:
             set_logging()
 
-        global_admin = global_admin_login(portal_address, portal_username, portal_password, ignore_cert)
+        global_admin = global_admin_login(portal_address, portal_username, portal_password, True)
 
         global_admin.portals.browse_global_admin()
 
         global_admin.put('/rolesSettings/readWriteAdminSettings/allowSSO', 'true')
 
-        global_admin = global_admin_login(portal_address, portal_username, portal_password, ignore_cert)
+        global_admin = global_admin_login(portal_address, portal_username, portal_password, True)
         
         ## Step6 - Run the tool here
         # Ex: run_status(global_admin, filename, all_tenants_flag)

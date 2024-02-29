@@ -1,75 +1,17 @@
-2024-02-28 11:35:51,161 [INFO] Logging into portal.ctera.me
-2024-02-28 11:35:51,218 [DEBUG] Starting new HTTPS connection (1): portal.ctera.me:443
-2024-02-28 11:35:51,324 [DEBUG] https://portal.ctera.me:443 "POST /admin/api/login HTTP/1.1" 200 24
-2024-02-28 11:35:51,326 [INFO] User logged in. {'host': 'portal.ctera.me', 'user': 'admin'}
-2024-02-28 11:35:51,338 [DEBUG] https://portal.ctera.me:443 "GET /admin/api/currentPortal HTTP/1.1" 200 17
-2024-02-28 11:35:51,357 [DEBUG] https://portal.ctera.me:443 "GET /admin/api/currentSession HTTP/1.1" 200 None
-2024-02-28 11:35:51,358 [DEBUG] Successfully logged in to portal.ctera.me
-2024-02-28 11:35:51,358 [DEBUG] Updating current tenant. {'tenant': ''}
-2024-02-28 11:35:51,367 [DEBUG] https://portal.ctera.me:443 "PUT /admin/api/currentPortal HTTP/1.1" 200 0
-2024-02-28 11:35:51,368 [DEBUG] Skipping.
-2024-02-28 11:35:51,368 [DEBUG] Configuration changed. {'url': '/currentPortal', 'value': '""'}
-2024-02-28 11:35:51,368 [DEBUG] Updated current tenant. {'tenant': ''}
-2024-02-28 11:35:51,566 [DEBUG] https://portal.ctera.me:443 "PUT /admin/api/rolesSettings/readWriteAdminSettings/allowSSO HTTP/1.1" 200 15
-2024-02-28 11:35:51,566 [DEBUG] Configuration changed. {'url': '/rolesSettings/readWriteAdminSettings/allowSSO', 'value': '"true"'}
-2024-02-28 11:35:51,567 [INFO] Logging into portal.ctera.me
-2024-02-28 11:35:51,568 [DEBUG] Starting new HTTPS connection (1): portal.ctera.me:443
-2024-02-28 11:35:51,600 [DEBUG] https://portal.ctera.me:443 "POST /admin/api/login HTTP/1.1" 200 24
-2024-02-28 11:35:51,602 [INFO] User logged in. {'host': 'portal.ctera.me', 'user': 'admin'}
-2024-02-28 11:35:51,610 [DEBUG] https://portal.ctera.me:443 "GET /admin/api/currentPortal HTTP/1.1" 200 17
-2024-02-28 11:35:51,622 [DEBUG] https://portal.ctera.me:443 "GET /admin/api/currentSession HTTP/1.1" 200 None
-2024-02-28 11:35:51,623 [DEBUG] Successfully logged in to portal.ctera.me
-2024-02-28 11:35:51,624 [INFO] Starting run_cmd task.
-2024-02-28 11:35:51,792 [DEBUG] https://portal.ctera.me:443 "POST /admin/api/portals/portal/devices/LabGW HTTP/1.1" 200 153
-2024-02-28 11:35:51,793 [INFO] Executing CLI command. {'cli_command': 'dbg l'}
-2024-02-28 11:35:51,794 [DEBUG] Found match. {'ref': 'objs/8//TeamPortal/portal'}
-2024-02-28 11:35:51,816 [DEBUG] https://portal.ctera.me:443 "POST /admin/devicecmdnew/portal/LabGW/config/device HTTP/1.1" 200 None
-2024-02-28 11:35:51,817 [DEBUG] User-defined method executed. {'url': '/config/device', 'name': 'debugCmd', 'param': '"dbg l"'}
-2024-02-28 11:35:51,817 [INFO] CLI command executed. {'cli_command': 'dbg l'}
-2024-02-28 11:35:51,817 [INFO] Usage: dbg level <level1> <level2> ...
-       dbg level <mask>
-0x000000000	none
-0x000000001	error
-0x000000002	warning
-0x000000003	info
-0x000000004	debug
-0x000000008	process
-0x000000010	samba
-0x000000020	aapi
-0x000000040	storage
-0x000000080	upload
-0x000000200	http
-0x000000100	dns
-0x000000400	ntp
-0x000000800	backup
-0x000001000	db
-0x000002000	files
-0x000004000	cttp
-0x000008000	cttp_data
-0x000010000	rsync
-0x000020000	alert
-0x000040000	cbck
-0x000080000	av
-0x000100000	index
-0x000200000	auth
-0x000400000	license
-0x000800000	collaboration
-0x001000000	error_abort
-0x002000000	cloud_extender
-0x004000000	apps
-0x008000000	evictor
-0x010000000	evictor_verbose
-0x020000000	caching
-0x040000000	backup_verbose
-0x080000000	pubsub
-0x100000000	verify_sync
-0x200000000	dbus
-0x400000000	systemd
-0x800000000	beats
-0x1000000000	envoy
-0x2000000000	kafka
-0x4000000000	dedup
-0x8000000000	fsevents
-
-0x000000004	Current dbg level
-2024-02-28 11:35:51,820 [INFO] Finished single run_cmd task on LabGW
+2024-02-29 11:12:37,068 [INFO] hello
+2024-02-29 11:12:37,068 [INFO] Logging into portal.ctera.me
+2024-02-29 11:12:37,109 [INFO] User logged in. {'host': 'portal.ctera.me', 'user': 'admin'}
+2024-02-29 11:12:37,228 [INFO] Logging into portal.ctera.me
+2024-02-29 11:12:37,253 [INFO] User logged in. {'host': 'portal.ctera.me', 'user': 'admin'}
+2024-02-29 11:12:37,268 [INFO] Getting Filers connected to portal
+2024-02-29 11:12:42,317 [INFO] delete
+2024-02-29 11:12:42,328 [INFO] Share name: 'cloud'
+2024-02-29 11:12:42,328 [INFO] Share name: 'vol1-notmethough'
+2024-02-29 11:12:42,329 [INFO] Share name: 'vol1-delete'
+2024-02-29 11:12:42,329 [INFO] Share name: 'vol1-deleteme'
+2024-02-29 11:12:42,329 [INFO] Share name: 'vol1-thistoo'
+2024-02-29 11:12:42,329 [INFO] Share name: 'vol1-test'
+2024-02-29 11:12:42,329 [INFO] The following shares from filer LabGW will be deleted:
+2024-02-29 11:12:42,330 [INFO] Share vol1-delete
+2024-02-29 11:12:42,330 [INFO] Share vol1-deleteme
+2024-02-29 11:12:44,096 [INFO] Request to delete share was not approved.

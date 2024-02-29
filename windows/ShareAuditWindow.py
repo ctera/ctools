@@ -71,7 +71,7 @@ class shareAuditWindow(QMainWindow):
         toolView = QVBoxLayout()
 
         # Step3 - You will change the next two lines according to the KB
-        ShareAuditLayout, self.input_widgets = gen_custom_tool_layout("Share Audit", ["Device Name"],["Ignore cert warnings for login", "Verbose Logging"])
+        ShareAuditLayout, self.input_widgets = gen_custom_tool_layout("Share Audit", ["Device Name"],["Verbose Logging"])
         toolView.addLayout(ShareAuditLayout)
 
 
@@ -101,15 +101,14 @@ class shareAuditWindow(QMainWindow):
         portal_username = self.input_widgets[1].text()
         portal_password = self.input_widgets[2].text()
         device_name = self.input_widgets[3].text()
-        ignore_cert = self.input_widgets[4].isChecked()
-        verbose = self.input_widgets[5].isChecked()
+        verbose = self.input_widgets[4].isChecked()
 
         if verbose:
             set_logging(logging.DEBUG, 'debug-log.txt')
         else:
             set_logging()
 
-        global_admin = global_admin_login(portal_address, portal_username, portal_password, ignore_cert)
+        global_admin = global_admin_login(portal_address, portal_username, portal_password, True)
         
         ## Step6b - Run the tool here
         share_audit(global_admin, device_name)

@@ -71,7 +71,7 @@ class suspendSyncWindow(QMainWindow):
         toolView = QVBoxLayout()
 
         # Step3 - You will change the next two lines according to the KB
-        SuspendSyncLayout, self.input_widgets = gen_custom_tool_layout("Suspend Sync", ["Device Name", "Tenant Name"], ["Ignore cert warnings for login", "Verbose Logging"])
+        SuspendSyncLayout, self.input_widgets = gen_custom_tool_layout("Suspend Sync", ["Device Name", "Tenant Name"], ["Verbose Logging"])
         toolView.addLayout(SuspendSyncLayout)
 
         # Create action buttons
@@ -101,20 +101,19 @@ class suspendSyncWindow(QMainWindow):
         portal_password = self.input_widgets[2].text()
         device_name = self.input_widgets[3].text()
         tenant_name = self.input_widgets[4].text()
-        ignore_cert = self.input_widgets[5].isChecked()
-        verbose = self.input_widgets[6].isChecked()
+        verbose = self.input_widgets[5].isChecked()
 
         if verbose:
             set_logging(logging.DEBUG, 'debug-log.txt')
         else:
             set_logging()
 
-        global_admin = global_admin_login(portal_address, portal_username, portal_password, ignore_cert)
+        global_admin = global_admin_login(portal_address, portal_username, portal_password, True)
 
         global_admin.portals.browse_global_admin()
 
         global_admin.put('/rolesSettings/readWriteAdminSettings/allowSSO', 'true')
-        global_admin = global_admin_login(portal_address, portal_username, portal_password, ignore_cert)
+        global_admin = global_admin_login(portal_address, portal_username, portal_password, True)
         
         ## Step6 - Run the tool here
         # Ex: run_status(global_admin, filename, all_tenants_flag)

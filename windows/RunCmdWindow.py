@@ -70,7 +70,7 @@ class runCmdWindow(QMainWindow):
     def _createToolViewLayout(self):
         toolView = QVBoxLayout()
 
-        RunCMDLayout, self.input_widgets = gen_custom_tool_layout("Run CMD", ["Command", "Tenant Name", "Device Name (Overrides the \"All Tenants\" checkbox)"], ["Run on all Tenants (No device name needed)", "Ignore Cert Warnings for Login", "Verbose Logging"])
+        RunCMDLayout, self.input_widgets = gen_custom_tool_layout("Run CMD", ["Command", "Tenant Name", "Device Name (Overrides the \"All Tenants\" checkbox)"], ["Run on all Tenants (No device name needed)","Verbose Logging"])
 
         toolView.addLayout(RunCMDLayout)
 
@@ -103,20 +103,19 @@ class runCmdWindow(QMainWindow):
         tenant_name = self.input_widgets[4].text()
         device_name = self.input_widgets[5].text()
         all_tenants_flag = self.input_widgets[6].isChecked()
-        ignore_cert = self.input_widgets[7].isChecked()
-        verbose = self.input_widgets[8].isChecked()
+        verbose = self.input_widgets[7].isChecked()
 
         if verbose:
             set_logging(logging.DEBUG, 'debug-log.txt')
         else:
             set_logging()
 
-        global_admin = global_admin_login(portal_address, portal_username, portal_password, ignore_cert)
+        global_admin = global_admin_login(portal_address, portal_username, portal_password, True)
 
         global_admin.portals.browse_global_admin()
 
         global_admin.put('/rolesSettings/readWriteAdminSettings/allowSSO', 'true')
-        global_admin = global_admin_login(portal_address, portal_username, portal_password, ignore_cert)
+        global_admin = global_admin_login(portal_address, portal_username, portal_password, True)
 
                 
         if not device_name:
