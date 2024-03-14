@@ -14,7 +14,7 @@ def write_status(self, p_filename, all_tenants):
                 'proc/storage/summary',
                 'proc/perfMonitor']
     for filer in get_filers(self, all_tenants):
-        info = filer.get_multi('', get_list)
+        info = filer.api.get_multi('/', get_list)
         tenant = filer.session().user.tenant
         sync_id = info.proc.cloudsync.serviceStatus.id
         try:

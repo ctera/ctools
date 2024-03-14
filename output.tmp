@@ -1,8 +1,44 @@
-2024-03-07 17:01:05,600 [ERROR] Unclosed connector
-connections: ['[(<aiohttp.client_proto.ResponseHandler object at 0x0000014864609460>, 268953.953)]']
-connector: <aiohttp.connector.TCPConnector object at 0x000001485F797CA0>
-2024-03-07 17:01:05,602 [ERROR] Unclosed client session
-client_session: <aiohttp.client.ClientSession object at 0x000001485FA04430>
-2024-03-07 17:01:05,603 [ERROR] Unclosed connector
-connections: ['[(<aiohttp.client_proto.ResponseHandler object at 0x000001485FA5D4C0>, 268954.375)]']
-connector: <aiohttp.connector.TCPConnector object at 0x000001485FA82CD0>
+2024-03-14 15:17:42,944 [INFO] Logging into portal.ctera.me
+2024-03-14 15:17:42,945 [DEBUG] Using proactor: IocpProactor
+2024-03-14 15:17:42,947 [DEBUG] Starting request. {
+     "request": {
+          "method": "POST",
+          "url": "https://portal.ctera.me:443/admin/api/login",
+          "headers": []
+     }
+}
+2024-03-14 15:17:43,805 [DEBUG] Ended request. {
+     "request": {
+          "method": "POST",
+          "url": "https://portal.ctera.me:443/admin/api/login",
+          "headers": [
+               {
+                    "Host": "portal.ctera.me",
+                    "Accept": "*/*",
+                    "Accept-Encoding": "gzip, deflate",
+                    "User-Agent": "Python/3.10 aiohttp/3.9.3",
+                    "Content-Length": "38",
+                    "Content-Type": "application/x-www-form-urlencoded"
+               }
+          ]
+     },
+     "response": {
+          "status": 405,
+          "reason": "Method Not Allowed",
+          "headers": [
+               {
+                    "Content-Type": "text/plain",
+                    "Allow": "GET",
+                    "Content-Security-Policy": "script-src 'self' 'unsafe-inline' 'unsafe-eval';",
+                    "Date": "Thu, 14 Mar 2024 19:27:42 GMT",
+                    "X-Content-Type-Options": "nosniff",
+                    "X-Frame-Options": "sameorigin",
+                    "X-XSS-Protection": "1; mode=block",
+                    "Content-Length": "0"
+               }
+          ]
+     }
+}
+2024-03-14 15:17:43,811 [DEBUG] Empty payload received.
+2024-03-14 15:17:43,811 [DEBUG] Parsing failed. Expected XML format but received invalid input.
+2024-03-14 15:17:43,812 [ERROR] There was a problem trying to login. Ensure that credentials are correct. Also be sure that there is either a valid certificate or the ignore_cert flag is checked
