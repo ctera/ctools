@@ -59,6 +59,6 @@ def run_cmd(self, command: str, tenant_name=None, all_tenants=False, device_name
             logging.info('Finished run_cmd task on all Filers.')
         else:
             multi_filer_run(self, command, all_tenants=False)
-            logging.info("Finished run_cmd task on all Filers in Tenant: %s", tenant)
+            logging.info("Finished run_cmd task on all Filers in Tenant: %s", tenant_name)
     except Exception as e:
         logging.warning("An error occurred: " + str(e))

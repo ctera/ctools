@@ -47,7 +47,7 @@ class importSharesWindow(QMainWindow):
         self._createToolBar()
         self._createToolViewLayout()
     def _createToolBar(self):
-        tools = create_tool_bar(self.widget, 10)
+        tools = create_tool_bar(self.widget, 9)
         # Add line separator between Tool List and Tool View
         line = QFrame()
         line.setFrameShape(QFrame.VLine)
@@ -91,7 +91,7 @@ class importSharesWindow(QMainWindow):
 
         global_admin.portals.browse_global_admin()
 
-        global_admin.put('/rolesSettings/readWriteAdminSettings/allowSSO', 'true')
+        global_admin.api.put('/rolesSettings/readWriteAdminSettings/allowSSO', 'true')
 
         global_admin = global_admin_login(portal_address, portal_username, portal_password, True)
         ## Step6b - Run the tool here

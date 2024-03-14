@@ -6,7 +6,7 @@ import logging
 
 from pathlib import Path
 from getpass import getpass
-from cterasdk import GlobalAdmin, portal_types, CTERAException, config, tojsonstr
+from cterasdk import GlobalAdmin, portal_type, CTERAException, config, tojsonstr
 from cterasdk.lib.filesystem import FileSystem
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -41,9 +41,9 @@ def create_folders(global_admin,filepath):
                     owner = None
                     if idx > 0:
                         domain, user = user_owner.split('\\')
-                        owner = portal_types.UserAccount(user, domain)
+                        owner = portal_type.UserAccount(user, domain)
                     else:
-                        owner = portal_types.UserAccount(user_owner)
+                        owner = portal_type.UserAccount(user_owner)
 
                     try:
                         global_admin.cloudfs.mkfg(folder_group, owner, deduplication_method_type)
@@ -61,7 +61,7 @@ def create_folders(global_admin,filepath):
                         logging.getLogger().warn('Failed creating zone. %s', {'name': zone_name, 'error': tojsonstr(error, False)})
 
                     try:
-                        cloudfs_folder_helper = portal_types.CloudFSFolderFindingHelper(cloud_drive_folder, owner)
+                        cloudfs_folder_helper = portal_type.CloudFSFolderFindingHelper(cloud_drive_folder, owner)
                         logging.getLogger().info('Adding cloud folders to zone. %s', {'zone': zone_name, 'cloud_drive_folders': [cloud_drive_folder]})
                         global_admin.zones.add_folders(zone_name, [cloudfs_folder_helper])  # add folders
                     except CTERAException as error:

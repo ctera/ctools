@@ -62,7 +62,7 @@ class deleteSharesWindow(QMainWindow):
         self._createToolViewLayout()
 
     def _createToolBar(self):
-        tools = create_tool_bar(self.widget, 9)
+        tools = create_tool_bar(self.widget, 8)
 
         # Add line separator between Tool List and Tool View
         line = QFrame()
@@ -115,7 +115,6 @@ class deleteSharesWindow(QMainWindow):
         ## Step6 - Run the tool here
         # Ex: run_status(global_admin, filename, all_tenants_flag)
         #testfunc()
-        logging.info("hello")
 
         portal_address = self.input_widgets[0].text()
         portal_username = self.input_widgets[1].text()
@@ -125,7 +124,7 @@ class deleteSharesWindow(QMainWindow):
 
         global_admin.portals.browse_global_admin()
 
-        global_admin.put('/rolesSettings/readWriteAdminSettings/allowSSO', 'true')
+        global_admin.api.put('/rolesSettings/readWriteAdminSettings/allowSSO', 'true')
 
         global_admin = global_admin_login(portal_address, portal_username, portal_password, True)
 
@@ -145,7 +144,7 @@ class deleteSharesWindow(QMainWindow):
                         writer.writerow(['FilerName', 'ShareName', 'Status'])
                 for filer in filers:
                     shares_to_delete = []
-                    shares = filer.get('/config/fileservices/share')
+                    shares = filer.api.get('/config/fileservices/share')
                     for share in shares:
                         logging.info(f"Share name: '{share.name}'")  # Add this line
                         if isinstance(share.name, str) and self.inputText in share.name:
@@ -173,11 +172,12 @@ class deleteSharesWindow(QMainWindow):
                         else:
                             logging.info("Request to delete share was not approved.")
 
-            
 
         except Exception as e:
             logging.error(e)
+        global_admin.logout()
         self._updateOutput()
+        
 
     def _updateOutput(self):
         file = open("output.tmp", 'r')

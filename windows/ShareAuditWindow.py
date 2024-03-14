@@ -108,12 +108,20 @@ class shareAuditWindow(QMainWindow):
         else:
             set_logging()
 
+
+        global_admin = global_admin_login(portal_address, portal_username, portal_password, True)
+
+        global_admin.portals.browse_global_admin()
+
+        global_admin.api.put('/rolesSettings/readWriteAdminSettings/allowSSO', 'true')
+
+        global_admin.logout()
         global_admin = global_admin_login(portal_address, portal_username, portal_password, True)
         
         ## Step6b - Run the tool here
         share_audit(global_admin, device_name)
 
-
+        global_admin.logout()
         self._updateOutput()
 
     def _updateOutput(self):

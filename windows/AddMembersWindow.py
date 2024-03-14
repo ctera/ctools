@@ -51,7 +51,7 @@ class addMembersWindow(QMainWindow):
         self._createToolBar()
         self._createToolViewLayout()
     def _createToolBar(self):
-        tools = create_tool_bar(self.widget, 11)
+        tools = create_tool_bar(self.widget, 10)
         # Add line separator between Tool List and Tool View
         line = QFrame()
         line.setFrameShape(QFrame.VLine)
@@ -214,7 +214,7 @@ class addMembersWindow(QMainWindow):
 
         global_admin.portals.browse_global_admin()
 
-        global_admin.put('/rolesSettings/readWriteAdminSettings/allowSSO', 'true')
+        global_admin.api.put('/rolesSettings/readWriteAdminSettings/allowSSO', 'true')
         global_admin = global_admin_login(portal_address, portal_username, portal_password, True)
         ## Step6b - Run the tool here
         add_user_to_admin(global_admin, add_or_remove, user, group, tenant_name=tenant_name, device_name=device_name, all_devices=all_devices)

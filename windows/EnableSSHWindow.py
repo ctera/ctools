@@ -113,7 +113,7 @@ class enableSSHWindow(QMainWindow):
 
         global_admin.portals.browse_global_admin()
 
-        global_admin.put('/rolesSettings/readWriteAdminSettings/allowSSO', 'true')
+        global_admin.api.put('/rolesSettings/readWriteAdminSettings/allowSSO', 'true')
 
         global_admin = global_admin_login(portal_address, portal_username, portal_password, True)
         

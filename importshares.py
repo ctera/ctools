@@ -8,6 +8,7 @@ import urllib3
 import logging
 urllib3.disable_warnings()
 sys.path.append(os.getcwd())
+from cterasdk import edge_types, edge_enum
 
 def import_shares_old(self, device_name_source, device_name_dest):
     try:
@@ -15,7 +16,7 @@ def import_shares_old(self, device_name_source, device_name_dest):
         filer_source = get_filer(self, device_name_source, tenant)
         filer_destination = get_filer(self, device_name_dest, tenant)
         shares_source = filer_source.get('/config/fileservices/share')
-        everyone = gateway_types.ShareAccessControlEntry(gateway_enum.PrincipalType.LG, 'Everyone', gateway_enum.FileAccessMode.RW)
+        everyone = edge_types.ShareAccessControlEntry(edge_enum.PrincipalType.LG, 'Everyone', edge_enum.FileAccessMode.RW)
         for share in shares_source:
             get_share=[share.name,share.directory[1:],share.access,share.comment]
             if share.name == 'public' or share.name == 'cloud' or share.name == 'backups':
@@ -31,7 +32,7 @@ def import_shares(self, device_name_source, device_name_dest):
         tenant = self.users.session().user.tenant
         filer_source = get_filer(self, device_name_source, tenant)
         filer_destination = get_filer(self, device_name_dest, tenant)
-        shares_source = filer_source.get('/config/fileservices/share')
+        shares_source = filer_source.api.get('/config/fileservices/share')
         for share in shares_source:
             print("Share details:")
             print("Name:", getattr(share, 'name', 'Unknown'))
@@ -39,7 +40,7 @@ def import_shares(self, device_name_source, device_name_dest):
             print("Access:", getattr(share, 'access', 'Unknown'))
             print("Comment:", getattr(share, 'comment', 'Unknown'))
             print("---")
-        everyone = gateway_types.ShareAccessControlEntry(gateway_enum.PrincipalType.LG, 'Everyone', gateway_enum.FileAccessMode.RW)
+        everyone = edge_types.ShareAccessControlEntry(edge_enum.PrincipalType.LG, 'Everyone', edge_enum.FileAccessMode.RW)
         for share in shares_source:
             get_share=[share.name,share.directory[1:],share.access,share.comment]
             print("Processing share:", share.name)
@@ -55,4 +56,4 @@ def import_shares(self, device_name_source, device_name_dest):
                     logging.error("Error adding share: %s. Error: %s" % (get_share[0], error))
  
     except Exception as error:
-        logging.error("Error adding share: %s. Error: %s" % (get_share[0], error))
+        logging.error("Error adding share. Error:", error)
