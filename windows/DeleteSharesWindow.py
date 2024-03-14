@@ -62,7 +62,7 @@ class deleteSharesWindow(QMainWindow):
         self._createToolViewLayout()
 
     def _createToolBar(self):
-        tools = create_tool_bar(self.widget, 8)
+        tools = create_tool_bar(self.widget, 9)
 
         # Add line separator between Tool List and Tool View
         line = QFrame()

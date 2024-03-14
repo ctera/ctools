@@ -6,7 +6,7 @@ import logging
 
 from pathlib import Path
 from getpass import getpass
-from cterasdk import GlobalAdmin, portal_type, CTERAException, config, tojsonstr
+from cterasdk import GlobalAdmin, core_types, CTERAException, config, tojsonstr
 from cterasdk.lib.filesystem import FileSystem
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -41,9 +41,9 @@ def create_folders(global_admin,filepath):
                     owner = None
                     if idx > 0:
                         domain, user = user_owner.split('\\')
-                        owner = portal_type.UserAccount(user, domain)
+                        owner = core_types.UserAccount(user, domain)
                     else:
-                        owner = portal_type.UserAccount(user_owner)
+                        owner = core_types.UserAccount(user_owner)
 
                     try:
                         global_admin.cloudfs.mkfg(folder_group, owner, deduplication_method_type)

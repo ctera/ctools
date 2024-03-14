@@ -15,7 +15,7 @@ from windows.EnableSSHWindow import enableSSHWindow
 from windows.DisableSSHWindow import disableSSHWindow
 from windows.UnsuspendSyncWindow import unsuspendSyncWindow
 from windows.ResetPasswordWindow import resetPasswordWindow
-#from windows.CloudFoldersWindow import cloudFoldersWindow
+from windows.CloudFoldersWindow import cloudFoldersWindow
 from windows.ImportSharesWindow import importSharesWindow
 from windows.AddMembersWindow import addMembersWindow
 #from windows.SMBAuditWindow import smbAuditWindow
@@ -67,8 +67,8 @@ def main():
     reset_password = resetPasswordWindow(widget)
     widget.addWidget(reset_password)
 
-    #cloud_folders = cloudFoldersWindow(widget)
-    #widget.addWidget(cloud_folders)
+    cloud_folders = cloudFoldersWindow(widget)
+    widget.addWidget(cloud_folders)
 
     delete_shares = deleteSharesWindow(widget) 
     widget.addWidget(delete_shares)
