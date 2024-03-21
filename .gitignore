@@ -6,6 +6,7 @@ ctools.spec
 pyvenv.cfg
 __pycache__
 **/__pycache__
+*/__pycache__
 build/
 dist/
 Lib/
