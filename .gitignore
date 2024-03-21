@@ -4,6 +4,7 @@
 *-log.txt
 ctools.spec
 pyvenv.cfg
+# ignore __pycache__
 __pycache__
 **/__pycache__
 */__pycache__
