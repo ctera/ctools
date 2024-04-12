@@ -2,6 +2,7 @@ import logging
 from log_setter import set_logging
 ## STEP6a - import the tool function from the file you imported into the CTOOLS3 project folder
 from importshares import import_shares
+from copyshares import copyshares
 from ui_help import gen_tool_layout, gen_custom_tool_layout, create_tool_bar
 from login import global_admin_login
 from PySide6.QtCore import Qt
@@ -93,10 +94,13 @@ class importSharesWindow(QMainWindow):
 
         global_admin.api.put('/rolesSettings/readWriteAdminSettings/allowSSO', 'true')
 
+        global_admin.logout()
+
         global_admin = global_admin_login(portal_address, portal_username, portal_password, True)
         ## Step6b - Run the tool here
         # Ex: run_status(global_admin, filename, all_tenants_flag)
-        import_shares(global_admin, device_name_source, device_name_dest)
+        copyshares(global_admin, device_name_source, device_name_dest)
+        global_admin.logout()
         self._updateOutput()
     def _updateOutput(self):
         file = open("output.tmp", 'r')
