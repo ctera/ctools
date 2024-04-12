@@ -8,13 +8,13 @@ A toolbox of tasks to check and manage CTERA Edge Filers via GUI.
 
 1. **Use a Portal Global Administrator account to login.**
 
-- There is currently no support for tenant admins or direct logins to Filers. All requests are sent through the Portal to connected Filers.
+- There is currently no support for tenant admins or direct logins to Edge Filers. All requests are sent through the Portal to connected Edge Filers.
 
-2. **Ensure necessary Remote Administration settings are enabled on the portal:**
+2. **Ensure necessary Remote Administration settings are enabled on the portal:** (Applies to portal versions older than 7.2)
 
     Access the Global Administration view > Navigate to Settings > Control Panel > User Roles > Read/Write Administrator -> Ensure "Allow Single Sign On to Devices" is checked
 
-[documentation](https://kb.ctera.com/v1/docs/en/portaladmin3-02-7?highlight=user%20roles%20portal)
+    - [documentation](https://kb.ctera.com/v1/docs/en/customizing-administrator-roles-1?highlight=Allow%20Single%20Sign%20On%20to%20Devices) 
 
 ## Please review this document to learn more about each tool
 
@@ -61,32 +61,33 @@ python ctools.py
 
 #### Run CMD 
 
-Run a "hidden CLI command", i.e. execute a RESTful API request to each connected Filer.
+Run a "hidden CLI command", i.e. execute a RESTful API request to each connected Edge Filer or to one specified Edge Filer.
 
 #### Show Status
 
-Record current status of connected Filers to a specified CSV output file.
-Provide a portal URL, e.g. portal.ctera.me, to scan all connected Filers to that tenant and write various bits of
+Record current status of connected Edge Filers to a specified CSV output file.
+Provide a portal URL, e.g. portal.ctera.me, to scan all connected Edge Filers to that tenant and write various bits of
 information to a specified CSV file.
 If an IP address is provided, the Default Tenant Portal will be used.
-Or you can use/check the `-a, --all` flag to scan all connected Filers across all Tenant Portals.
+Or you can use/check the `-a, --all` flag to scan all connected Edge Filers across all Tenant Portals.
 If the output filename already exists, the results will be appended to the existing file.
 
 #### Suspend Sync / Unsuspend Sync
-Suspend or Unususpend Cloud Drive syncing on a Filer.
+
+Suspend or Unususpend Cloud Drive syncing on a Edge Filer.
 
 #### Enable SSH / Disable SSH
 
-Enable or Disable the ssh service on a given Filer and add the public key to the authorized_keys of the Filer.
+Enable or Disable the ssh service on a given Edge Filer and add the public key to the authorized_keys of the Edge Filer.
 If no public key is provided, a new keypair will generated and saved to the Downloads folder.
 
 #### Enable Telnet
 
-Enable the telnet service on a given Filer. If no unlock code is provided, return the required MAC address
+Enable the telnet service on a given Edge Filer. If no unlock code is provided, return the required MAC address
 and firmware version to get an unlock code from CTERA Support.
 
 #### Reset Password
-Reset a local user account password on a Filer.
+Reset a local user account password on a Edge Filer.
 
 #### CloudFS
 Create folder_groups and cloud folders using a pre-populated CSV file - download template [here](./templates/cloud_folders.csv)
@@ -94,6 +95,12 @@ Create folder_groups and cloud folders using a pre-populated CSV file - download
 
 #### Delete Shares
 Delete shares from all Gateway devices containing specified pattern
+
+#### Copy Shares
+Copy Shares from one specified Edge Filer to a different specified Edge Filer
+
+#### Add/Remove Members
+Add/remove domain users/groups to the Administrators group on all devices on all portals, all devices on specified portal tenant, or one device on specified portal tenant
 
 ```
 PS C:\Users\ctera\git\ctools> python ctools.py
