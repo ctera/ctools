@@ -1,9 +1,0 @@
-2024-01-26 14:05:09,957 [INFO] Logging into 192.168.22.165
-2024-01-26 14:05:10,152 [INFO] User logged in. {'host': '192.168.22.165', 'user': 'admin'}
-2024-01-26 14:05:10,526 [INFO] Logging into 192.168.22.165
-2024-01-26 14:05:10,721 [INFO] User logged in. {'host': '192.168.22.165', 'user': 'admin'}
-2024-01-26 14:05:10,813 [INFO] Getting Filers connected to portal
-2024-01-26 14:05:10,915 [INFO] Adding group members. {'group': 'Administrators'}
-2024-01-26 14:05:11,009 [INFO] Group members added. {'group': 'Administrators'}
-2024-01-26 14:05:11,009 [INFO] User "test" added to Administrators group on LabGW
-2024-01-26 14:05:11,010 [INFO] User added to Administrators group on LabGW
