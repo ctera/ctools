@@ -18,6 +18,7 @@ from windows.ResetPasswordWindow import resetPasswordWindow
 from windows.CloudFoldersWindow import cloudFoldersWindow
 from windows.ImportSharesWindow import importSharesWindow
 from windows.AddMembersWindow import addMembersWindow
+from windows.ReportZonesWindow import reportZonesWindow
 #from windows.SMBAuditWindow import smbAuditWindow
 
 from PySide6 import QtCore
@@ -78,6 +79,9 @@ def main():
     
     add_members = addMembersWindow(widget)
     widget.addWidget(add_members)
+
+    report_zones = reportZonesWindow(widget)
+    widget.addWidget(report_zones)
 
     ## STEP7- Add new windows above this line ##
 

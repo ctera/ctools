@@ -1,16 +1,13 @@
 import logging
-
 from log_setter import set_logging
+from report_zones import create
 ## STEP6a - import the tool function from the file you imported into the CTOOLS3 project folder
-from cloud_folders import create_folders
-
 from ui_help import gen_tool_layout, gen_custom_tool_layout, create_tool_bar
 from login import global_admin_login
 
-from PySide6.QtCore import Qt
-
 from pathlib import Path
 
+from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
     QMainWindow,
     QWidget,
@@ -22,21 +19,18 @@ from PySide6.QtWidgets import (
     QFrame,
     QGridLayout,
     QLineEdit,
-    QFileDialog,
-    QCheckBox
+    QComboBox,
+    QCheckBox,
+    QFileDialog
 )
-
 from PySide6.QtGui import (
     QPixmap
 )
-
 WINDOW_WIDTH = 700
 WINDOW_HEIGHT = 600
 OUTPUT_HEIGHT = 250
-
-class cloudFoldersWindow(QMainWindow):
+class reportZonesWindow(QMainWindow):
     """PyCalc's main window (GUI or view)."""
-
     def __init__(self, widget):
         super().__init__()
         self.widget = widget
@@ -46,7 +40,7 @@ class cloudFoldersWindow(QMainWindow):
         self.top = QHBoxLayout()
         welcome = QLabel("<h2>Welcome to CTools!</h2><h5>One tool for all</h5>")
         pic_label = QLabel(self)
-        pixmap = QPixmap("C:\\Users\\lakea\\Desktop\\CTERA\\ctools\\logo.png")
+        pixmap = QPixmap("C:\\Users\\lakea\\Desktop\\CTERA\\ctools\\logo.png")#replace with image location
         pic_label.setPixmap(pixmap)
         #pic_label.setScaledContents(True)
         self.top.addWidget(welcome)
@@ -60,130 +54,102 @@ class cloudFoldersWindow(QMainWindow):
         self.generalLayout.addLayout(self.mainContent)
         self._createToolBar()
         self._createToolViewLayout()
-
     def _createToolBar(self):
-        tools = create_tool_bar(self.widget, 8)
-
+        tools = create_tool_bar(self.widget, 12)
         # Add line separator between Tool List and Tool View
         line = QFrame()
         line.setFrameShape(QFrame.VLine)
         line.setFrameShadow(QFrame.Sunken)
         line.setLineWidth(1)
-
         self.mainContent.addLayout(tools)
         self.mainContent.addWidget(line)
-
     def _createToolViewLayout(self):
         toolView = QVBoxLayout()
-
         # Step3 - You will change the next two lines according to the KB
-        #CloudFoldersLayout, self.input_widgets = gen_custom_tool_layout(["CSV File"], ["Ignore cert warnings for login", "Verbose Logging"])
-        
-        CloudFoldersLayout = QGridLayout()
-        tool_header = QLabel("<h2><b>CloudFS</b></h2>")
+        ReportZonesLayout = QGridLayout()
+
+        tool_header = QLabel("<h2><b>Create Zones Report</b></h2>")
         requiredArgs = QLabel ("<h4><b>Required Arguments</b></h4>")
-        
-        address = QLabel("Portal Address, hostname, or FQDN")
+       
+        address = QLabel("Address (Portal IP, hostname, FQDN):")
         self.address_field = QLineEdit()
-        
-        username = QLabel("Username for portal admin")
+
+        username = QLabel("Portal Admin Username:")
         self.username_field = QLineEdit()
 
-        password = QLabel("Password")
+        password = QLabel("Portal Admin Password:")
         self.password_field = QLineEdit()
 
-        csv_file = QLabel("CSV File")
-        self.csv_file_field = QHBoxLayout()
-        self.filename_edit = QLineEdit()
+        output_dir = QLabel("Output Location:")
+        self.output_field = QHBoxLayout()
+        self.output_filename_edit = QLineEdit()
 
-        file_browse = QPushButton("Browse")
-        file_browse.clicked.connect(self.open_file_dialog)
+        output_file_browse = QPushButton("Browse")
+        output_file_browse.clicked.connect(self.open_directory_dialog)
 
-        self.csv_file_field.addWidget(self.filename_edit)
-        self.csv_file_field.addWidget(file_browse)
-
-        verbose = QLabel("Add verbose logging")
-        self.verbose_box = QCheckBox("Verbose")
-
-        CloudFoldersLayout.addWidget(tool_header, 0, 0, 1, 2)
-        CloudFoldersLayout.addWidget(requiredArgs, 1, 0, 1, 2)
-        CloudFoldersLayout.addWidget(address, 2, 0)
-        CloudFoldersLayout.addWidget(username, 2, 1)
-        CloudFoldersLayout.addWidget(self.address_field, 3, 0)
-        CloudFoldersLayout.addWidget(self.username_field, 3, 1)
-        CloudFoldersLayout.addWidget(password, 4, 0)
-        CloudFoldersLayout.addWidget(csv_file, 4, 1)
-        CloudFoldersLayout.addWidget(self.password_field, 5, 0)
-        CloudFoldersLayout.addLayout(self.csv_file_field, 5, 1)
-        CloudFoldersLayout.addWidget(verbose, 6, 0)
-        CloudFoldersLayout.addWidget(self.verbose_box, 7, 0)
+        self.output_field.addWidget(self.output_filename_edit)
+        self.output_field.addWidget(output_file_browse)
 
 
-        toolView.addLayout(CloudFoldersLayout)
 
+        self.verbose_box = QCheckBox("Verbose Logging")
+
+        ReportZonesLayout.addWidget(tool_header, 0, 0, 1, 2)
+        ReportZonesLayout.addWidget(requiredArgs, 1, 0, 1, 2)
+        ReportZonesLayout.addWidget(address, 2, 0)
+        ReportZonesLayout.addWidget(self.address_field, 3, 0)
+        ReportZonesLayout.addWidget(username, 2, 1)
+        ReportZonesLayout.addWidget(self.username_field, 3, 1)
+        ReportZonesLayout.addWidget(password, 4, 0)
+        ReportZonesLayout.addWidget(self.password_field, 5, 0)
+        ReportZonesLayout.addWidget(output_dir, 4, 1)
+        ReportZonesLayout.addLayout(self.output_field, 5, 1)
+
+
+
+        toolView.addLayout(ReportZonesLayout)
         # Create action buttons
         actionButtonLayout = QHBoxLayout()
         self.cancel = QPushButton("Cancel")
         self.start = QPushButton("Start")
-
         actionButtonLayout.addWidget(self.cancel)
         actionButtonLayout.addWidget(self.start)
-
         toolView.addLayout(actionButtonLayout)
-
         # STEP5 - Add button listeners
         self.start.clicked.connect(self.tool)
-        
         # Create Output box
         self.output = QTextEdit()
         self.output.setReadOnly(True)
         toolView.addWidget(self.output)
-
         self.mainContent.addLayout(toolView)
-    
-    def open_file_dialog(self):
-        filename, _ = QFileDialog.getOpenFileName(
-            self,
-            "Select a file",
-        )
 
-        if filename:
-            path = Path(filename)
-            self.filename_edit.setText(str(path))
+    def open_directory_dialog(self):
+      directory = QFileDialog.getExistingDirectory(
+        self,
+        "Select a directory",
+      )
+
+      if directory:
+        path = Path(directory)
+        self.output_filename_edit.setText(str(path))
 
     # STEP4 - Grab the arguments for you tool
     def tool(self):
-        portal_address = self.address_field.text()
-        portal_username = self.username_field.text()
-        portal_password = self.password_field.text()
-        csv_file = self.filename_edit.text()
+        address = self.address_field.text()
+        user = self.username_field.text()
+        password = self.password_field.text()
+        output_dir = self.output_filename_edit.text()
         verbose = self.verbose_box.isChecked()
-
         if verbose:
             set_logging(logging.DEBUG, 'debug-log.txt')
         else:
             set_logging()
-
-        global_admin = global_admin_login(portal_address, portal_username, portal_password, True)
-
-        global_admin.portals.browse_global_admin()
-
-        global_admin.put('/rolesSettings/readWriteAdminSettings/allowSSO', 'true')
-
-        global_admin = global_admin_login(portal_address, portal_username, portal_password, True)
-        
-        ## Step6 - Run the tool here
-        # Ex: run_status(global_admin, filename, all_tenants_flag)
-        create_folders(global_admin, csv_file)
-
-
+        ## Step6b - Run the tool here
+        create(address, user, password, output_dir, verbose)
         self._updateOutput()
-
     def _updateOutput(self):
         file = open("output.tmp", 'r')
-
         with file:
             text = file.read()
             self.output.setText(text)
-        
         self.output.verticalScrollBar().setValue(self.output.verticalScrollBar().maximum())

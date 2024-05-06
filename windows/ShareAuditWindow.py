@@ -40,7 +40,7 @@ class shareAuditWindow(QMainWindow):
         self.top = QHBoxLayout()
         welcome = QLabel("<h2>Welcome to CTools!</h2><h5>One tool for all</h5>")
         pic_label = QLabel(self)
-        pixmap = QPixmap("logo.png")
+        pixmap = QPixmap("C:\\Users\\lakea\\Desktop\\CTERA\\ctools\\logo.png")
         pic_label.setPixmap(pixmap)
         #pic_label.setScaledContents(True)
         self.top.addWidget(welcome)
