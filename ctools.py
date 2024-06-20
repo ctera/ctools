@@ -19,6 +19,7 @@ from windows.CloudFoldersWindow import cloudFoldersWindow
 from windows.ImportSharesWindow import importSharesWindow
 from windows.AddMembersWindow import addMembersWindow
 from windows.ReportZonesWindow import reportZonesWindow
+from windows.PopulateCloudFoldersWindow import populateCloudFoldersWindow
 #from windows.SMBAuditWindow import smbAuditWindow
 
 from PySide6 import QtCore
@@ -39,7 +40,7 @@ def main():
     
     widget = QStackedWidget()
 
-    widget.setWindowTitle("CTools v3.1a")
+    widget.setWindowTitle("CTools v3.1b")
 
     widget.setWindowIcon(QIcon('icon.jpeg'))
     
@@ -82,6 +83,9 @@ def main():
 
     report_zones = reportZonesWindow(widget)
     widget.addWidget(report_zones)
+
+    populate_shares = populateCloudFoldersWindow(widget)
+    widget.addWidget(populate_shares)
 
     ## STEP7- Add new windows above this line ##
 

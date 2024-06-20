@@ -29,15 +29,16 @@ def create_tool_bar(widget, currentWindow):
     delete_shares = QPushButton("Delete Shares")
     import_shares = QPushButton("Copy Shares")
     add_members = QPushButton("Add/Remove Members")
-    zones_report = QPushButton("Zones Report")
+    report_zones = QPushButton("Report Zones")
+    populate_shares = QPushButton("Populate Shares")
 
     #STEP8 - Create the push button above so you can navigate to the tool
 
 
     # STEP9 - Add the button you just created to the list below. MAKE SURE YOU PUT IT BEFORE EXIT
-    tool_list = [run_cmd, show_status, suspend_sync, unsuspend_sync, enable_ssh, disable_ssh, enable_telnet, reset_password, cloud_folders, delete_shares, import_shares, add_members, zones_report]
+    tool_list = [run_cmd, show_status, suspend_sync, unsuspend_sync, enable_ssh, disable_ssh, enable_telnet, reset_password, cloud_folders, delete_shares, import_shares, add_members, report_zones, populate_shares]
 
-    tool_list[currentWindow].setStyleSheet("color: darkblue; background-color: lightblue; ")   
+    tool_list[currentWindow].setStyleSheet("color: darkblue; background-color: lightblue;")   
 
     tools.addWidget(label, alignment=Qt.AlignTop)
     

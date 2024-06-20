@@ -1,12 +1,9 @@
 import logging
 from log_setter import set_logging
-from report_zones import create
 ## STEP6a - import the tool function from the file you imported into the CTOOLS3 project folder
+from populate import run_populate
 from ui_help import gen_tool_layout, gen_custom_tool_layout, create_tool_bar
 from login import global_admin_login
-
-from pathlib import Path
-
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
     QMainWindow,
@@ -17,19 +14,14 @@ from PySide6.QtWidgets import (
     QHBoxLayout,
     QTextEdit,
     QFrame,
-    QGridLayout,
-    QLineEdit,
-    QComboBox,
-    QCheckBox,
-    QFileDialog
 )
 from PySide6.QtGui import (
     QPixmap
 )
-WINDOW_WIDTH = 700
-WINDOW_HEIGHT = 600
+WINDOW_WIDTH = 600
+WINDOW_HEIGHT = 500
 OUTPUT_HEIGHT = 250
-class reportZonesWindow(QMainWindow):
+class populateCloudFoldersWindow(QMainWindow):
     """PyCalc's main window (GUI or view)."""
     def __init__(self, widget):
         super().__init__()
@@ -40,7 +32,7 @@ class reportZonesWindow(QMainWindow):
         self.top = QHBoxLayout()
         welcome = QLabel("<h2>Welcome to CTools!</h2><h5>One tool for all</h5>")
         pic_label = QLabel(self)
-        pixmap = QPixmap("C:\\Users\\lakea\\Desktop\\CTERA\\ctools\\logo.png")#replace with image location
+        pixmap = QPixmap("logo.png")
         pic_label.setPixmap(pixmap)
         #pic_label.setScaledContents(True)
         self.top.addWidget(welcome)
@@ -55,7 +47,7 @@ class reportZonesWindow(QMainWindow):
         self._createToolBar()
         self._createToolViewLayout()
     def _createToolBar(self):
-        tools = create_tool_bar(self.widget, 12)
+        tools = create_tool_bar(self.widget, 13)
         # Add line separator between Tool List and Tool View
         line = QFrame()
         line.setFrameShape(QFrame.VLine)
@@ -66,49 +58,8 @@ class reportZonesWindow(QMainWindow):
     def _createToolViewLayout(self):
         toolView = QVBoxLayout()
         # Step3 - You will change the next two lines according to the KB
-        ReportZonesLayout = QGridLayout()
-
-        tool_header = QLabel("<h2><b>Create Zones Report</b></h2>")
-        requiredArgs = QLabel ("<h4><b>Required Arguments</b></h4>")
-       
-        address = QLabel("Address (Portal IP, hostname, FQDN):")
-        self.address_field = QLineEdit()
-
-        username = QLabel("Portal Admin Username:")
-        self.username_field = QLineEdit()
-
-        password = QLabel("Portal Admin Password:")
-        self.password_field = QLineEdit()
-        self.password_field.setEchoMode(QLineEdit.Password)
-
-        output_dir = QLabel("Output Location:")
-        self.output_field = QHBoxLayout()
-        self.output_filename_edit = QLineEdit()
-
-        output_file_browse = QPushButton("Browse")
-        output_file_browse.clicked.connect(self.open_directory_dialog)
-
-        self.output_field.addWidget(self.output_filename_edit)
-        self.output_field.addWidget(output_file_browse)
-
-
-
-        self.verbose_box = QCheckBox("Verbose Logging")
-
-        ReportZonesLayout.addWidget(tool_header, 0, 0, 1, 2)
-        ReportZonesLayout.addWidget(requiredArgs, 1, 0, 1, 2)
-        ReportZonesLayout.addWidget(address, 2, 0)
-        ReportZonesLayout.addWidget(self.address_field, 3, 0)
-        ReportZonesLayout.addWidget(username, 2, 1)
-        ReportZonesLayout.addWidget(self.username_field, 3, 1)
-        ReportZonesLayout.addWidget(password, 4, 0)
-        ReportZonesLayout.addWidget(self.password_field, 5, 0)
-        ReportZonesLayout.addWidget(output_dir, 4, 1)
-        ReportZonesLayout.addLayout(self.output_field, 5, 1)
-
-
-
-        toolView.addLayout(ReportZonesLayout)
+        BoilerLayout, self.input_widgets = gen_custom_tool_layout("Populate Cloud Folders", ["Device Name"], ["Ignore cert warnings for login", "Verbose Logging"])
+        toolView.addLayout(BoilerLayout)
         # Create action buttons
         actionButtonLayout = QHBoxLayout()
         self.cancel = QPushButton("Cancel")
@@ -123,30 +74,21 @@ class reportZonesWindow(QMainWindow):
         self.output.setReadOnly(True)
         toolView.addWidget(self.output)
         self.mainContent.addLayout(toolView)
-
-    def open_directory_dialog(self):
-      directory = QFileDialog.getExistingDirectory(
-        self,
-        "Select a directory",
-      )
-
-      if directory:
-        path = Path(directory)
-        self.output_filename_edit.setText(str(path))
-
     # STEP4 - Grab the arguments for you tool
     def tool(self):
-        address = self.address_field.text()
-        user = self.username_field.text()
-        password = self.password_field.text()
-        output_dir = self.output_filename_edit.text()
-        verbose = self.verbose_box.isChecked()
+        portal_address = self.input_widgets[0].text()
+        portal_username = self.input_widgets[1].text()
+        portal_password = self.input_widgets[2].text()
+        device_name = self.input_widgets[3].text()
+        ignore_cert = self.input_widgets[4].isChecked()
+        verbose = self.input_widgets[5].isChecked()
         if verbose:
             set_logging(logging.DEBUG, 'debug-log.txt')
         else:
             set_logging()
         ## Step6b - Run the tool here
-        create(address, user, password, output_dir, verbose)
+        # Ex: run_status(global_admin, filename, all_tenants_flag)
+        run_populate(portal_address, portal_username, portal_password, device_name)
         self._updateOutput()
     def _updateOutput(self):
         file = open("output.tmp", 'r')
