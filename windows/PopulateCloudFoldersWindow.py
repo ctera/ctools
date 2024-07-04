@@ -18,8 +18,8 @@ from PySide6.QtWidgets import (
 from PySide6.QtGui import (
     QPixmap
 )
-WINDOW_WIDTH = 600
-WINDOW_HEIGHT = 500
+WINDOW_WIDTH = 700
+WINDOW_HEIGHT = 600
 OUTPUT_HEIGHT = 250
 class populateCloudFoldersWindow(QMainWindow):
     """PyCalc's main window (GUI or view)."""
@@ -32,7 +32,7 @@ class populateCloudFoldersWindow(QMainWindow):
         self.top = QHBoxLayout()
         welcome = QLabel("<h2>Welcome to CTools!</h2><h5>One tool for all</h5>")
         pic_label = QLabel(self)
-        pixmap = QPixmap("logo.png")
+        pixmap = QPixmap("C:\\Users\\lakea\\Desktop\\CTERA\\ctools\\logo.png")#replace with image location
         pic_label.setPixmap(pixmap)
         #pic_label.setScaledContents(True)
         self.top.addWidget(welcome)
@@ -58,7 +58,7 @@ class populateCloudFoldersWindow(QMainWindow):
     def _createToolViewLayout(self):
         toolView = QVBoxLayout()
         # Step3 - You will change the next two lines according to the KB
-        BoilerLayout, self.input_widgets = gen_custom_tool_layout("Populate Cloud Folders", ["Device Name"], ["Ignore cert warnings for login", "Verbose Logging"])
+        BoilerLayout, self.input_widgets = gen_custom_tool_layout("Populate Cloud Folders as Shares (Except My Files)", ["Device Name"], ["Ignore cert warnings for login", "Verbose Logging"])
         toolView.addLayout(BoilerLayout)
         # Create action buttons
         actionButtonLayout = QHBoxLayout()
