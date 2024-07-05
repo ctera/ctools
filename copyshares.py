@@ -1,5 +1,6 @@
 import cterasdk
 from filer import get_filer, get_filers
+from copynfs import copy_nfs_share
 from cterasdk import Edge, edge_types, edge_enum
 import logging
 
@@ -41,6 +42,10 @@ def copyshares(self, source, dest):
       logging.info("Processing share: %s" % str(share.name))
       if share.name == 'public' or share.name == 'cloud' or share.name == 'backups':
         logging.info("%s skipped" % str(share.name))
+        continue
+      elif share.exportToNFS:
+        logging.info("Copying NFS share: %s" % str(share.name))
+        copy_nfs_share(self, share, dest)
         continue
       try:
         acl_entries = []

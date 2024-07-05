@@ -29,16 +29,20 @@ def create_shares_from_folders_list(self, folders, edge_filer):
       if folder.name != 'My Files':
         logging.info("Creating share for folder: " + folder.name)
 
-        users = self.users.list_local_users(include = ['name', 'email', 'firstName', 'lastName'])
-        match = None
-        for user in users:
-          if user.name == folder.owner.split('/')[-1]:
-            match = user
-            break
-        
-        if match is not None:
-          path = "cloud/users/"+ match.firstName + " " + match.lastName + "/" + folder.name
-          edge_filer.shares.add(folder.name, path)
+        try:
+          users = self.users.list_local_users(include = ['name', 'email', 'firstName', 'lastName'])
+          match = None
+          for user in users:
+            if user.name == folder.owner.split('/')[-1]:
+              match = user
+              break
+          
+          if match is not None:
+            path = "cloud/users/"+ match.firstName + " " + match.lastName + "/" + folder.name
+            edge_filer.shares.add(folder.name, path)
+        except CTERAException as ce:
+          logging.error(ce)
+          logging.error("Failed creating share for folder: " + folder.name)
 
       
   except CTERAException as ce:
