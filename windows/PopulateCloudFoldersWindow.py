@@ -58,7 +58,7 @@ class populateCloudFoldersWindow(QMainWindow):
     def _createToolViewLayout(self):
         toolView = QVBoxLayout()
         # Step3 - You will change the next two lines according to the KB
-        BoilerLayout, self.input_widgets = gen_custom_tool_layout("Populate Cloud Folders as Shares (Except My Files)", ["Device Name"], ["Ignore cert warnings for login", "Verbose Logging"])
+        BoilerLayout, self.input_widgets = gen_custom_tool_layout("Populate Cloud Folders as Shares (Except My Files)", ["Device Name", "Domain Name (Only needed if domain users are cloud folder owners)"], ["Ignore cert warnings for login", "Verbose Logging"])
         toolView.addLayout(BoilerLayout)
         # Create action buttons
         actionButtonLayout = QHBoxLayout()
@@ -80,15 +80,16 @@ class populateCloudFoldersWindow(QMainWindow):
         portal_username = self.input_widgets[1].text()
         portal_password = self.input_widgets[2].text()
         device_name = self.input_widgets[3].text()
-        ignore_cert = self.input_widgets[4].isChecked()
-        verbose = self.input_widgets[5].isChecked()
+        domain_name = self.input_widgets[4].text()
+        ignore_cert = self.input_widgets[5].isChecked()
+        verbose = self.input_widgets[6].isChecked()
         if verbose:
             set_logging(logging.DEBUG, 'debug-log.txt')
         else:
             set_logging()
         ## Step6b - Run the tool here
         # Ex: run_status(global_admin, filename, all_tenants_flag)
-        run_populate(portal_address, portal_username, portal_password, device_name)
+        run_populate(portal_address, portal_username, portal_password, device_name, domain_name)
         self._updateOutput()
     def _updateOutput(self):
         file = open("output.tmp", 'r')

@@ -6,7 +6,7 @@ import logging
 
 from pathlib import Path
 from getpass import getpass
-from cterasdk import GlobalAdmin, core_types, CTERAException, config, tojsonstr
+from cterasdk import GlobalAdmin, core_types, CTERAException, tojsonstr
 from cterasdk.lib.filesystem import FileSystem
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)

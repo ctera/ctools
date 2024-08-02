@@ -2,7 +2,7 @@ import os
 import logging
 from datetime import datetime
 import csv
-from cterasdk import GlobalAdmin, settings, config, CTERAException, Object
+from cterasdk import GlobalAdmin, settings, CTERAException, Object
 from cterasdk.exceptions import ConsentException
 from cterasdk.core import query
 

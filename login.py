@@ -5,7 +5,6 @@ import urllib3
 
 from cterasdk import GlobalAdmin
 from cterasdk import CTERAException
-from cterasdk import config as cterasdk_config
 
 from cterasdk import settings
 
@@ -62,7 +61,6 @@ def global_admin_login(address: str, username: str, password: str, ignore_cert=F
     """
     if ignore_cert is True:
         settings.sessions.management.ssl = False
-        #cterasdk_config.http['ssl'] = 'Trust'
         urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
     sys.stdin = StringIO('n')  # if prompted, answer no
     try:
