@@ -20,6 +20,7 @@ from windows.ImportSharesWindow import importSharesWindow
 from windows.AddMembersWindow import addMembersWindow
 from windows.ReportZonesWindow import reportZonesWindow
 from windows.PopulateCloudFoldersWindow import populateCloudFoldersWindow
+from windows.AddMappingWindow import addMappingWindow
 #from windows.SMBAuditWindow import smbAuditWindow
 
 from PySide6 import QtCore
@@ -86,6 +87,9 @@ def main():
 
     populate_shares = populateCloudFoldersWindow(widget)
     widget.addWidget(populate_shares)
+
+    add_mapping = addMappingWindow(widget)
+    widget.addWidget(add_mapping)
 
     ## STEP7- Add new windows above this line ##
 
