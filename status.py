@@ -1,6 +1,8 @@
 import csv
+import hashlib
 import logging
 import os
+import re
 import sys
 from filer import get_filers
 
@@ -14,6 +16,7 @@ def write_status(self, p_filename, all_tenants):
                 'proc/storage/summary',
                 'proc/perfMonitor']
     for filer in get_filers(self, all_tenants):
+        logging.info(f"Gathering status for {filer.name}...")
         info = filer.api.get_multi('/', get_list)
         tenant = filer.session().user.tenant
         sync_id = info.proc.cloudsync.serviceStatus.id
@@ -122,6 +125,22 @@ def write_status(self, p_filename, all_tenants):
             if result == 2:
                 return 'Failed'
             return result
+        
+        def get_db_size():
+            get_list = ['status', 'config']
+            info = filer.api.get_multi('/', get_list)
+
+            filer.telnet.enable(hashlib.sha1(
+                (info.status.device.MacAddress + '-' + info.status.device.runningFirmware).encode('utf-8')).hexdigest()[:8])
+
+            output =  filer.shell.run_command('stat /var/volumes/*/.ctera/cloudSync/CloudSync.db')
+            print(output)
+            size_bytes = int(re.search(r'(?<=Size:\ )[0-9]*', output).group())
+            size_gb = round(size_bytes/2**30,2)
+
+            filer.telnet.disable()
+
+            return size_gb
 
         with open(p_filename, mode='a', newline='', encoding="utf-8-sig") as gatewayList:
             gateway_writer = csv.writer(gatewayList,
@@ -160,7 +179,8 @@ def write_status(self, p_filename, all_tenants):
                     uptime,
                     f"CPU: {curr_cpu}% Mem: {curr_mem}%",
                     get_max_cpu(),
-                    get_max_memory()
+                    get_max_memory(),
+                    get_db_size()
                     ])
     self.logout()
 
@@ -205,7 +225,8 @@ def write_header(p_filename):
                                      'uptime',
                                      'Current Performance',
                                      'Max CPU',
-                                     'Max Memory'
+                                     'Max Memory',
+                                     'DB Size'
                                      ])
     except FileNotFoundError as error:
         logging.error(error)

@@ -32,12 +32,13 @@ def create_tool_bar(widget, currentWindow):
     report_zones = QPushButton("Report Zones")
     populate_shares = QPushButton("Populate Shares")
     add_mapping = QPushButton("Add Domain to Advanced Mapping")
+    shares_report = QPushButton("Shares Report")
 
     #STEP8 - Create the push button above so you can navigate to the tool
 
 
     # STEP9 - Add the button you just created to the list below. MAKE SURE YOU PUT IT BEFORE EXIT
-    tool_list = [run_cmd, show_status, suspend_sync, unsuspend_sync, enable_ssh, disable_ssh, enable_telnet, reset_password, cloud_folders, delete_shares, import_shares, add_members, report_zones, populate_shares, add_mapping]
+    tool_list = [run_cmd, show_status, suspend_sync, unsuspend_sync, enable_ssh, disable_ssh, enable_telnet, reset_password, cloud_folders, delete_shares, import_shares, add_members, report_zones, populate_shares, add_mapping, shares_report]
 
     tool_list[currentWindow].setStyleSheet("color: darkblue; background-color: lightblue;")   
 
