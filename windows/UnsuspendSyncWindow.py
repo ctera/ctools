@@ -70,8 +70,15 @@ class unsuspendSyncWindow(QMainWindow):
     def _createToolViewLayout(self):
         toolView = QVBoxLayout()
 
+        tooltip = """Unsuspend Sync on an edge filer
+  -  Address: The IP address of the CTERA Portal
+  -  Username: The global admin username of the CTERA Portal
+  -  Password: The global admin password of the CTERA Portal
+  -  Device Name: The name of the device to unsuspend sync on
+  -  Tenant Name: The name of the tenant the device is on"""
+
         # Step3 - You will change the next two lines according to the KB
-        UnsuspendSyncLayout, self.input_widgets = gen_custom_tool_layout("Unsuspend Sync", ["Device Name", "Tenant Name"], ["Verbose Logging"])
+        UnsuspendSyncLayout, self.input_widgets = gen_custom_tool_layout("Unsuspend Sync", ["Device Name", "Tenant Name"], ["Verbose Logging"], tooltip=tooltip)
         toolView.addLayout(UnsuspendSyncLayout)
 
         # Create action buttons
@@ -114,6 +121,8 @@ class unsuspendSyncWindow(QMainWindow):
 
         global_admin.api.put('/rolesSettings/readWriteAdminSettings/allowSSO', 'true')
 
+        global_admin.logout()
+        
         global_admin = global_admin_login(portal_address, portal_username, portal_password, True)
 
         

@@ -4,15 +4,19 @@ from copynfs import copy_nfs_share
 from cterasdk import Edge, edge_types, edge_enum
 import logging
 
+import cterasdk.settings
 
 principal_dict = {"LocalGroup": edge_enum.PrincipalType.LG, "LocalUser": edge_enum.PrincipalType.LU, "DomainGroup": edge_enum.PrincipalType.DG, "DomainUser": edge_enum.PrincipalType.DU}
 perm_dict = {"ReadWrite": edge_enum.FileAccessMode.RW, "ReadOnly": edge_enum.FileAccessMode.RO, "None": edge_enum.FileAccessMode.NA}
 
 
-def copyshares(self, source, dest):
-  tenant = self.users.session().user.tenant
-  filer_source = get_filer(self, source, tenant)
-  filer_destination = get_filer(self, dest, tenant)
+def copyshares(source, source_username, source_pass, dest, dest_username, dest_pass):
+  cterasdk.settings.sessions.management.ssl = False
+
+  filer_source = Edge(source)
+  filer_source.login(source_username, source_pass)
+  filer_destination = Edge(dest)
+  filer_destination.login(dest_username, dest_pass)
   try:
     shares_source = filer_source.shares.get()
 
@@ -45,7 +49,7 @@ def copyshares(self, source, dest):
         continue
       elif share.exportToNFS:
         logging.info("Copying NFS share: %s" % str(share.name))
-        copy_nfs_share(self, share, dest)
+        copy_nfs_share(share, filer_destination)
         continue
       try:
         acl_entries = []
@@ -56,16 +60,16 @@ def copyshares(self, source, dest):
 
           if acl.principal2._classname == "LocalUser":
             name = acl.principal2.ref.split("#")[-1]
-            logging.debug("LocalUser: ", name)
+            logging.debug("LocalUser: " + str(name))
           elif acl.principal2._classname == "DomainUser":
             name = acl.principal2.name
-            logging.debug("DomainUser: ", name)
+            logging.debug("DomainUser: " + str(name))
           elif acl.principal2._classname == "LocalGroup":
             name = acl.principal2.ref.split("#")[-1]
-            logging.debug("LocalGroup: ", name)
+            logging.debug("LocalGroup: " + str(name))
           elif acl.principal2._classname == "DomainGroup":
             name = acl.principal2.name
-            logging.debug("DomainGroup: ", name)
+            logging.debug("DomainGroup: ", str(name))
           else:
             logging.error("Error processing ACL entry: ", acl)
   
@@ -74,24 +78,38 @@ def copyshares(self, source, dest):
 
         logging.info("Adding share %s to filer <%s>" % (share.name, dest))
         try:
-          filer_destination.shares.add(share.name, share.directory[1:], acl=None, access=share.access, dir_permissions=777, comment=share.comment)
-          logging.info("Successfully added share %s to filer <%s>" % (share.name, dest))
+            share_access = share.access if share.access is not None else []
+            share_comment = share.comment if share.comment is not None else ""
+            share_directory = share.directory[1:] if share.directory else ""
 
-          logging.info("Number of ACL Entries to add: %s" % len(acl_entries))
-          for entry in acl_entries:
-            try:
-              filer_destination.shares.add_acl(share.name, [entry])
-              logging.info("Successfully added ACL entry %s to share %s" % (entry.name, share.name))
-            except Exception as e:
-              logging.error("Failed to add ACL entry %s to share %s" % (entry.name, share.name))
-              logging.error("This could be due to the destination filer not having the same local users/groups as the source filer has in its permissions for the share")
-              logging.error(e)
-              continue
-          logging.info("Successfully added ACL entries to share %s" % share.name)
+            logging.info("Share Name: %s" % share.name)
+            logging.info("Share Directory: %s" % share_directory)
+            logging.info("Share Access: %s" % share_access)
+            logging.info("Share Comment: %s" % share_comment)
+
+            filer_destination.shares.add(
+                share.name, 
+                share_directory, 
+                acl=None, 
+                access=share_access, 
+                dir_permissions=777, 
+                comment=share_comment
+            )
+            logging.info("Successfully added share %s to filer <%s>" % (share.name, dest))
+
+            logging.info("Number of ACL Entries to add: %s" % len(acl_entries))
+            for entry in acl_entries:
+                try:
+                    filer_destination.shares.add_acl(share.name, [entry])
+                    logging.info("Successfully added ACL entry %s to share %s" % (entry.name, share.name))
+                except Exception as e:
+                    logging.error("Failed to add ACL entry %s to share %s" % (entry.name, share.name))
+                    logging.error("This could be due to the destination filer not having the same local users/groups.")
+                    logging.error(e)
         except Exception as e:
-          logging.error("Failed to add share %s to filer <%s" % (share.name, dest))
-          logging.error(e)
-          continue
+            logging.error("Failed to add share %s to filer <%s>" % (share.name, dest))
+            logging.error(e)
+            continue
       except Exception as e:
         logging.error("Failed to process ACL entries")
         logging.error(e)
@@ -100,5 +118,9 @@ def copyshares(self, source, dest):
     logging.error("Failed to process shares")
     logging.error(e)
     return
+  
+  finally:
+    filer_source.logout()
+    filer_destination.logout()
 
 

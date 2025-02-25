@@ -14,6 +14,7 @@ from PySide6.QtWidgets import (
     QLabel,
     QHBoxLayout,
     QTextEdit,
+    QLineEdit,
     QFrame,
 )
 from PySide6.QtGui import (
@@ -58,8 +59,20 @@ class importSharesWindow(QMainWindow):
         self.mainContent.addWidget(line)
     def _createToolViewLayout(self):
         toolView = QVBoxLayout()
+
+        tooltip = """Copy shares from source edge filer to another destination edge filer.
+  -  Source Device IP/FQDN: IP or FQDN of the source edge filer.
+  -  Source Admin Username: Username of the source edge filer.
+  -  Source Admin Password: Password of the source edge filer.
+  -  Destination Device IP/FQDN: IP or FQDN of the destination edge filer.
+  -  Destination Admin Username: Username of the destination edge filer.
+  -  Destination Admin Password: Password of the destination edge filer.
+  -  Verbose Logging: Enable debug logging."""
+
         # Step3 - You will change the next two lines according to the KB
-        BoilerLayout, self.input_widgets = gen_custom_tool_layout("Copy Shares", ["Source Device Name", "Destination Device Name"], ["Verbose Logging"])
+        BoilerLayout, self.input_widgets = gen_custom_tool_layout("Copy Shares", ["Source Device IP/FQDN", "Source Admin Username", "Source Admin Password", "Destination Device IP/FQDN", "Destination Admin Username", "Destination Admin Password"], ["Verbose Logging"], False, tooltip=tooltip)
+        self.input_widgets[2].setEchoMode(QLineEdit.Password)
+        self.input_widgets[5].setEchoMode(QLineEdit.Password)
         toolView.addLayout(BoilerLayout)
         # Create action buttons
         actionButtonLayout = QHBoxLayout()
@@ -77,30 +90,20 @@ class importSharesWindow(QMainWindow):
         self.mainContent.addLayout(toolView)
     # STEP4 - Grab the arguments for you tool
     def tool(self):
-        portal_address = self.input_widgets[0].text()
-        portal_username = self.input_widgets[1].text()
-        portal_password = self.input_widgets[2].text()
-        device_name_source = self.input_widgets[3].text()
-        device_name_dest = self.input_widgets[4].text()
-        verbose = self.input_widgets[5].isChecked()
+        source_address = self.input_widgets[0].text()
+        source_username = self.input_widgets[1].text()
+        source_password = self.input_widgets[2].text()
+        destination_address = self.input_widgets[3].text()
+        destination_username = self.input_widgets[4].text()
+        destination_password = self.input_widgets[5].text()
+        verbose = self.input_widgets[6].isChecked()
         if verbose:
             set_logging(logging.DEBUG, 'debug-log.txt')
         else:
             set_logging()     
-
-        global_admin = global_admin_login(portal_address, portal_username, portal_password, True)   
-
-        global_admin.portals.browse_global_admin()
-
-        global_admin.api.put('/rolesSettings/readWriteAdminSettings/allowSSO', 'true')
-
-        global_admin.logout()
-
-        global_admin = global_admin_login(portal_address, portal_username, portal_password, True)
         ## Step6b - Run the tool here
         # Ex: run_status(global_admin, filename, all_tenants_flag)
-        copyshares(global_admin, device_name_source, device_name_dest)
-        global_admin.logout()
+        copyshares(source_address, source_username, source_password, destination_address, destination_username, destination_password)
         self._updateOutput()
     def _updateOutput(self):
         file = open("output.tmp", 'r')

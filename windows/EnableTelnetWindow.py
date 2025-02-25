@@ -59,8 +59,18 @@ class enableTelnetWindow(QMainWindow):
         self.mainContent.addWidget(line)
     def _createToolViewLayout(self):
         toolView = QVBoxLayout()
+
+        tooltip = """Enable Telnet on an Edge Filer
+  -  Address: The IP address of the CTERA Portal
+  -  Username: The global admin username of the CTERA Portal
+  -  Password: The global admin password of the CTERA Portal
+  -  Device Name: The name of the device to enable Telnet on
+  -  Tenant Name: The name of the tenant the device belongs to
+  -  Required Code for Telnet: The code required to enable Telnet on the device
+  -  Verbose Logging: Enable debug logging"""
+
         # Step3 - You will change the next two lines according to the KB
-        EnableTelnetLayout, self.input_widgets = gen_custom_tool_layout("Enable Telnet", ["Device Name", "Tenant Name", "Required Code for Telnet"], ["Verbose Logging"])
+        EnableTelnetLayout, self.input_widgets = gen_custom_tool_layout("Enable Telnet", ["Device Name", "Tenant Name", "Required Code for Telnet"], ["Verbose Logging"], tooltip=tooltip)
         toolView.addLayout(EnableTelnetLayout)
         # Create action buttons
         actionButtonLayout = QHBoxLayout()

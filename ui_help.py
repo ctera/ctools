@@ -6,7 +6,9 @@ from PySide6.QtWidgets import (
     QLabel,
     QCheckBox,
     QVBoxLayout,
-    QPushButton
+    QHBoxLayout,
+    QPushButton,
+    QToolTip,
 )
 
 
@@ -33,12 +35,13 @@ def create_tool_bar(widget, currentWindow):
     populate_shares = QPushButton("Populate Shares")
     add_mapping = QPushButton("Add Domain to Advanced Mapping")
     shares_report = QPushButton("Shares Report")
+    import_certificate = QPushButton("Import Certificate")
 
     #STEP8 - Create the push button above so you can navigate to the tool
 
 
     # STEP9 - Add the button you just created to the list below. MAKE SURE YOU PUT IT BEFORE EXIT
-    tool_list = [run_cmd, show_status, suspend_sync, unsuspend_sync, enable_ssh, disable_ssh, enable_telnet, reset_password, cloud_folders, delete_shares, import_shares, add_members, report_zones, populate_shares, add_mapping, shares_report]
+    tool_list = [run_cmd, show_status, suspend_sync, unsuspend_sync, enable_ssh, disable_ssh, enable_telnet, reset_password, cloud_folders, delete_shares, import_shares, add_members, report_zones, populate_shares, add_mapping, shares_report, import_certificate]
 
     tool_list[currentWindow].setStyleSheet("color: darkblue; background-color: lightblue;")   
 
@@ -62,7 +65,25 @@ def gen_tool_layout(toolname):
     input_widgets = []
 
     grid = QGridLayout()
-    tool_header = QLabel("<h2><b>" + str(toolname) + "</b></h2>")
+    tool_name = QLabel("<h2><b>" + str(toolname) + "</b></h2>")
+
+    #generate tool tip
+    info_button = QPushButton("x")
+    info_button.setToolTip("This is detailed information about the feature.")
+    info_button.setFixedSize(20, 20)  # Set width and height to make it smaller
+    info_button.setStyleSheet("""
+        QPushButton {
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #e0e0e0;
+            color: #363636;
+        }
+        QPushButton:hover {
+            background-color: #e0e0e0;
+        }
+    """)
+    tool_header.addWidget(tool_name)
+    tool_header.addWidget(info_button)
     requiredArgs = QLabel("<h4><b>Required Arguments:</b></h4>")
     address = QLabel("Address (Portal IP, hostname, or FQDN):")
     username = QLabel("Portal Admin Username:")
@@ -82,7 +103,7 @@ def gen_tool_layout(toolname):
     input_widgets.append(dev_name_field)
 
     # add widgets to layout
-    grid.addWidget(tool_header, 0, 0, 1, 2)
+    grid.addLayout(tool_header, 0, 0, 1, 2)
     grid.addWidget(requiredArgs, 1, 0, 1, 2)
     grid.addWidget(address, 2, 0)
     grid.addWidget(username, 2, 1)
@@ -96,7 +117,7 @@ def gen_tool_layout(toolname):
     return grid, input_widgets
 
 # Generate the base tool layout
-def gen_custom_tool_layout(toolname, fields, checkboxes, base=True):
+def gen_custom_tool_layout(toolname, fields, checkboxes, base=True, tooltip="This is detailed information about the feature."):
     input_widgets = []
     input_labels = {}
     input_fields = {}
@@ -105,7 +126,27 @@ def gen_custom_tool_layout(toolname, fields, checkboxes, base=True):
 
     grid = QGridLayout()
 
-    tool_header = QLabel("<h2><b>" + str(toolname) + "</b></h2>")
+    tool_header = QHBoxLayout()
+
+    tool_name = QLabel("<h2><b>" + str(toolname) + "</b></h2>")
+
+    #generate tool tip
+    info_button = QPushButton("i")
+    info_button.setToolTip(tooltip)
+    info_button.setFixedSize(20, 20)  # Set width and height to make it smaller
+    info_button.setStyleSheet("""
+        QPushButton {
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #e0e0e0;
+            color: #363636;
+        }
+        QPushButton:hover {
+            background-color: #e0e0e0;
+        }
+    """)
+    tool_header.addWidget(tool_name)
+    tool_header.addWidget(info_button)
     requiredArgs = QLabel("<h4><b>Required Arguments:</b></h4>")
     if (base):
         address = QLabel("Address (Portal IP, hostname, or FQDN):")
@@ -134,7 +175,7 @@ def gen_custom_tool_layout(toolname, fields, checkboxes, base=True):
         input_widgets.append(cb_widgets[index])
 
     # add widgets to layout
-    grid.addWidget(tool_header, 0, 0, 1, 2)
+    grid.addLayout(tool_header, 0, 0, 1, 2)
     grid.addWidget(requiredArgs, 1, 0, 1, 2)
     
     if (base):

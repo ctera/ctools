@@ -59,8 +59,19 @@ class sharesReportWindow(QMainWindow):
         self.mainContent.addWidget(line)
     def _createToolViewLayout(self):
         toolView = QVBoxLayout()
+
+        tooltip = """Export shares list for all edge filers (Detailed)
+  -  Address: The IP address of the CTERA Portal
+  -  Username: The global admin username of the CTERA Portal
+  -  Password: The global admin password of the CTERA Portal
+  -  Tenant: The tenant to run the tool on. Leave empty to run on all tenants.
+  -  Filename: The name of the file to save the output to. Needs to be .csv file.
+  -  Ignore cert warnings for login: Check to ignore certificate warnings when logging in.
+  -  Verbose Logging: Check to enable debug logging."""
+
+
         # Step3 - You will change the next two lines according to the KB
-        BoilerLayout, self.input_widgets = gen_custom_tool_layout("Create a shares report with the filename given", ["Tenant", "Filename"], ["Ignore cert warnings for login", "Verbose Logging"])
+        BoilerLayout, self.input_widgets = gen_custom_tool_layout("Export shares list for all edge filers (Detailed)", ["Tenant (Empty to run on all)", "Filename (.csv)"], ["Ignore cert warnings for login", "Verbose Logging"], tooltip=tooltip)
         toolView.addLayout(BoilerLayout)
         # Create action buttons
         actionButtonLayout = QHBoxLayout()

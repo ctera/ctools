@@ -90,7 +90,7 @@ and firmware version to get an unlock code from CTERA Support.
 Reset a local user account password on a Edge Filer.
 
 #### CloudFS
-Create folder_groups and cloud folders using a pre-populated CSV file - download template [here](./templates/cloud_folders.csv)
+Create folder_groups and cloud folders using a pre-populated CSV file - download template [here](./templates/cloud_fs.csv)
 - Replace content in file above with desired folder_group and cloud_folder names
 
 #### Delete Shares

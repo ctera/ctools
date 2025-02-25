@@ -15,10 +15,21 @@ def write_status(self, p_filename, all_tenants):
                 'proc/time/',
                 'proc/storage/summary',
                 'proc/perfMonitor']
+    
+    logging.info("Gathering status for all filers...")
     for filer in get_filers(self, all_tenants):
         logging.info(f"Gathering status for {filer.name}...")
         info = filer.api.get_multi('/', get_list)
-        tenant = filer.session().user.tenant
+
+        logging.info("Checking for tenant...")
+        
+        tenant = filer.portal
+
+        #tenant = filer.session().current_tenant()
+
+        logging.info(f"Tenant: {tenant}")
+        logging.info("Success")
+        
         sync_id = info.proc.cloudsync.serviceStatus.id
         try:
             selfScanIntervalInHours = info.config.cloudsync.selfScanVerificationIntervalInHours

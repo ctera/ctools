@@ -70,8 +70,16 @@ class suspendSyncWindow(QMainWindow):
     def _createToolViewLayout(self):
         toolView = QVBoxLayout()
 
+        tooltip = """Suspend Sync of Edge Filer
+  -  Address: The IP address of the CTERA Portal
+  -  Username: The global admin username of the CTERA Portal
+  -  Password: The global admin password of the CTERA Portal
+  -  Device Name: The name of the device to suspend sync on
+  -  Tenant Name: The name of the tenant the device is on
+  -  Verbose Logging: Enable verbose logging"""
+
         # Step3 - You will change the next two lines according to the KB
-        SuspendSyncLayout, self.input_widgets = gen_custom_tool_layout("Suspend Sync", ["Device Name", "Tenant Name"], ["Verbose Logging"])
+        SuspendSyncLayout, self.input_widgets = gen_custom_tool_layout("Suspend Sync", ["Device Name", "Tenant Name"], ["Verbose Logging"], tooltip=tooltip)
         toolView.addLayout(SuspendSyncLayout)
 
         # Create action buttons

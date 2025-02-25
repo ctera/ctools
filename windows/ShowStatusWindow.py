@@ -71,7 +71,15 @@ class showStatusWindow(QMainWindow):
     def _createToolViewLayout(self):
         toolView = QVBoxLayout()
 
-        show_status_layout, self.input_widgets = gen_custom_tool_layout("Show Status", ["File Name"], ["Run on all Tenants","Verbose Logging"])
+        tooltip = """Grab in depth stats about all devices in the CTERA Portal. Saved to same directory as this program is run from.
+  -  Address: The IP address of the CTERA Portal
+  -  Username: The global admin username of the CTERA Portal
+  -  Password: The global admin password of the CTERA Portal
+  -  File Name: The name of the file to save the output to
+  -  Run on all Tenants: Check this box if you would like to run the command on all tenants
+  -  Verbose Logging: Check this box if you would like to see debug logs"""
+
+        show_status_layout, self.input_widgets = gen_custom_tool_layout("Show Status", ["File Name"], ["Run on all Tenants","Verbose Logging"], tooltip=tooltip)
 
         toolView.addLayout(show_status_layout)
 

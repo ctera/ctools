@@ -65,10 +65,37 @@ class reportZonesWindow(QMainWindow):
         self.mainContent.addWidget(line)
     def _createToolViewLayout(self):
         toolView = QVBoxLayout()
+
+        tooltip = """Create zones report for details such as Devices, Total Size, Total Folders, and Total Files in the desired output location.
+  -  Address: IP or FQDN of the portal.
+  -  Username: Username of the portal admin.
+  -  Password: Password of the portal admin.
+  -  Output Location: Select the browse button to select a folder where you would like the report to be generated."""
+
         # Step3 - You will change the next two lines according to the KB
         ReportZonesLayout = QGridLayout()
 
-        tool_header = QLabel("<h2><b>Create Zones Report</b></h2>")
+        tool_header = QHBoxLayout()
+        tool_name = QLabel("<h2><b>Zones Report</b></h2>")
+
+        #generate tool tip
+        info_button = QPushButton("i")
+        info_button.setToolTip(tooltip)
+        info_button.setFixedSize(20, 20)  # Set width and height to make it smaller
+        info_button.setStyleSheet("""
+            QPushButton {
+                border: 1px solid #ccc;
+                border-radius: 10px;
+                background-color: #e0e0e0;
+                color: #363636;
+            }
+            QPushButton:hover {
+                background-color: #e0e0e0;
+            }
+        """)
+        tool_header.addWidget(tool_name)
+        tool_header.addWidget(info_button)
+
         requiredArgs = QLabel ("<h4><b>Required Arguments</b></h4>")
        
         address = QLabel("Address (Portal IP, hostname, FQDN):")
@@ -95,7 +122,7 @@ class reportZonesWindow(QMainWindow):
 
         self.verbose_box = QCheckBox("Verbose Logging")
 
-        ReportZonesLayout.addWidget(tool_header, 0, 0, 1, 2)
+        ReportZonesLayout.addLayout(tool_header, 0, 0, 1, 2)
         ReportZonesLayout.addWidget(requiredArgs, 1, 0, 1, 2)
         ReportZonesLayout.addWidget(address, 2, 0)
         ReportZonesLayout.addWidget(self.address_field, 3, 0)
@@ -146,7 +173,7 @@ class reportZonesWindow(QMainWindow):
         else:
             set_logging()
         ## Step6b - Run the tool here
-        create(address, user, password, output_dir, verbose)
+        create(address, user, password, output_dir)
         self._updateOutput()
     def _updateOutput(self):
         file = open("output.tmp", 'r')

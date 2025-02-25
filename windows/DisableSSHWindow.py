@@ -70,8 +70,16 @@ class disableSSHWindow(QMainWindow):
     def _createToolViewLayout(self):
         toolView = QVBoxLayout()
 
+        tooltip = """Disable SSH on an edge filer
+  -  Address: The IP address of the CTERA Portal
+  -  Username: The global admin username of the CTERA Portal
+  -  Password: The global admin password of the CTERA Portal
+  -  Device Name: The name of the device to disable SSH on
+  -  Tenant Name: The name of the tenant the device is in
+  -  Verbose Logging: Enable debug logging"""
+
         # Step3 - You will change the next two lines according to the KB
-        DisableSSHLayout, self.input_widgets = gen_custom_tool_layout("Disable SSH", ["Device Name", "Tenant Name"], ["Verbose Logging"])
+        DisableSSHLayout, self.input_widgets = gen_custom_tool_layout("Disable SSH", ["Device Name", "Tenant Name"], ["Verbose Logging"], tooltip=tooltip)
         toolView.addLayout(DisableSSHLayout)
 
         # Create action buttons

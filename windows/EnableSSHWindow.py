@@ -70,8 +70,17 @@ class enableSSHWindow(QMainWindow):
     def _createToolViewLayout(self):
         toolView = QVBoxLayout()
 
+        tooltip = """Enable SSH on an Edge Filer
+  -  Address: The IP address of the CTERA Portal
+  -  Username: The global admin username of the CTERA Portal
+  -  Password: The global admin password of the CTERA Portal
+  -  Device Name: The name of the device you want to enable SSH on
+  -  Tenant Name: The name of the tenant the device is on
+  -  SSH Public Key: The public key to add to the device (Must be in same directory as this exe). If no public key is provided, a new keypair will generated and saved to the Downloads folder.
+  -  Verbose Logging: Enable debug logging"""
+
         # Step3 - You will change the next two lines according to the KB
-        EnableSSHLayout, self.input_widgets = gen_custom_tool_layout("Enable SSH", ["Device Name", "Tenant Name", "SSH Public Key"], ["Verbose Logging"])
+        EnableSSHLayout, self.input_widgets = gen_custom_tool_layout("Enable SSH", ["Device Name", "Tenant Name", "SSH Public Key"], ["Verbose Logging"], tooltip=tooltip)
         toolView.addLayout(EnableSSHLayout)
 
         # Create action buttons

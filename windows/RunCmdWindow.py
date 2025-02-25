@@ -27,6 +27,8 @@ WINDOW_WIDTH = 700
 WINDOW_HEIGHT = 600
 OUTPUT_HEIGHT = 250
 
+
+
 class runCmdWindow(QMainWindow):
     """PyCalc's main window (GUI or view)."""
 
@@ -70,7 +72,17 @@ class runCmdWindow(QMainWindow):
     def _createToolViewLayout(self):
         toolView = QVBoxLayout()
 
-        RunCMDLayout, self.input_widgets = gen_custom_tool_layout("Run CMD", ["Command", "Tenant Name", "Device Name (Overrides the \"All Tenants\" checkbox)"], ["Run on all Tenants (No device name needed)","Verbose Logging"])
+        tooltip = """Run a CLI command on one device, all devices on a tenant, or all devices on all tenants.
+Address: The IP address of the CTERA Portal
+  -  Username: The global admin username of the CTERA Portal
+  -  Password: The global admin password of the CTERA Portal
+  -  Command: The CLI command to run on the devices
+  -  Tenant Name: The name of the tenant that you would like to perform command on (Not needed if running on all tenants)
+  -  Device Name: The name of the device on that tenant that you would like to perform command on (Will perform on all devices on tenant if left blank)
+  -  Run on all Tenants: Check this box if you would like to run the command on all tenants
+  -  Verbose Logging: Check this box if you would like to see debug logs"""
+  
+        RunCMDLayout, self.input_widgets = gen_custom_tool_layout("Run CMD", ["Command", "Tenant Name", "Device Name (Overrides the \"All Tenants\" checkbox)"], ["Run on all Tenants (No device name needed)","Verbose Logging"], tooltip=tooltip)
 
         toolView.addLayout(RunCMDLayout)
 

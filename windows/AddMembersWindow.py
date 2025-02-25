@@ -61,10 +61,43 @@ class addMembersWindow(QMainWindow):
         self.mainContent.addWidget(line)
     def _createToolViewLayout(self):
         toolView = QVBoxLayout()
+
+        tooltip = """Add or Remove Users/Groups to Edge Filer Admin Group
+  -  Address: The IP address of the CTERA Portal
+  -  Username: The global admin username of the CTERA Portal
+  -  Password: The global admin password of the CTERA Portal
+  -  Add or Remove: Select whether you want to add or remove a user/group
+      -  Add: Select whether you want to add a domain user or domain group
+      -  Remove: Select whether you want to remove a domain user or domain group
+  -  Perform on: Select whether you want to perform the action on one device, all devices on one tenant, or all devices on all tenants
+  -  Tenant Name: The name of the tenant you want to perform the action on
+  -  Device Name: The name of the device you want to perform the action on
+  -  User/Group: The domain user or domain group you want to add/remove
+  -  Verbose Logging: Enable debug logging"""
+
         # Step3 - You will change the next two lines according to the KB
         AddMembersLayout = QGridLayout()
 
-        tool_header = QLabel("<h2><b>Add or Remove Users/Groups to Edge Filer Admin Group</b></h2>")
+        tool_header = QHBoxLayout()
+        tool_name = QLabel("<h2><b>Add or Remove Members to Admin Group</b></h2>")
+
+        #generate tool tip
+        info_button = QPushButton("i")
+        info_button.setToolTip(tooltip)
+        info_button.setFixedSize(20, 20)  # Set width and height to make it smaller
+        info_button.setStyleSheet("""
+            QPushButton {
+                border: 1px solid #ccc;
+                border-radius: 10px;
+                background-color: #e0e0e0;
+                color: #363636;
+            }
+            QPushButton:hover {
+                background-color: #e0e0e0;
+            }
+        """)
+        tool_header.addWidget(tool_name)
+        tool_header.addWidget(info_button)
         requiredArgs = QLabel ("<h4><b>Required Arguments</b></h4>")
         
         address = QLabel("Portal Address, hostname, or FQDN")
@@ -106,7 +139,7 @@ class addMembersWindow(QMainWindow):
         
         self.verbose_box = QCheckBox("Verbose Logging")
 
-        AddMembersLayout.addWidget(tool_header, 0, 0, 1, 2)
+        AddMembersLayout.addLayout(tool_header, 0, 0, 1, 2)
         AddMembersLayout.addWidget(requiredArgs, 1, 0, 1, 2)
         AddMembersLayout.addWidget(address, 2, 0)
         AddMembersLayout.addWidget(username, 2, 1)

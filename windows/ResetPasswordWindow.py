@@ -70,8 +70,19 @@ class resetPasswordWindow(QMainWindow):
     def _createToolViewLayout(self):
         toolView = QVBoxLayout()
 
+        tooltip = """Reset the password of a local user on a device
+  -  Address: The IP address of the CTERA Portal
+  -  Username: The global admin username of the CTERA Portal
+  -  Password: The global admin password of the CTERA Portal
+  -  Device Name: The name of the device to reset the password on (Leave blank if you want to run on all devices on a tenant or all devices on all tenants)
+  -  Tenant Name: The name of the tenant the device is on (Leave blank if you want to run on all devices on all tenants)
+  -  Username for local user: The username of the local user you want to reset the password for
+  -  New filer password: The new password for the local user
+  -  Run on all Devices: Check this box if you want to run this tool on all devices on a tenant or all devices on all tenants
+  -  Verbose Logging: Check this box if you want to enable debug logging"""
+
         # Step3 - You will change the next two lines according to the KB
-        ResetPasswordLayout, self.input_widgets = gen_custom_tool_layout("Reset Password", ["Device Name", "Tenant Name", "Username for local user", "New filer password"], ["Run on all Devices (No device or tenant name needed)","Verbose Logging"])
+        ResetPasswordLayout, self.input_widgets = gen_custom_tool_layout("Reset Password", ["Device Name", "Tenant Name", "Username for local user", "New filer password"], ["Run on all Devices (No device or tenant name needed)","Verbose Logging"], tooltip=tooltip)
         toolView.addLayout(ResetPasswordLayout)
 
         # Create action buttons

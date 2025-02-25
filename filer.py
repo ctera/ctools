@@ -19,6 +19,9 @@ def get_filers(self, all_tenants=False, tenant=None):
         connected_filers = []
         if all_tenants is True:
             self.portals.browse_global_admin()
+
+            #tenant = self.users.session().current_tenant()
+
             tenant = self.users.session().user.tenant
             logging.info("Getting all Filers since tenant is %s", tenant)
             for tenant in self.portals.tenants():

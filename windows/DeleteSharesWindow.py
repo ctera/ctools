@@ -76,8 +76,15 @@ class deleteSharesWindow(QMainWindow):
     def _createToolViewLayout(self):
         toolView = QVBoxLayout()
 
+        tooltip = """Tool to assist with deleting shares from multiple filers based on a substring match.
+  -  Address: The IP address of the CTERA Portal
+  -  Username: The global admin username of the CTERA Portal
+  -  Password: The global admin password of the CTERA Portal
+  
+  It will prompt you for the substring first, and then it will show you all shares that match this substring on each filer one by one and confirm whether you would like to delete them."""
+
         # Step3 - You will change the next two lines according to the KB
-        DeleteSharesLayout, self.input_widgets = gen_custom_tool_layout("Delete Shares", [], [])
+        DeleteSharesLayout, self.input_widgets = gen_custom_tool_layout("Delete Shares", [], [], tooltip=tooltip)
         toolView.addLayout(DeleteSharesLayout)
 
         # Create action buttons

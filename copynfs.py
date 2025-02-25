@@ -1,4 +1,4 @@
-import cterasdk
+import cterasdk, logging
 from filer import get_filer, get_filers
 from cterasdk import Edge, edge_types, edge_enum
 from login import global_admin_login
@@ -7,10 +7,9 @@ principal_dict = {"LocalGroup": edge_enum.PrincipalType.LG, "LocalUser": edge_en
 perm_dict = {"ReadWrite": edge_enum.FileAccessMode.RW, "ReadOnly": edge_enum.FileAccessMode.RO, "None": edge_enum.FileAccessMode.NA}
 
 
-def copy_nfs_share(ga, share, dest):
+def copy_nfs_share(share, dest):
   try:
-    tenant = ga.users.session().user.tenant
-    filer_dest = get_filer(ga, dest, tenant)
+    filer_dest = dest
 
     client_list = []
     for client in share.trustedNFSClients:
@@ -21,44 +20,44 @@ def copy_nfs_share(ga, share, dest):
 
     acl_entries = []
     for acl in share.acl:
-      print("Processing ACL entry: %s" % str(acl))
+      logging.info("Processing ACL entry: %s" % str(acl))
 
       name = None
 
       if acl.principal2._classname == "LocalUser":
         name = acl.principal2.ref.split("#")[-1]
-        print("LocalUser: ", name)
+        logging.info("LocalUser: " + str(name))
       elif acl.principal2._classname == "DomainUser":
         name = acl.principal2.name
-        print("DomainUser: ", name)
+        logging.info("DomainUser: " + str(name))
       elif acl.principal2._classname == "LocalGroup":
         name = acl.principal2.ref.split("#")[-1]
-        print("LocalGroup: ", name)
+        logging.info("LocalGroup: " + str(name))
       elif acl.principal2._classname == "DomainGroup":
         name = acl.principal2.name
-        print("DomainGroup: ", name)
+        logging.info("DomainGroup: " + str(name))
       else:
-        print("Error processing ACL entry: ", acl)
+        logging.info("Error processing ACL entry: ", acl)
 
       entry = edge_types.ShareAccessControlEntry(principal_dict[acl.principal2._classname], name, perm_dict[acl.permissions.allowedFileAccess])
       acl_entries.append(entry)
     
     filer_dest.shares.add(share.name, share.directory[1:], acl=None, access=share.access, dir_permissions=777, comment=share.comment, export_to_nfs=True, trusted_nfs_clients=client_list)
 
-    print("Number of ACL Entries to add: %s" % len(acl_entries))
+    logging.info("Number of ACL Entries to add: %s" % len(acl_entries))
     for entry in acl_entries:
       try:
         filer_dest.shares.add_acl(share.name, [entry])
-        print("Successfully added ACL entry %s to share %s" % (entry.name, share.name))
+        logging.info("Successfully added ACL entry %s to share %s" % (entry.name, share.name))
       except Exception as e:
-        print("Failed to add ACL entry %s to share %s" % (entry.name, share.name))
-        print("This could be due to the destination filer not having the same local users/groups as the source filer has in its permissions for the share")
-        print(e)
+        logging.info("Failed to add ACL entry %s to share %s" % (entry.name, share.name))
+        logging.info("This could be due to the destination filer not having the same local users/groups as the source filer has in its permissions for the share")
+        logging.info(e)
         continue
-    print("Successfully added ACL entries to share %s" % share.name)
+    logging.info("Successfully added ACL entries to share %s" % share.name)
   except Exception as e:
-    print("Failed to copy share: %s" % share.name)
-    print(e)
+    logging.info("Failed to copy share: %s" % share.name)
+    logging.info(e)
 
 def get_nfs_shares(ga, source):
   tenant = ga.users.session().user.tenant

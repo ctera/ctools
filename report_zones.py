@@ -9,7 +9,7 @@ from cterasdk.core import query
 class FileNames:
     LogBaseName = 'Zones-'
 
-def create(address, user, password, output, debug):
+def create(address, user, password, output):
   output = output if output is not None else 'output'
   output = os.path.expandvars(output)
   if not os.path.exists(output):

@@ -21,13 +21,13 @@ def single_filer_run(filer, command: str):
         logging.info("Failed run_cmd task on %s", filer.name)
 
 
-def multi_filer_run(self, command: str, all_tenants=False):
+def multi_filer_run(self, command: str, all_tenants=False, tenant=None):
     """Run command against all devices on a tenant or all tenants.
 
     :param str command: command to run
     :param bool,optional all_tenants: Scan all tenants
     """
-    filers = get_filers(self, all_tenants)
+    filers = get_filers(self, all_tenants, tenant)
     for filer in filers:
         try:
             logging.info("Running command on: %s", filer.name)

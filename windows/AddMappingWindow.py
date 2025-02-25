@@ -57,8 +57,19 @@ class addMappingWindow(QMainWindow):
         self.mainContent.addWidget(line)
     def _createToolViewLayout(self):
         toolView = QVBoxLayout()
+
+        tooltip = """Add domain to advanced mapping under the UID/GID mappings.
+  -  Address: The IP address of the CTERA Portal
+  -  Username: The global admin username of the CTERA Portal
+  -  Password: The global admin password of the CTERA Portal
+  -  Tenant: The tenant to add the domain to (leave empty for all devices on all tenants)
+  -  Device Name: The name of the device to add the domain to (leave empty for multiple devices)
+  -  Domain to be Added: The domain to add to the advanced mapping
+  -  Ignore cert warnings for login: Check to ignore certificate warnings when logging in
+  -  Verbose Logging: Check to enable verbose logging"""
+
         # Step3 - You will change the next two lines according to the KB
-        BoilerLayout, self.input_widgets = gen_custom_tool_layout("Add Domain to Advanced Mapping", ["Tenant (Empty if all devices on all tenants)", "Device Name (Empty if multiple devices)", "Domain to be Added"], ["Ignore cert warnings for login", "Verbose Logging"])
+        BoilerLayout, self.input_widgets = gen_custom_tool_layout("Add Domain to Advanced Mapping", ["Tenant (Empty if all devices on all tenants)", "Device Name (Empty if multiple devices)", "Domain to be Added"], ["Ignore cert warnings for login", "Verbose Logging"], tooltip=tooltip)
         toolView.addLayout(BoilerLayout)
         # Create action buttons
         actionButtonLayout = QHBoxLayout()
