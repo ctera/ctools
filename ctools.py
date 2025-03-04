@@ -23,7 +23,6 @@ from windows.PopulateCloudFoldersWindow import populateCloudFoldersWindow
 from windows.AddMappingWindow import addMappingWindow
 from windows.SharesReportWindow import sharesReportWindow
 from windows.ImportCertificateWindow import importCertificateWindow
-#from windows.SMBAuditWindow import smbAuditWindow
 
 from PySide6 import QtCore
 
@@ -47,7 +46,7 @@ def main():
         
         widget = QStackedWidget()
 
-        widget.setWindowTitle("CTools v3.1f")
+        widget.setWindowTitle("CTools v3.2.1")
 
         widget.setWindowIcon(QIcon('icon.jpeg'))
         
