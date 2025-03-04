@@ -7,9 +7,9 @@ A toolbox of tasks to check and manage CTERA Edge Filers via GUI/CLI.
 You can download Ctools from the releases tab of this repository:
 https://github.com/ctera/ctools/releases
 
-Download the EXE to run it. The EXE is a signed application.
+Download the **EXE** to run it. The **EXE** is a signed application.
 
-~OR~
+OR
 
 You can use the python version as well.
 
