@@ -80,7 +80,9 @@ Address: The IP address of the CTERA Portal
   -  Tenant Name: The name of the tenant that you would like to perform command on (Not needed if running on all tenants)
   -  Device Name: The name of the device on that tenant that you would like to perform command on (Will perform on all devices on tenant if left blank)
   -  Run on all Tenants: Check this box if you would like to run the command on all tenants
-  -  Verbose Logging: Check this box if you would like to see debug logs"""
+  -  Verbose Logging: Check this box if you would like to see debug logs
+  
+  DISCLAIMER: This tool's output goes to the commandline window separate from the GUI. Please do not close the commandline window while the tool is running."""
   
         RunCMDLayout, self.input_widgets = gen_custom_tool_layout("Run CMD", ["Command", "Tenant Name", "Device Name (Overrides the \"All Tenants\" checkbox)"], ["Run on all Tenants (No device name needed)","Verbose Logging"], tooltip=tooltip)
 

@@ -67,7 +67,9 @@ class enableTelnetWindow(QMainWindow):
   -  Device Name: The name of the device to enable Telnet on
   -  Tenant Name: The name of the tenant the device belongs to
   -  Required Code for Telnet: The code required to enable Telnet on the device
-  -  Verbose Logging: Enable debug logging"""
+  -  Verbose Logging: Enable debug logging
+  
+  DISCLAIMER: This tool's output goes to the commandline window separate from the GUI. Please do not close the commandline window while the tool is running."""
 
         # Step3 - You will change the next two lines according to the KB
         EnableTelnetLayout, self.input_widgets = gen_custom_tool_layout("Enable Telnet", ["Device Name", "Tenant Name", "Required Code for Telnet"], ["Verbose Logging"], tooltip=tooltip)

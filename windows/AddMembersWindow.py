@@ -73,7 +73,9 @@ class addMembersWindow(QMainWindow):
   -  Tenant Name: The name of the tenant you want to perform the action on
   -  Device Name: The name of the device you want to perform the action on
   -  User/Group: The domain user or domain group you want to add/remove
-  -  Verbose Logging: Enable debug logging"""
+  -  Verbose Logging: Enable debug logging
+  
+  DISCLAIMER: This tool's output goes to the commandline window separate from the GUI. Please do not close the commandline window while the tool is running."""
 
         # Step3 - You will change the next two lines according to the KB
         AddMembersLayout = QGridLayout()

@@ -67,7 +67,9 @@ class importSharesWindow(QMainWindow):
   -  Destination Device IP/FQDN: IP or FQDN of the destination edge filer.
   -  Destination Admin Username: Username of the destination edge filer.
   -  Destination Admin Password: Password of the destination edge filer.
-  -  Verbose Logging: Enable debug logging."""
+  -  Verbose Logging: Enable debug logging.
+  
+  DISCLAIMER: This tool's output goes to the commandline window separate from the GUI. Please do not close the commandline window while the tool is running."""
 
         # Step3 - You will change the next two lines according to the KB
         BoilerLayout, self.input_widgets = gen_custom_tool_layout("Copy Shares", ["Source Device IP/FQDN", "Source Admin Username", "Source Admin Password", "Destination Device IP/FQDN", "Destination Admin Username", "Destination Admin Password"], ["Verbose Logging"], False, tooltip=tooltip)

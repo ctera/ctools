@@ -75,7 +75,9 @@ class unsuspendSyncWindow(QMainWindow):
   -  Username: The global admin username of the CTERA Portal
   -  Password: The global admin password of the CTERA Portal
   -  Device Name: The name of the device to unsuspend sync on
-  -  Tenant Name: The name of the tenant the device is on"""
+  -  Tenant Name: The name of the tenant the device is on
+  
+  DISCLAIMER: This tool's output goes to the commandline window separate from the GUI. Please do not close the commandline window while the tool is running."""
 
         # Step3 - You will change the next two lines according to the KB
         UnsuspendSyncLayout, self.input_widgets = gen_custom_tool_layout("Unsuspend Sync", ["Device Name", "Tenant Name"], ["Verbose Logging"], tooltip=tooltip)

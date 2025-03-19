@@ -76,7 +76,9 @@ class disableSSHWindow(QMainWindow):
   -  Password: The global admin password of the CTERA Portal
   -  Device Name: The name of the device to disable SSH on
   -  Tenant Name: The name of the tenant the device is in
-  -  Verbose Logging: Enable debug logging"""
+  -  Verbose Logging: Enable debug logging
+  
+  DISCLAIMER: This tool's output goes to the commandline window separate from the GUI. Please do not close the commandline window while the tool is running."""
 
         # Step3 - You will change the next two lines according to the KB
         DisableSSHLayout, self.input_widgets = gen_custom_tool_layout("Disable SSH", ["Device Name", "Tenant Name"], ["Verbose Logging"], tooltip=tooltip)

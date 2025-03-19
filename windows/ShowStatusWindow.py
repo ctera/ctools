@@ -77,7 +77,9 @@ class showStatusWindow(QMainWindow):
   -  Password: The global admin password of the CTERA Portal
   -  File Name: The name of the file to save the output to
   -  Run on all Tenants: Check this box if you would like to run the command on all tenants
-  -  Verbose Logging: Check this box if you would like to see debug logs"""
+  -  Verbose Logging: Check this box if you would like to see debug logs
+  
+  DISCLAIMER: This tool's output goes to the commandline window separate from the GUI. Please do not close the commandline window while the tool is running."""
 
         show_status_layout, self.input_widgets = gen_custom_tool_layout("Show Status", ["File Name"], ["Run on all Tenants","Verbose Logging"], tooltip=tooltip)
 
