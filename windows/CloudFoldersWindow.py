@@ -82,7 +82,9 @@ https://github.com/ctera/ctools/blob/main/templates/cloud_fs.csv
   -  Username: The global admin username of the CTERA Portal
   -  Password: The global admin password of the CTERA Portal
   -  CSV File: The path to the CSV file containing the folder groups and cloud folders to create
-  -  Add verbose logging: Enable verbose logging for debugging purposes"""
+  -  Add verbose logging: Enable verbose logging for debugging purposes
+  
+  DISCLAIMER: This tool's output goes to the commandline window separate from the GUI. Please do not close the commandline window while the tool is running."""
 
         # Step3 - You will change the next two lines according to the KB
         #CloudFoldersLayout, self.input_widgets = gen_custom_tool_layout(["CSV File"], ["Ignore cert warnings for login", "Verbose Logging"])

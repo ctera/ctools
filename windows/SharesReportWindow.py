@@ -67,7 +67,9 @@ class sharesReportWindow(QMainWindow):
   -  Tenant: The tenant to run the tool on. Leave empty to run on all tenants.
   -  Filename: The name of the file to save the output to. Needs to be .csv file.
   -  Ignore cert warnings for login: Check to ignore certificate warnings when logging in.
-  -  Verbose Logging: Check to enable debug logging."""
+  -  Verbose Logging: Check to enable debug logging.
+  
+  DISCLAIMER: This tool's output goes to the commandline window separate from the GUI. Please do not close the commandline window while the tool is running."""
 
 
         # Step3 - You will change the next two lines according to the KB

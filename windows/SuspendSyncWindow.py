@@ -76,7 +76,9 @@ class suspendSyncWindow(QMainWindow):
   -  Password: The global admin password of the CTERA Portal
   -  Device Name: The name of the device to suspend sync on
   -  Tenant Name: The name of the tenant the device is on
-  -  Verbose Logging: Enable verbose logging"""
+  -  Verbose Logging: Enable verbose logging
+  
+  DISCLAIMER: This tool's output goes to the commandline window separate from the GUI. Please do not close the commandline window while the tool is running."""
 
         # Step3 - You will change the next two lines according to the KB
         SuspendSyncLayout, self.input_widgets = gen_custom_tool_layout("Suspend Sync", ["Device Name", "Tenant Name"], ["Verbose Logging"], tooltip=tooltip)

@@ -81,7 +81,9 @@ class deleteSharesWindow(QMainWindow):
   -  Username: The global admin username of the CTERA Portal
   -  Password: The global admin password of the CTERA Portal
   
-  It will prompt you for the substring first, and then it will show you all shares that match this substring on each filer one by one and confirm whether you would like to delete them."""
+  It will prompt you for the substring first, and then it will show you all shares that match this substring on each filer one by one and confirm whether you would like to delete them.
+  
+  DISCLAIMER: This tool's output goes to the commandline window separate from the GUI. Please do not close the commandline window while the tool is running."""
 
         # Step3 - You will change the next two lines according to the KB
         DeleteSharesLayout, self.input_widgets = gen_custom_tool_layout("Delete Shares", [], [], tooltip=tooltip)

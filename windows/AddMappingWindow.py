@@ -66,7 +66,8 @@ class addMappingWindow(QMainWindow):
   -  Device Name: The name of the device to add the domain to (leave empty for multiple devices)
   -  Domain to be Added: The domain to add to the advanced mapping
   -  Ignore cert warnings for login: Check to ignore certificate warnings when logging in
-  -  Verbose Logging: Check to enable verbose logging"""
+  -  Verbose Logging: Check to enable verbose logging
+  DISCLAIMER: This tool's output goes to the commandline window separate from the GUI. Please do not close the commandline window while the tool is running."""
 
         # Step3 - You will change the next two lines according to the KB
         BoilerLayout, self.input_widgets = gen_custom_tool_layout("Add Domain to Advanced Mapping", ["Tenant (Empty if all devices on all tenants)", "Device Name (Empty if multiple devices)", "Domain to be Added"], ["Ignore cert warnings for login", "Verbose Logging"], tooltip=tooltip)

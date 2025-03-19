@@ -82,7 +82,9 @@ class importCertificateWindow(QMainWindow):
   -  Admin Username: Username of the Edge Filer.
   -  Admin Password: Password of the Edge Filer.
   -  Private Key File: Path to the private key file.
-  -  Certificate Files: Path to the certificate files. Be sure to select all files when you browse files."""
+  -  Certificate Files: Path to the certificate files. Be sure to select all files when you browse files.
+  
+  DISCLAIMER: This tool's output goes to the commandline window separate from the GUI. Please do not close the commandline window while the tool is running."""
 
         # Create the layout for the tool
         CloudFoldersLayout = QGridLayout()

@@ -65,7 +65,9 @@ class populateCloudFoldersWindow(QMainWindow):
   -  Device Name: The name of the edge filer to populate shares on
   -  Domain Name: The domain name of the edge filer. This is only needed if domain users are cloud folder owners
   -  Ignore cert warnings for login: Check this box to ignore certificate warnings when logging in
-  -  Verbose Logging: Check this box to enable debug logging"""
+  -  Verbose Logging: Check this box to enable debug logging
+  
+  DISCLAIMER: This tool's output goes to the commandline window separate from the GUI. Please do not close the commandline window while the tool is running."""
 
         # Step3 - You will change the next two lines according to the KB
         BoilerLayout, self.input_widgets = gen_custom_tool_layout("Populate Cloud Folders as Shares (Except My Files)", ["Device Name", "Domain Name (Only needed if domain users are cloud folder owners)"], ["Ignore cert warnings for login", "Verbose Logging"], tooltip=tooltip)

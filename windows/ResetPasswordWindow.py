@@ -79,7 +79,9 @@ class resetPasswordWindow(QMainWindow):
   -  Username for local user: The username of the local user you want to reset the password for
   -  New filer password: The new password for the local user
   -  Run on all Devices: Check this box if you want to run this tool on all devices on a tenant or all devices on all tenants
-  -  Verbose Logging: Check this box if you want to enable debug logging"""
+  -  Verbose Logging: Check this box if you want to enable debug logging
+  
+  DISCLAIMER: This tool's output goes to the commandline window separate from the GUI. Please do not close the commandline window while the tool is running."""
 
         # Step3 - You will change the next two lines according to the KB
         ResetPasswordLayout, self.input_widgets = gen_custom_tool_layout("Reset Password", ["Device Name", "Tenant Name", "Username for local user", "New filer password"], ["Run on all Devices (No device or tenant name needed)","Verbose Logging"], tooltip=tooltip)

@@ -70,7 +70,9 @@ class reportZonesWindow(QMainWindow):
   -  Address: IP or FQDN of the portal.
   -  Username: Username of the portal admin.
   -  Password: Password of the portal admin.
-  -  Output Location: Select the browse button to select a folder where you would like the report to be generated."""
+  -  Output Location: Select the browse button to select a folder where you would like the report to be generated.
+  
+  DISCLAIMER: This tool's output goes to the commandline window separate from the GUI. Please do not close the commandline window while the tool is running."""
 
         # Step3 - You will change the next two lines according to the KB
         ReportZonesLayout = QGridLayout()
