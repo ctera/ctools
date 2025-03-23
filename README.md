@@ -14,13 +14,13 @@ The EXE is digitally signed and ready to run immediately.
 ### Alternative (Python version)
 If you prefer, you can run the tool from the Python source instead. This option requires Python and manual setup.
 
-#### Development Requirements
+- #### Development Requirements
+  - [CTERA Environment](https://www.ctera.com/)
+  - [CTERA SDK for Python](https://github.com/ctera/ctera-python-sdk)
+  - [Python](https://www.python.org/downloads/)
+  - [git](https://git-scm.com/)
+  - [PySide6](https://pypi.org/project/PySide6/)
 
-- [CTERA Environment](https://www.ctera.com/)
-- [CTERA SDK for Python](https://github.com/ctera/ctera-python-sdk)
-- [Python](https://www.python.org/downloads/)
-- [git](https://git-scm.com/)
-- [PySide6](https://pypi.org/project/PySide6/)
 
 ## Requirements
 
