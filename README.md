@@ -4,13 +4,13 @@ CTools is a toolbox to easily check, manage, run bulk operations, automate tasks
 
 ### Getting Started
 
-You do not need to build or compile the tool yourself.
-Simply download the ready-to-use EXE file directly from the [Releases](https://github.com/ctera/ctools/releases) tab.
+**You do not need to build or compile the tool yourself. Simply download the ready-to-use EXE file directly from the [Releases](https://github.com/ctera/ctools/releases) tab.**
 
 The EXE is digitally signed and ready to run immediately.
 
 ### Alternative (Python version)
 If you prefer, you can run the tool from the Python source instead. This option requires Python and manual setup.
+
 
 - #### Development Requirements
   - [CTERA Environment](https://www.ctera.com/)
