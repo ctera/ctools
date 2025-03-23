@@ -33,9 +33,9 @@ If you prefer, you can run the tool from the Python source instead. This option 
 
 ## Please review this document to learn more about each tool
 
-## Using CTools
+## 💻 Using CTools (GUI Mode)
 
-When you launch **CTools**, two windows will open:
+When you launch **CTools** in GUI, two windows will open:
 
 ### 1. Main Window (GUI)
 - Provides an interactive graphical interface for selecting and executing tasks.
@@ -295,6 +295,32 @@ To see an explanation for what each tool does and how to use it, hover over the 
   | **Verbose Logging**       | Checkbox: Enable this option for detailed logging output in the console window.                           |
   | **Start**                 | Initiates the import and update of the UI certificate.                                                    |
   | **Cancel**                | Cancels the current operation.                                                                            |
+
+## 🖥️ Command Line Interface (CLI)
+
+**CTools** can also be run directly from the command line. To see the available tools and options, use:
+
+```cmd
+C:\Users\Admin\Downloads>"ctools.exe" --help
+
+CTools is a GUI toolset to interact with your CTERA Environment
+
+Usage: ./ctools.exe [tool] [parameters]
+
+Tools:
+  run_cmd                show_status
+  suspend_sync           unsuspend_sync
+  enable_ssh             disable_ssh
+  enable_telnet          reset_password
+  cloud_folders          delete_shares
+  copy_shares            add_rem_members
+  report_zones           populate_shares
+  add_mapping            shares_report
+  import_cert
+
+For help using these tools, you can use the --help flag after selecting the tool
+Ex: "./ctools.exe run_cmd --help"
+```
 
 ## Adding Requests for New Features or Scripts  
 
