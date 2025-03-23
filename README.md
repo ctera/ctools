@@ -14,6 +14,14 @@ The EXE is digitally signed and ready to run immediately.
 ### Alternative (Python version)
 If you prefer, you can run the tool from the Python source instead. This option requires Python and manual setup.
 
+## Development Requirements
+
+- [CTERA Environment](https://www.ctera.com/)
+- [CTERA SDK for Python](https://github.com/ctera/ctera-python-sdk)
+- [Python](https://www.python.org/downloads/)
+- [git](https://git-scm.com/)
+- [PySide6](https://pypi.org/project/PySide6/)
+
 ## Requirements
 
 1. **Use a Portal Global Administrator account to login.**
@@ -25,14 +33,6 @@ If you prefer, you can run the tool from the Python source instead. This option 
     - [documentation](https://kb.ctera.com/v1/docs/en/customizing-administrator-roles-1?highlight=Allow%20Single%20Sign%20On%20to%20Devices) 
 
 ## Please review this document to learn more about each tool
-
-## Development Requirements
-
-- [CTERA Environment](https://www.ctera.com/)
-- [CTERA SDK for Python](https://github.com/ctera/ctera-python-sdk)
-- [Python](https://www.python.org/downloads/)
-- [git](https://git-scm.com/)
-- [PySide6](https://pypi.org/project/PySide6/)
 
 ## Toolset:
 
