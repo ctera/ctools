@@ -48,22 +48,22 @@ When you launch **CTools**, two windows will open:
 ### Running Commands:
 To see an explanation for what each tool does and how to use it, hover over the "i" button.
 
-## Run CMD Tab
-
-This tab allows you to run a command remotely across one or multiple CTERA Edge Filers. Below are explanations of each available field and checkbox:
-
-| Field/Option                             | Description                                                                                                                                                                         |
-| ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Address (Portal IP, hostname, or FQDN)** | The IP address, hostname, or fully qualified domain name of your CTERA portal or filer.                                                                                             |
-| **Portal Admin Username**                  | Admin username used to login to Portal Admin UI.                                                                                                                                   |
-| **Password**                               | Password associated with the provided admin username.                                                                                                                              |
-| **Command**                                | The command you want to execute on the filer(s). For example, to change the admin password for all the edge filers, please type `set /config/auth/users/admin/password "P@ssw0rd"` |
-| **Tenant Name**                            | Specify the tenant name, if applicable, when running a command against specific tenants.                                                                                           |
-| **Device Name (Overrides "All Tenants")**  | Specify an individual filer name to target; overrides running on all devices if provided.                                                                                          |
-| **Run on all Tenants (No device name needed)** | Checkbox: Select to execute the command on all tenants connected to the specified portal.                                                                                          |
-| **Verbose Logging**                        | Checkbox: Enable this option for detailed logging output in the console window.                                                                                                    |
-| **Start**                                  | Initiates execution of the specified command.                                                                                                                                      |
-| **Cancel**                                 | Cancels the current operation.                                                                                                                                                     |
+> #### Run CMD Tab
+> This tab allows you to run a command remotely across one or multiple CTERA Edge Filers. Below are explanations of each available field and checkbox:
+> 
+> | Field/Option                                  | Description                                                                                                                                                                         |
+> | --------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+> | **Address (Portal IP, hostname, or FQDN)**    | The IP address, hostname, or fully qualified domain name of your CTERA portal or filer.                                                                                             |
+> | **Portal Admin Username**                     | Admin username used to login to Portal Admin UI.                                                                                                                                    |
+> | **Password**                                  | Password associated with the provided admin username.                                                                                                                               |
+> | **Command**                                   | The command you want to execute on the filer(s). For example, to change the admin password for all the edge filers, please type `set /config/auth/users/admin/password "P@ssw0rd"`  |
+> | **Tenant Name**                               | Specify the tenant name, if applicable, when running a command against specific tenants.                                                                                            |
+> | **Device Name (Overrides "All Tenants")**     | Specify an individual filer name to target; overrides running on all devices if provided.                                                                                           |
+> | **Run on all Tenants (No device name needed)**| Checkbox: Select to execute the command on all tenants connected to the specified portal.                                                                                           |
+> | **Verbose Logging**                           | Checkbox: Enable this option for detailed logging output in the console window.                                                                                                     |
+> | **Start**                                     | Initiates execution of the specified command.                                                                                                                                       |
+> | **Cancel**                                    | Cancels the current operation.                                                                                                                                                      |
+                                                                                                                                                |
 
 
 #### Show Status
