@@ -2,16 +2,17 @@
 
 ## Description
 
-A toolbox of tasks to check and manage CTERA Edge Filers via GUI/CLI.
+CTools is a toolbox to easily check, manage, run bulk operations, automate tasks across multiple CTERA Edge Filers and Portal via GUI or CLI.
 
-You can download Ctools from the releases tab of this repository:
-https://github.com/ctera/ctools/releases
+Getting Started
 
-Download the **EXE** to run it. The **EXE** is a signed application.
+You do not need to build or compile the tool yourself.
+Simply download the ready-to-use EXE file directly from the Releases tab.
 
-OR
+The EXE is digitally signed and ready to run immediately.
 
-You can use the python version as well.
+Alternative (Python version)
+If you prefer, you can run the tool from the Python source instead. This option requires Python and manual setup.
 
 ## Requirements
 
