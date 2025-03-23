@@ -4,14 +4,14 @@
 
 CTools is a toolbox to easily check, manage, run bulk operations, automate tasks across multiple CTERA Edge Filers and Portal via GUI or CLI.
 
-Getting Started
+### Getting Started
 
 You do not need to build or compile the tool yourself.
 Simply download the ready-to-use EXE file directly from the Releases tab.
 
 The EXE is digitally signed and ready to run immediately.
 
-Alternative (Python version)
+### Alternative (Python version)
 If you prefer, you can run the tool from the Python source instead. This option requires Python and manual setup.
 
 ## Requirements
