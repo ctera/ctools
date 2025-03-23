@@ -34,7 +34,16 @@ If you prefer, you can run the tool from the Python source instead. This option 
 
 ## Please review this document to learn more about each tool
 
-## Toolset:
+## Using CTools
+
+When you launch **CTools**, two windows will open:
+
+### 1. Main Window (GUI)
+- Provides an interactive graphical interface for selecting and executing tasks.
+
+### 2. Console Window
+- This black window displays detailed logs, progress, and relevant runtime messages.
+- **Important:** Keep this window open to view real-time operation status and debug information.
 
 ### Running Commands:
 To see an explanation for what each tool does and how to use it, hover over the "i" button.
