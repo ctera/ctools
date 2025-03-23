@@ -1,5 +1,7 @@
 ## Description
 
+![image](https://github.com/user-attachments/assets/b8eab875-8514-4988-9687-0b577897381f)
+
 CTools is a toolbox to easily check, manage, run bulk operations, automate tasks across multiple CTERA Edge Filers and Portal via GUI or CLI.
 
 ### Getting Started
