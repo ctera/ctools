@@ -277,8 +277,8 @@ To see an explanation for what each tool does and how to use it, hover over the 
   | **Start**                                  | Initiates the process and generates the Shares report.                                                                            |
   | **Cancel**                                 | Cancels the current operation.                                                                                                    |
 
-**Note:**  
-The resulting CSV file can be opened in Excel or any other compatible application for further analysis.
+  **Note:**  
+  The resulting CSV file can be opened in Excel or any other compatible application for further analysis.
 
 - **Import Certificate**  
   This tab allows importing and updating the UI certificate on older Edge Filers where the direct certificate import option isn't available. To import the certificate, fill in the following fields:
