@@ -16,6 +16,7 @@ from cli_helpers.report_zones_cli import report_zones_cli
 from cli_helpers.populate_shares_cli import populate_shares_cli
 from cli_helpers.shares_report_cli import shares_report_cli
 from cli_helpers.add_mapping_cli import add_mapping_cli
+from cli_helpers.worm_settings_cli import worm_settings_cli
 
 from cterasdk import GlobalAdmin, settings
 from log_setter import set_logging
@@ -33,7 +34,7 @@ def cli(args):
         print("  copy_shares            add_rem_members")
         print("  report_zones           populate_shares")
         print("  add_mapping            shares_report")
-        print("  import_cert")
+        print("  import_cert            worm_settings")
         print("\nFor help using these tools, you can use the --help flag after selecting the tool")
         print("Ex: \"./ctools.exe run_cmd --help\"\n")
 
@@ -73,6 +74,8 @@ def cli(args):
         add_mapping_cli(args)
     elif args[1] == "import_cert":
         print("\nThis tool is not yet supported with the CLI\n")
+    elif args[1] == "worm_settings":
+        worm_settings_cli(args)
 
     else:
         print("\nInvalid tool selected. Please use the --help flag to see a list of available tools\n")

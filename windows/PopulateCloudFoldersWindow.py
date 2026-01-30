@@ -18,8 +18,8 @@ from PySide6.QtWidgets import (
 from PySide6.QtGui import (
     QPixmap
 )
-WINDOW_WIDTH = 700
-WINDOW_HEIGHT = 600
+WINDOW_WIDTH = 900
+WINDOW_HEIGHT = 700
 OUTPUT_HEIGHT = 250
 class populateCloudFoldersWindow(QMainWindow):
     """PyCalc's main window (GUI or view)."""

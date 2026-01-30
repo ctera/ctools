@@ -23,6 +23,7 @@ from windows.PopulateCloudFoldersWindow import populateCloudFoldersWindow
 from windows.AddMappingWindow import addMappingWindow
 from windows.SharesReportWindow import sharesReportWindow
 from windows.ImportCertificateWindow import importCertificateWindow
+from windows.WormSettingsWindow import wormSettingsWindow
 
 from PySide6 import QtCore
 
@@ -101,6 +102,9 @@ def main():
 
         import_certificate = importCertificateWindow(widget)
         widget.addWidget(import_certificate)
+
+        worm_settings = wormSettingsWindow(widget)
+        widget.addWidget(worm_settings)
 
         ## STEP7- Add new windows above this line ##
 
