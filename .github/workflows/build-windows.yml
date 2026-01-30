@@ -27,7 +27,7 @@ jobs:
 
     - name: Build executable with PyInstaller
       run: |
-        pyinstaller --name ctools --onefile --windowed ctools.py
+        pyinstaller --name ctools --onefile --windowed --collect-data cterasdk ctools.py
 
     - name: List dist contents
       run: |
