@@ -25,9 +25,11 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Build executable with PyInstaller
+    - name: Find cterasdk location and build executable
       run: |
-        pyinstaller --name ctools --onefile --windowed --collect-data cterasdk ctools.py
+        $cterasdk_path = python -c "import cterasdk; import os; print(os.path.dirname(cterasdk.__file__))"
+        echo "cterasdk path: $cterasdk_path"
+        pyinstaller --name ctools --onefile --windowed --add-data "$cterasdk_path;cterasdk" ctools.py
 
     - name: List dist contents
       run: |
