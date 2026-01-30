@@ -27,7 +27,7 @@ jobs:
 
     - name: Build executable with PyInstaller
       run: |
-        pyinstaller --name ctools --onefile --windowed --icon=icon.jpeg ctools.py
+        pyinstaller --name ctools --onefile --windowed ctools.py
 
     - name: List dist contents
       run: |
