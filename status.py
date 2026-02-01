@@ -4,7 +4,7 @@ import logging
 import os
 import re
 import sys
-from filer import get_filers
+from filer import get_filers, safe_cli_command, get_portal_name
 
 
 def write_status(self, p_filename, all_tenants):
@@ -22,8 +22,8 @@ def write_status(self, p_filename, all_tenants):
         info = filer.api.get_multi('/', get_list)
 
         logging.info("Checking for tenant...")
-        
-        tenant = filer.portal
+
+        tenant = get_portal_name(filer)
 
         #tenant = filer.session().current_tenant()
 
@@ -56,32 +56,31 @@ def write_status(self, p_filename, all_tenants):
                 MetaLogMaxFiles = info.config.logging.log2File.maxfiles
             except AttributeError:
                 MetaLogMaxFiles = 'Not Applicable'
-        try:
-            AuditLogsStatus = filer.cli.run_command('show /config/logging/files/mode')
-        except AttributeError:
-            AuditLogsStatus = 'Not Applicable'
-        try:
-            DeviceLocation = filer.cli.run_command('show /config/device/location')
-        except AttributeError:
-            AuditLogsStatus = 'Not Applicable'
-        try:
-            AuditLogsPath = filer.cli.run_command('show /config/logging/files/path')
-        except AttributeError:
-            AuditLogsStatus = 'Not Applicable'
-        try:
-            MetaLogs = filer.cli.run_command('dbg level')
+        AuditLogsStatus = safe_cli_command(filer, 'show /config/logging/files/mode')
+        DeviceLocation = safe_cli_command(filer, 'show /config/device/location')
+        AuditLogsPath = safe_cli_command(filer, 'show /config/logging/files/path')
+        MetaLogs = safe_cli_command(filer, 'dbg level')
+        # Extract substring from MetaLogs if it's a valid string
+        if isinstance(MetaLogs, str) and len(MetaLogs) >= 28:
             MetaLogs1 = MetaLogs[-28:-18]
-        except AttributeError:
-            MetaLogs1 = 'Not Applicable'
+        else:
+            MetaLogs1 = MetaLogs if MetaLogs != 'Not Applicable' else 'Not Applicable'
+        ad_mapping = safe_cli_command(filer, 'show /config/fileservices/cifs/idMapping/map')
         try:
-            MetaLogs = filer.cli.run_command('dbg level')
-        except AttributeError:
-            MetaLogs = 'Not Applicable'
-        try:
-            ad_mapping = filer.cli.run_command('show /config/fileservices/cifs/idMapping/map')
-        except AttributeError:
-            ad_mapping = 'Not Applicable'
-        License = filer.licenses.get()
+            License = filer.licenses.get()
+            # Handle None or invalid response
+            if License is None:
+                raise ValueError("License returned None")
+        except Exception:
+            # Fallback for SDK 7.11+ where licenses.get() may fail
+            try:
+                License = filer.api.get('/config/device/activeLicenseType')
+                if License is not None and hasattr(License, 'current'):
+                    License = License.current
+                elif License is None:
+                    License = 'Not Applicable'
+            except Exception:
+                License = 'Not Applicable'
         # License = info.config.device.activeLicenseType
         SN = info.status.device.SerialNumber
         MAC = info.status.device.MacAddress
@@ -93,8 +92,12 @@ def write_status(self, p_filename, all_tenants):
         except AttributeError:
             storageThresholdPercentTrigger = 'Not Applicable'
         uptime = info.proc.time.uptime
-        curr_cpu = info.proc.perfMonitor.current.cpu
-        curr_mem = info.proc.perfMonitor.current.memUsage
+        try:
+            curr_cpu = info.proc.perfMonitor.current.cpu
+            curr_mem = info.proc.perfMonitor.current.memUsage
+        except (AttributeError, TypeError):
+            curr_cpu = 'N/A'
+            curr_mem = 'N/A'
         _total = info.proc.storage.summary.totalVolumeSpace
         _used = info.proc.storage.summary.usedVolumeSpace
         _free = info.proc.storage.summary.freeVolumeSpace
@@ -108,21 +111,33 @@ def write_status(self, p_filename, all_tenants):
         _servers = TimeServer.NTPServer
         time = (f"Mode: {_mode} Zone: {_zone} Servers: {_servers}")
 
-        def get_max_cpu(samples=info.proc.perfMonitor.samples):
+        def get_max_cpu():
             """Return the max CPU usage recorded in last few hours."""
-            cpu_history = []
-            for i in samples:
-                cpu_history.append(i.cpu)
-            max_cpu = format(max(cpu_history))
-            return f"{max_cpu}%"
+            try:
+                samples = info.proc.perfMonitor.samples
+                if samples is None:
+                    return 'N/A'
+                cpu_history = []
+                for i in samples:
+                    cpu_history.append(i.cpu)
+                max_cpu = format(max(cpu_history))
+                return f"{max_cpu}%"
+            except (AttributeError, TypeError, ValueError):
+                return 'N/A'
 
-        def get_max_memory(samples=info.proc.perfMonitor.samples):
+        def get_max_memory():
             """Return the max memory usage recorded in last few hours."""
-            memory_history = []
-            for i in samples:
-                memory_history.append(i.memUsage)
-            max_memory = format(max(memory_history))
-            return f"{max_memory}%"
+            try:
+                samples = info.proc.perfMonitor.samples
+                if samples is None:
+                    return 'N/A'
+                memory_history = []
+                for i in samples:
+                    memory_history.append(i.memUsage)
+                max_memory = format(max(memory_history))
+                return f"{max_memory}%"
+            except (AttributeError, TypeError, ValueError):
+                return 'N/A'
 
         def get_ad_status(result=info.status.fileservices.cifs.joinStatus):
             """
@@ -138,20 +153,32 @@ def write_status(self, p_filename, all_tenants):
             return result
         
         def get_db_size():
-            get_list = ['status', 'config']
-            info = filer.api.get_multi('/', get_list)
+            try:
+                get_list = ['status', 'config']
+                info = filer.api.get_multi('/', get_list)
 
-            filer.telnet.enable(hashlib.sha1(
-                (info.status.device.MacAddress + '-' + info.status.device.runningFirmware).encode('utf-8')).hexdigest()[:8])
+                # Handle MacAddress being a list or string
+                mac_addr = info.status.device.MacAddress
+                if isinstance(mac_addr, list):
+                    mac_addr = mac_addr[0] if mac_addr else ''
+                mac_addr = str(mac_addr)
 
-            output =  filer.shell.run_command('stat /var/volumes/*/.ctera/cloudSync/CloudSync.db')
-            print(output)
-            size_bytes = int(re.search(r'(?<=Size:\ )[0-9]*', output).group())
-            size_gb = round(size_bytes/2**30,2)
+                firmware = str(info.status.device.runningFirmware)
 
-            filer.telnet.disable()
+                filer.telnet.enable(hashlib.sha1(
+                    (mac_addr + '-' + firmware).encode('utf-8')).hexdigest()[:8])
 
-            return size_gb
+                output = filer.shell.run_command('stat /var/volumes/*/.ctera/cloudSync/CloudSync.db')
+                print(output)
+                size_bytes = int(re.search(r'(?<=Size:\ )[0-9]*', output).group())
+                size_gb = round(size_bytes/2**30,2)
+
+                filer.telnet.disable()
+
+                return size_gb
+            except Exception as e:
+                logging.debug(f"get_db_size failed: {e}")
+                return 'N/A'
 
         with open(p_filename, mode='a', newline='', encoding="utf-8-sig") as gatewayList:
             gateway_writer = csv.writer(gatewayList,
