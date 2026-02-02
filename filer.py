@@ -84,7 +84,14 @@ def get_current_tenant(portal_session):
     """Get current tenant from session, handling different SDK versions."""
     session = portal_session.users.session()
 
-    # Try 7.11+ structure first
+    # Try current_tenant() method first (7.11+)
+    if hasattr(session, 'current_tenant') and callable(getattr(session, 'current_tenant', None)):
+        try:
+            return session.current_tenant()
+        except Exception:
+            pass
+
+    # Try 7.11+ structure - tenant property
     if hasattr(session, 'tenant'):
         return session.tenant
 

@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(python ctools.py:*)"
+      "Bash(python ctools.py:*)",
+      "Bash(git push:*)",
+      "Bash(python -c:*)"
     ]
   }
 }
