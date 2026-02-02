@@ -29,7 +29,7 @@ jobs:
       run: |
         $cterasdk_path = python -c "import cterasdk; import os; print(os.path.dirname(cterasdk.__file__))"
         echo "cterasdk path: $cterasdk_path"
-        pyinstaller --name ctools --onefile --windowed --add-data "$cterasdk_path;cterasdk" ctools.py
+        pyinstaller --name ctools --onefile --console --add-data "$cterasdk_path;cterasdk" ctools.py
 
     - name: List dist contents
       run: |
