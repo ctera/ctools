@@ -47,7 +47,7 @@ def main():
         
         widget = QStackedWidget()
 
-        widget.setWindowTitle("CTools v3.2.2")
+        widget.setWindowTitle("CTools v3.2.5")
 
         widget.setWindowIcon(QIcon('icon.jpeg'))
         

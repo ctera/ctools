@@ -3,7 +3,9 @@
     "allow": [
       "Bash(python ctools.py:*)",
       "Bash(git push:*)",
-      "Bash(python -c:*)"
+      "Bash(python -c:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ]
   }
 }
