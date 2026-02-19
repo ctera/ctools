@@ -1,0 +1,4 @@
+share_name,path,comment,acl
+TestShare,cloud/users/SVC ACCT/folder1,My test share,DomainGroup:CTERA\Admins:RW;DomainUser:CTERA\john:RO
+AnotherShare,cloud/users/SVC ACCT/folder2,,LocalUser:admin:RW
+NoACLShare,cloud/users/SVC ACCT/folder3,No permissions,

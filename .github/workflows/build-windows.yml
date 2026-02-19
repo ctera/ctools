@@ -29,7 +29,27 @@ jobs:
       run: |
         $cterasdk_path = python -c "import cterasdk; import os; print(os.path.dirname(cterasdk.__file__))"
         echo "cterasdk path: $cterasdk_path"
-        pyinstaller --name ctools --onefile --console --add-data "$cterasdk_path;cterasdk" ctools.py
+        pyinstaller --name ctools --onefile --console `
+          --add-data "$cterasdk_path;cterasdk" `
+          --add-data "src/ctools;ctools" `
+          --add-data "assets;assets" `
+          --hidden-import=PySide6.QtWidgets `
+          --hidden-import=PySide6.QtCore `
+          --hidden-import=PySide6.QtGui `
+          --hidden-import=urllib3 `
+          --hidden-import=certifi `
+          --hidden-import=aiohttp `
+          --hidden-import=aiofiles `
+          --hidden-import=cryptography `
+          --hidden-import=yaml `
+          --hidden-import=xml.etree.ElementTree `
+          --hidden-import=xml.dom `
+          --hidden-import=xml.dom.minidom `
+          --hidden-import=packaging `
+          --hidden-import=packaging.version `
+          --hidden-import=snappy `
+          --collect-data=certifi `
+          ctools.py
 
     - name: List dist contents
       run: |

@@ -228,7 +228,70 @@ To see an explanation for what each tool does and how to use it, hover over the 
   **Note:**  
   The resulting CSV file can be opened in Excel or any other compatible application for further analysis.
 
-- **Populate Shares**  
+- **Create Shares from CSV**
+  This tab allows you to create one or more shares on an Edge Filer from a CSV file, including full ACL (permissions) configuration. Each row in the CSV represents **one share** — all of its permissions are defined inline in a single `acl` column. This is ideal for bulk share provisioning where you need precise control over who gets access.
+
+  | Field/Option                               | Description                                                                                                                    |
+  | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
+  | **Address (Portal IP, hostname, or FQDN)** | The IP address, hostname, or fully qualified domain name of your CTERA portal.                                                 |
+  | **Portal Admin Username**                  | Admin username used to login to Portal Admin UI.                                                                               |
+  | **Password**                               | Password associated with the provided admin username.                                                                          |
+  | **Device Name**                            | Name of the target Edge Filer where the shares will be created.                                                                |
+  | **Tenant Name**                            | Specify the portal tenant name. Leave blank if not needed.                                                                     |
+  | **CSV File**                               | Browse and select a CSV file containing the share definitions and permissions.                                                 |
+  | **Exclude Everyone RW**                    | Checkbox: See explanation below.                                                                                               |
+  | **Verbose Logging**                        | Checkbox: Enable this option for detailed logging output in the console window.                                                |
+  | **Start**                                  | Initiates share creation as defined in the CSV file.                                                                           |
+  | **Cancel**                                 | Cancels the current operation.                                                                                                 |
+
+  **CSV Format:**
+
+  The CSV file has 4 columns — one row per share:
+
+  | Column        | Required | Description                                                                                                                       |
+  | ------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------- |
+  | `share_name`  | Yes      | The name of the share to create.                                                                                                  |
+  | `path`        | Yes      | The path on the filer (e.g., `cloud/users/SVC ACCT/my-folder`).                                                                   |
+  | `comment`     | No       | An optional description for the share.                                                                                            |
+  | `acl`         | No       | Permissions for the share. See format below. Leave empty for no explicit permissions.                                             |
+
+  **ACL column format:**
+
+  Each permission entry uses the format `type:name:permission`, and multiple entries are separated by semicolons (`;`).
+
+  | Part          | Description                                                                                          |
+  | ------------- | ---------------------------------------------------------------------------------------------------- |
+  | `type`        | `DomainUser`, `DomainGroup`, `LocalUser`, or `LocalGroup`                                            |
+  | `name`        | The user or group name (e.g., `CTERA\Domain Admins`, `admin`, `Everyone`)                            |
+  | `permission`  | `RW` (Read/Write), `RO` (Read Only), or `NA` (No Access)                                            |
+
+  **Example:** `DomainGroup:CTERA\Domain Admins:RW;LocalUser:admin:RO`
+
+  **Example CSV:**
+  ```csv
+  share_name,path,comment,acl
+  ProjectShare,cloud/users/SVC ACCT/project,Project files,DomainGroup:CTERA\Domain Admins:RW;DomainUser:CTERA\jsmith:RO;LocalUser:admin:RW
+  BackupShare,cloud/users/SVC ACCT/backup,Backup folder,LocalUser:admin:RW
+  EmptyShare,cloud/users/SVC ACCT/empty,No permissions,
+  ```
+
+  In this example:
+  - **ProjectShare** is created with 3 ACL entries (Domain Admins RW, jsmith RO, admin RW).
+  - **BackupShare** is created with 1 ACL entry (admin RW).
+  - **EmptyShare** is created with no explicit ACL entries.
+
+  **"Exclude Everyone RW" Checkbox:**
+
+  By default (checkbox **unchecked**), the tool automatically adds an **Everyone – Read/Write** permission to every share it creates. This is a common default that ensures shares are accessible out of the box.
+
+  When the checkbox is **checked**, this automatic Everyone RW entry is **not** added. This is useful when you want to lock down shares and only grant access to the specific users and groups listed in your CSV.
+
+  > **Important:** This checkbox only controls the *automatic* Everyone RW entry. If you explicitly include an `Everyone` entry in your CSV (e.g., `LocalGroup:Everyone:RW`), that entry will **always** be applied regardless of the checkbox setting. This gives you full control — you can check "Exclude Everyone RW" to prevent the automatic default, while still manually granting Everyone access to specific shares via the CSV where needed.
+
+  **CSV Template:**
+  > You can download the CSV template [here](https://github.com/ctera/ctools/blob/main/templates/create_shares.csv).
+
+- **Populate Shares**
   This tab creates a share on an Edge Filer for each cloud folder (excluding "My Files"). It's especially useful when there are many cloud folders, and you need each one available as an individual share on the filer.
 
   | Field/Option                                 | Description                                                                                                                    |
@@ -259,13 +322,14 @@ To see an explanation for what each tool does and how to use it, hover over the 
   | **Start**                                  | Initiates the process to add the specified domain to Advanced Mappings.                                                        |
   | **Cancel**                                 | Cancels the current operation.                                                                                                 |
 
-- **Shares Report**  
+- **Shares Report**
   This tab generates a detailed CSV report of all shares configured across all connected Edge Filers. The resulting report includes the following information:
 
   - **Share Name**
   - **Share Path**
   - **Edge Filer Name**
   - **Edge Filer IP**
+  - **ACL Permissions** — A summary of all access control entries on the share (e.g., `DomainGroup: CTERA\Domain Admins (ReadWrite); LocalUser: admin (ReadOnly)`)
 
   | Field/Option                               | Description                                                                                                                       |
   | ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------- |

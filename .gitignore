@@ -1,19 +1,83 @@
-*.csv
-*.log
-*.swp
-*-log.txt
-ctools.spec
-pyvenv.cfg
-__pycache__
-**/__pycache__
-*/__pycache__
+# Python
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
 build/
+develop-eggs/
 dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv/
 Lib/
 Scripts/
-venv/
+pyvenv.cfg
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+.settings/
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Testing
+src/ctools/tests/
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# mypy
+.mypy_cache/
+
+# Logs and temp files
+*.log
+*.tmp
 output.tmp
-output
+output/
 info-log.txt
+debug-log.txt
+*-log.txt
+
+# Output files (test results)
+*.csv
+!templates/*.csv
+
+# OS files
+.DS_Store
+Thumbs.db
+nul
+
+# Linting config (if local)
 .flake8
 .pylintrc
+
+# Local settings
+.claude/
+.env
+.env.local

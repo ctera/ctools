@@ -1,120 +1,17 @@
-# ctools.py
+#!/usr/bin/env python3
+"""
+CTools - A GUI and CLI toolset for CTERA environments.
 
-"""CTools is a GUI toolset to interact with your CTERA Environment"""
+This file serves as the entry point for both development and PyInstaller builds.
+"""
 
-import sys, os
+import sys
+import os
 
-from command_line import cli
+# Add src to path for development
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
-from windows.RunCmdWindow import runCmdWindow
-from windows.ShowStatusWindow import showStatusWindow
-from windows.SuspendSyncWindow import suspendSyncWindow
-from windows.DeleteSharesWindow import deleteSharesWindow
-from windows.EnableTelnetWindow import enableTelnetWindow
-from windows.EnableSSHWindow import enableSSHWindow
-from windows.DisableSSHWindow import disableSSHWindow
-from windows.UnsuspendSyncWindow import unsuspendSyncWindow
-from windows.ResetPasswordWindow import resetPasswordWindow
-from windows.CloudFoldersWindow import cloudFoldersWindow
-from windows.ImportSharesWindow import importSharesWindow
-from windows.AddMembersWindow import addMembersWindow
-from windows.ReportZonesWindow import reportZonesWindow
-from windows.PopulateCloudFoldersWindow import populateCloudFoldersWindow
-from windows.AddMappingWindow import addMappingWindow
-from windows.SharesReportWindow import sharesReportWindow
-from windows.ImportCertificateWindow import importCertificateWindow
-from windows.WormSettingsWindow import wormSettingsWindow
-
-from PySide6 import QtCore
-
-from PySide6.QtWidgets import (
-    QApplication,
-    QStackedWidget,
-)
-
-from PySide6.QtGui import QIcon
-
-def main():
-    """CTools's main function."""
-
-    # Check if this is meant to run as cli
-    if len(sys.argv) > 1:
-        cli(sys.argv)
-    else: 
-        os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
-        ctoolsApp = QApplication(sys.argv)
-        
-        
-        widget = QStackedWidget()
-
-        widget.setWindowTitle("CTools v3.2.5")
-
-        widget.setWindowIcon(QIcon('icon.jpeg'))
-        
-        run_cmd = runCmdWindow(widget)
-        widget.addWidget(run_cmd)
-
-        show_status = showStatusWindow(widget) 
-        widget.addWidget(show_status)
-
-
-        suspend_sync = suspendSyncWindow(widget) 
-        widget.addWidget(suspend_sync)
-        
-        unsuspend_sync = unsuspendSyncWindow(widget)
-        widget.addWidget(unsuspend_sync)
-
-        enable_ssh = enableSSHWindow(widget)
-        widget.addWidget(enable_ssh)
-        
-        disable_ssh = disableSSHWindow(widget)
-        widget.addWidget(disable_ssh)
-
-        enable_telnet = enableTelnetWindow(widget)
-        widget.addWidget(enable_telnet)
-
-        reset_password = resetPasswordWindow(widget)
-        widget.addWidget(reset_password)
-
-        cloud_folders = cloudFoldersWindow(widget)
-        widget.addWidget(cloud_folders)
-
-        delete_shares = deleteSharesWindow(widget) 
-        widget.addWidget(delete_shares)
-
-        import_shares = importSharesWindow(widget)
-        widget.addWidget(import_shares)
-        
-        add_members = addMembersWindow(widget)
-        widget.addWidget(add_members)
-
-        report_zones = reportZonesWindow(widget)
-        widget.addWidget(report_zones)
-
-        populate_shares = populateCloudFoldersWindow(widget)
-        widget.addWidget(populate_shares)
-
-        add_mapping = addMappingWindow(widget)
-        widget.addWidget(add_mapping)
-
-        shares_report = sharesReportWindow(widget)
-        widget.addWidget(shares_report)
-
-        import_certificate = importCertificateWindow(widget)
-        widget.addWidget(import_certificate)
-
-        worm_settings = wormSettingsWindow(widget)
-        widget.addWidget(worm_settings)
-
-        ## STEP7- Add new windows above this line ##
-
-        widget.setCurrentWidget(run_cmd)
-
-        widget.show()
-
-        ctoolsApp.exec()
-
-    
+from ctools.app import main
 
 if __name__ == "__main__":
     main()
