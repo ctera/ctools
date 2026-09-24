@@ -50,7 +50,7 @@ When you launch **CTools** in GUI, two windows will open:
 To see an explanation for what each tool does and how to use it, hover over the "i" button.
 
 - **Run CMD**  
-  This tab allows you to run a command remotely across one or multiple CTERA Edge Filers. This is useful in sitatuations when you have many filers and need to make a change across all of them without manually logging into each. Below are explanations of each available field and checkbox:
+  This tab allows you to run a command remotely across one or multiple CTERA Edge Filers. This is useful in situations when you have many filers and need to make a change across all of them without manually logging into each. Below are explanations of each available field and checkbox:
 
     | Field/Option                                  | Description                                                                                                                                                                         |
     | --------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
