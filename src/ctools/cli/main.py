@@ -178,6 +178,23 @@ def create_parser() -> argparse.ArgumentParser:
         help="Run on all tenants"
     )
 
+    cache_parser = subparsers.add_parser(
+        "cache_report",
+        help="Generate edge filer cache utilization report",
+    )
+    add_common_args(cache_parser)
+    cache_parser.add_argument("filename", help="Output CSV filename")
+    cache_parser.add_argument("--tenant", help="Tenant name (when not scanning all portals)")
+    cache_parser.add_argument(
+        "--input-csv",
+        help="Optional CSV listing device_name and optional tenant",
+    )
+    cache_parser.add_argument(
+        "--all-tenants",
+        action="store_true",
+        help="Scan all portals (default when no --tenant and no --input-csv)",
+    )
+
     # copy_shares command
     copy_parser = subparsers.add_parser(
         "copy_shares",
@@ -363,6 +380,33 @@ def cli_main(argv=None):
             device=args.device,
             all_tenants=args.all_tenants
         )
+
+    elif args.command == "cache_report":
+        from ..tools.cache_report import run_cache_report
+
+        all_tenants = args.all_tenants or (not args.tenant and not args.input_csv)
+        setup_logging(
+            logging.DEBUG if args.verbose else logging.INFO,
+            "debug-log.txt" if args.verbose else "info-log.txt",
+        )
+        settings.sessions.management.ssl = False
+        try:
+            with GlobalAdmin(args.address) as admin:
+                admin.login(args.username, args.password)
+                enable_device_sso(admin)
+                try:
+                    run_cache_report(
+                        admin,
+                        filename=args.filename,
+                        tenant=args.tenant,
+                        all_tenants=all_tenants,
+                        input_csv=args.input_csv,
+                    )
+                finally:
+                    admin.logout()
+        except Exception as e:
+            logging.error("Operation failed: %s", e)
+            sys.exit(1)
 
     elif args.command == "copy_shares":
         from ..tools.copy_shares import copy_shares

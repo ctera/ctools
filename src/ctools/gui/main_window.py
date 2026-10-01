@@ -23,6 +23,7 @@ from .views import (
     ResetPasswordView,
     ReportZonesView,
     SharesReportView,
+    CacheReportView,
     CopySharesView,
     PopulateSharesView,
     CreateSharesView,
@@ -94,6 +95,7 @@ class MainWindow(QMainWindow):
         self._add_view(StatusView(), "Status Report", idx); idx += 1
         self._add_view(ReportZonesView(), "Zones Report", idx); idx += 1
         self._add_view(SharesReportView(), "Shares Report", idx); idx += 1
+        self._add_view(CacheReportView(), "Cache Report", idx); idx += 1
 
         # Device Operations section
         self.sidebar.add_section("Device Operations")

@@ -9,6 +9,7 @@ from .telnet_view import EnableTelnetView
 from .password_view import ResetPasswordView
 from .zones_view import ReportZonesView
 from .shares_views import SharesReportView, CopySharesView, PopulateSharesView
+from .cache_report_view import CacheReportView
 from .create_shares_view import CreateSharesView
 from .mapping_view import AddMappingView
 from .worm_view import WormSettingsView
@@ -29,6 +30,7 @@ __all__ = [
     'ResetPasswordView',
     'ReportZonesView',
     'SharesReportView',
+    'CacheReportView',
     'CopySharesView',
     'PopulateSharesView',
     'CreateSharesView',
@@ -52,6 +54,7 @@ TOOLS = [
     ("reset_password", "Reset Password", "Reset device passwords"),
     ("report_zones", "Zones Report", "Generate zones report"),
     ("shares_report", "Shares Report", "Generate shares report"),
+    ("cache_report", "Cache Report", "Edge filer cache utilization"),
     ("delete_shares", "Delete Shares", "Delete shares by substring match"),
     ("copy_shares", "Copy Shares", "Copy shares between devices"),
     ("populate_shares", "Populate Shares", "Populate cloud folders as shares"),
